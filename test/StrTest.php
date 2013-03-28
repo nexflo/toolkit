@@ -60,30 +60,6 @@ class StrTest extends PHPUnit_Framework_TestCase {
 
   }
 
-  /*
-  public function test_shorturl() {
-    
-    $sample = 'http://getkirby.com';
-    $long   = 'http://getkirby.com/docs/example/1/2/3';
-      
-    // without shortening
-    $this->assertEquals('getkirby.com', str::shorturl($sample, false));
-
-    // zero chars
-    $this->assertEquals('getkirby.com', str::shorturl($sample, 0));
-    
-    // with shortening
-    $this->assertEquals('getk…', str::shorturl($sample, 5));
-
-    // with different ellipsis character
-    $this->assertEquals('ge---', str::shorturl($sample, 5, false, '---'));
-
-    // only keeping the base
-    $this->assertEquals('getkirby.com', str::shorturl($long, false, true));
-
-  }
-  */
-
   public function testExcerpt() {
     // no test yet
   }
