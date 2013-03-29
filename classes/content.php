@@ -23,18 +23,20 @@ class Content {
   }
 
   /**
-   * Stops the output buffer
-   * and flush the content or return it.
+   * Stops the output buffer and returns its content
    * 
-   * @param  boolean  $return Pass true to return the content instead of flushing it 
-   * @return mixed
+   * @return string
    */
-  static public function end($return = false) {
-    if($return) {
-      $content = ob_get_contents();
-      ob_end_clean();
-      return $content;
-    }
+  static public function stop() {
+    $content = ob_get_contents();
+    ob_end_clean();
+    return $content;
+  }
+
+  /**
+   * Stops the output buffer and echos its content
+   */
+  static public function flush() {
     ob_end_flush();
   }
 
@@ -50,7 +52,7 @@ class Content {
     self::start();
     extract($data);
     require_once($file);
-    $content = self::end(true);
+    $content = self::stop();
     if($return) return $content;
     echo $content;        
   }
@@ -61,14 +63,20 @@ class Content {
    * @param  string  $ctype The shortcut for the content type. See the keys of the $ctypes array for all available shortcuts
    * @param  string  $charset The charset definition for the content type header. Default is "utf-8"
    */
-  static public function type($type = null, $charset = 'utf-8') {
+  static public function type($type = null, $charset = 'utf-8', $send = true) {
 
     $type = a::get(c::get('mimes'), $type);
 
     // use the first content type if multiple are available
     if(is_array($type)) $type = a::first($type);
 
-    header('Content-type: ' . $type . '; charset=' . $charset);
+    $header = 'Content-type: ' . $type . '; charset=' . $charset;
+
+    if($send) {
+     header($header);
+    } else {
+     return $header;
+    }
 
   }
 

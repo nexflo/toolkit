@@ -97,21 +97,31 @@ class Dir {
    * @param   boolean  $nice returns the size in a human readable size 
    * @return  mixed  
    */  
-  static public function size($path, $recursive = true, $nice = false) {
-    if(!file_exists($path)) return false;
-    if(is_file($path)) return self::size($path, $nice);
+  static public function size($dir, $recursive = true, $nice = false) {
+    if(!file_exists($dir)) return false;
+    if(is_file($dir))      return f::size($path, $nice);
     $size = 0;
-    foreach(glob($path."/*") AS $file) {
-      if($file != "." && $file != "..") {
-        if($recursive) {
-          $size += self::size($file, true);
-        } else {
-          $size += f::size($path);
-        }
+    
+    foreach(dir::read($dir) AS $file) {
+      if(is_dir($dir . DS . $file) && $recursive) {
+        $size += self::size($dir . DS . $file, true);
+      } else {
+        $size += f::size($dir . DS . $file);
       }
     }
     return ($nice) ? f::niceSize($size) : $size;
   }
+
+  /**
+   * Returns a nicely formatted size of all the contents of the folder
+   * 
+   * @param string $dir The path of the directory
+   * @param boolean $recursive
+   * @return mixed
+   */
+  static public function niceSize($dir, $recursive = true) {
+    return self::size($dir, $recursive, true);
+  } 
 
   /**
    * Recursively check when the dir and all 
@@ -125,10 +135,10 @@ class Dir {
     if($modified === false) $modified = filemtime($dir);
     $files = self::read($dir);
     foreach($files AS $file) {
-      if(!is_dir($dir . '/' . $file)) continue;
-      $filectime = filemtime($dir . '/' . $file);
+      if(!is_dir($dir . DS . $file)) continue;
+      $filectime = filemtime($dir . DS . $file);
       $modified  = ($filectime > $modified) ? $filectime : $modified;
-      $modified  = self::modified($dir . '/' . $file, $modified);
+      $modified  = self::modified($dir . DS . $file, $modified);
     }
     return $modified;
   }

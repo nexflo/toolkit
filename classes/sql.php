@@ -92,7 +92,7 @@ class Sql {
 
     $options = array_merge($defaults, $params);
     $query   = array();
-    
+
     $query[] = 'INSERT INTO ' . $options['table'];
     $query[] = self::values($options['values'], ', ', false);
 
@@ -185,20 +185,20 @@ class Sql {
     } else {
       
       $fields = array();
-      $values = array();
+      $output = array();
       
       foreach($values AS $key => $value) {
         $fields[] = $key;
         if(in_array($value, self::$literals)) {
-          $values[] = $value;
+          $output[] = $value;
         } elseif(is_array($value)) {
-          $values[] = "'" . db::escape(json_encode($value)) . "'";
+          $output[] = "'" . db::escape(json_encode($value)) . "'";
         } else {
-          $values[] = "'" . db::escape($value) . "'";
+          $output[] = "'" . db::escape($value) . "'";
         }
       }
   
-      return '(' . implode($separator, $fields) . ') VALUES (' . implode($separator, $values) . ')'; 
+      return '(' . implode($separator, $fields) . ') VALUES (' . implode($separator, $output) . ')'; 
     
     }
 

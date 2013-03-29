@@ -40,6 +40,8 @@ class DbConnector {
         'user'     => c::get('db.user'),
         'password' => c::get('db.password'),
         'database' => c::get('db.name'),
+        'prefix'   => c::get('db.prefix'),
+        'charset'  => c::get('db.charset'),
         'type'     => 'mysql'
       );
     } else if(is_string($params)) {

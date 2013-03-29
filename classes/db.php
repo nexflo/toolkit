@@ -302,7 +302,7 @@ class Db {
    * @param int $limit
    * @return mixed
    */
-  static public function select($table, $columns, $where = null, $order = null, $offset = 0, $limit = null) {
+  static public function select($table, $columns = '*', $where = null, $order = null, $offset = 0, $limit = null) {
     return self::table($table)->select($columns)->where($where)->order($order)->offset($offset)->limit($limit)->all();
   }
 
@@ -317,7 +317,7 @@ class Db {
    * @param int $limit
    * @return mixed
    */
-  static public function first($table, $columns, $where = null, $order = null) {
+  static public function first($table, $columns = '*', $where = null, $order = null) {
     return self::table($table)->select($columns)->where($where)->order($order)->first();    
   }
 
@@ -326,8 +326,8 @@ class Db {
    * 
    * @see self::first()
    */
-  static public function row($table, $columns, $where = null, $order = null) {
-    return self::first($table, $column, $where, $order);
+  static public function row($table, $columns = '*', $where = null, $order = null) {
+    return self::first($table, $columns, $where, $order);
   }
 
   /**
@@ -335,8 +335,8 @@ class Db {
    * 
    * @see self::first()
    */
-  static public function one($table, $columns, $where = null, $order = null) {
-    return self::first($table, $column, $where, $order);
+  static public function one($table, $columns = '*', $where = null, $order = null) {
+    return self::first($table, $columns, $where, $order);
   }
 
   /**
@@ -350,7 +350,7 @@ class Db {
    * @param int $limit
    * @return mixed
    */
-  static public function column($table, $column, $where = null, $order = null, $limit = null) {
+  static public function column($table, $column, $where = null, $order = null, $offset = 0, $limit = null) {
     return self::table($table)->where($where)->order($order)->offset($offset)->limit($limit)->column($column);
   }
 
@@ -375,6 +375,17 @@ class Db {
    */
   static public function update($table, $values, $where = null) {
     return self::table($table)->where($where)->update($values);
+  }
+
+  /**
+   * Shortcut for deleting rows in a table
+   * 
+   * @param string $table The name of the table, which should be queried
+   * @param mixed $where An optional where clause
+   * @return boolean
+   */
+  static public function delete($table, $where = null) {
+    return self::table($table)->where($where)->delete();
   }
 
   /**

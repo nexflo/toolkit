@@ -734,10 +734,11 @@ class DbQuery {
    * Fires an insert query
    *
    * @param array $values You can pass values here or set them with ->values() before
-   * @return boolean
+   * @return mixed Returns the last inserted id on success or false. 
    */
   public function insert($values = null) {
-    return $this->execute($this->values($values)->build('insert'));
+    $query = $this->execute($this->values($values)->build('insert'));
+    return ($query) ? db::lastId() : false;
   }
 
   /**

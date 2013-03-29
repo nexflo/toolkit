@@ -8,29 +8,39 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  *
  * @param   string    $url The URL to redirect to
  * @param   boolean   $code The HTTP status code, which should be sent (301, 302 or 303)
+ * @param   boolean   $send If true, headers will be sent and redirection will take effect
  * @package Kirby
  */
-function go($url = false, $code = false) {
+function go($url = false, $code = false, $send = true) {
 
   if(empty($url)) $url = c::get('url', '/');
+
+  $header = false;
 
   // send an appropriate header
   if($code) {
     switch($code) {
       case 301:
-        header('HTTP/1.1 301 Moved Permanently');
+        $header = 'HTTP/1.1 301 Moved Permanently';
         break;
       case 302:
-        header('HTTP/1.1 302 Found');
+        $header = 'HTTP/1.1 302 Found';
         break;
       case 303:
-        header('HTTP/1.1 303 See Other');
+        $header = 'HTTP/1.1 303 See Other';
         break;
     }
   }
-  // send to new page
-  header('Location:' . $url);
-  exit();
+  
+  if($send) {
+    // send to new page
+    if($header) header($header);
+    header('Location:' . $url);
+    exit();
+  } else {
+    return $header;
+  }
+
 }
 
 /**
@@ -56,6 +66,17 @@ function param($key = null, $default = null) {
 }
 
 /**
+ * Smart version of return with an if condition as first argument
+ * 
+ * @param boolean $condition
+ * @param string $value The string to be returned if the condition is true
+ * @param string $alternative An alternative string which should be returned when the condition is false
+ */
+function r($condition, $value, $alternative = null) {
+  return ($condition) ? $value : $alternative;
+}
+
+/**
  * Smart version of echo with an if condition as first argument
  * 
  * @param boolean $condition
@@ -73,17 +94,6 @@ function e($condition, $value, $alternative = null) {
  */
 function ecco($condition, $value, $alternative = null) {
   e($condition, $value, $alternative);
-}
-
-/**
- * Smart version of return with an if condition as first argument
- * 
- * @param boolean $condition
- * @param string $value The string to be returned if the condition is true
- * @param string $alternative An alternative string which should be returned when the condition is false
- */
-function r($condition, $value, $alternative = null) {
-  return ($condition) ? $value : $alternative;
 }
 
 /**

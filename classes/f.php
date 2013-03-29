@@ -35,7 +35,8 @@ class F {
   static public function write($file,$content,$append=false){
     if(is_array($content)) $content = a::json($content);
     $mode = ($append) ? FILE_APPEND | LOCK_EX : LOCK_EX;
-    return file_put_contents($file, $content, $mode);
+    if(file_put_contents($file, $content, $mode)) return true;
+    return false;
   }
 
   /**
@@ -45,7 +46,7 @@ class F {
    * @param  mixed   $content Either a string or an array. Arrays will be converted to JSON. 
    * @return boolean 
    */  
-   static public function append($file,$content){
+  static public function append($file,$content){
     return self::write($file,$content,true);
   }
   
@@ -56,7 +57,7 @@ class F {
    * @param  mixed   $parse if set to true, parse the result with the passed method. See: "str::parse()" for more info about available methods. 
    * @return mixed 
    */  
-   static public function read($file, $parse = false) {
+  static public function read($file, $parse = false) {
     $content = f::exists($file) ? file_get_contents($file) : null;
     return ($parse) ? str::parse($content, $parse) : $content;
   }
@@ -68,7 +69,7 @@ class F {
    * @param  string  $new The path to the new location
    * @return boolean 
    */  
-   static public function move($old, $new) {
+  static public function move($old, $new) {
     if(!f::exists($old)) return false;
     return rename($old, $new);
   }
@@ -90,7 +91,7 @@ class F {
    * @param  string  $file The path for the file
    * @return boolean 
    */  
-   static public function remove($file) {
+  static public function remove($file) {
     return (file_exists($file) && is_file($file) && !empty($file)) ? unlink($file) : false;
   }
 
@@ -98,10 +99,17 @@ class F {
    * Gets the extension of a file
    * 
    * @param  string  $file The filename or path
+   * @param  string  $extension Set an optional extension to overwrite the current one
    * @return string 
    */  
-   static public function extension($file) {
+  static public function extension($file, $extension = false) {
+
+    // overwrite the current extension
+    if($extension) return self::name($file) . '.' . $extension;
+
+    // return the current extension
     return pathinfo($file, PATHINFO_EXTENSION);
+  
   }
 
   /**
@@ -110,7 +118,7 @@ class F {
    * @param  string  $file The path
    * @return string 
    */  
-   static public function filename($name) {
+  static public function filename($name) {
     $name = basename($name);
     $name = url::stripQuery($name);
     $name = preg_replace('!\:.*!i', '', $name);
@@ -122,12 +130,11 @@ class F {
    * Extracts the name from a file path or filename without extension
    * 
    * @param  string  $file The path or filename
-   * @param  boolean $remove_path remove the path from the name
    * @return string 
    */  
-   static public function name($name, $removePath = false) {
-    if($removePath == true) $name = self::filename($name);
-    $dot = strrpos($name, '.');
+  static public function name($name) {
+    $name = self::filename($name);
+    $dot  = strrpos($name, '.');
     return ($dot) ? substr($name, 0, $dot) : $name;
   }
 
@@ -137,7 +144,7 @@ class F {
    * @param  string  $file The path
    * @return string 
    */  
-   static public function dirname($file = __FILE__) {
+  static public function dirname($file = __FILE__) {
     return dirname($file);
   }
 
@@ -152,6 +159,33 @@ class F {
     clearstatcache();
     $size = filesize($file);
     return ($nice) ? self::niceSize($size) : $size;
+  }
+
+  /**
+   * Converts an integer size into a human readable format
+   * 
+   * @param  int $size The file size or a file path
+   * @return string
+   */    
+  static public function niceSize($size) {
+    
+    // file mode
+    if(!is_int($size) && file_exists($size)) {
+      $size = self::size($size);
+    }
+
+    // make sure it's an int
+    $size = (int)$size;
+    
+    // avoid errors for invalid sizes
+    if($size <= 0) return '0 kb';
+    
+    // available units
+    $unit = array('b','kb','mb','gb','tb','pb', 'eb', 'zb', 'yb');
+    
+    // the math magic
+    return round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . a::get($unit, $i, '?');
+  
   }
 
   /**
@@ -195,39 +229,18 @@ class F {
     return $info;
 
   }
-
-  /**
-   * Converts an integer size into a human readable format
-   * 
-   * @param  int $size The file size
-   * @return string
-   */    
-   static public function niceSize($size) {
-    $size = (int)$size;
-    if($size < 1) return '0 kb';
-    $unit = array('b','kb','mb','gb','tb','pb');
-    return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
-  }
     
-  /**
-   * Convert the filename to a new extension
-   * 
-   * @param  string $name The file name
-   * @param  string $type The new extension
-   * @return string
-   */    
-   static public function convert($name, $type = 'jpg') {
-    return self::name($name) . $type;
-  }
-
   /**
    * Sanitize a filename to strip unwanted special characters
    * 
    * @param  string $string The file name
    * @return string
    */    
-   static public function safeName($string) {
-    return str::slug($string);
+  static public function safeName($string) {
+    $name      = f::name($string);
+    $extension = f::extension($string);
+    $end       = (!empty($extension)) ? '.' . str::slug($extension) : '';
+    return str::slug($name) . $end;
   }
 
   /**
