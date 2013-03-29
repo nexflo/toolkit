@@ -28,7 +28,7 @@ if(!defined('MB_STRING')) define('MB_STRING', (int)function_exists('mb_get_info'
  */
 function toolkitLoader($class) {
 
-  $file = ROOT_KIRBY_TOOLKIT_CLASSES . DS . $class . '.php';
+  $file = ROOT_KIRBY_TOOLKIT_CLASSES . DS . strtolower($class) . '.php';
 
   if(file_exists($file)) {
     require_once($file);
