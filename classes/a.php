@@ -100,7 +100,7 @@ class A {
    * @see a::remove() 
    */
   static public function removeKey($array, $search) {
-    A::remove($array, $search, true);
+    self::remove($array, $search, true);
   }
 
   /**
@@ -109,7 +109,7 @@ class A {
    * @see a::remove() 
    */
   static public function removeValue($array, $search) {
-    A::remove($array, $search, false);
+    self::remove($array, $search, false);
   }
 
   /**

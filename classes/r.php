@@ -31,11 +31,11 @@ class R {
    */
   static public function data($key = null, $default = null) {
     
-    if(!is_null(R::$data)) {
-      $data = R::$data;
+    if(!is_null(self::$data)) {
+      $data = self::$data;
     } else {
       $_REQUEST = array_merge($_GET, $_POST);
-      $data = R::$data = (R::is('GET')) ? R::sanitize($_REQUEST) : array_merge(R::body(), R::sanitize($_REQUEST));
+      $data = self::$data = (self::is('GET')) ? self::sanitize($_REQUEST) : array_merge(self::body(), self::sanitize($_REQUEST));
     }
     
     if(is_null($key)) return $data;
@@ -57,7 +57,7 @@ class R {
     }
 
     foreach($data as $key => $value) {
-      $value = R::sanitize($value);
+      $value = self::sanitize($value);
       $data[$key] = $value;    
     }      
 
@@ -76,25 +76,25 @@ class R {
     
     // set multiple values at once
     if(is_array($key)) {
-      foreach($key as $k => $v) R::set($k, $v);
+      foreach($key as $k => $v) self::set($k, $v);
     }
 
     // make sure the data array is actually an array
-    if(is_null(R::$data)) R::$data = array();
+    if(is_null(self::$data)) self::$data = array();
 
-    R::$data[$key] = R::sanitize($value);
+    self::$data[$key] = self::sanitize($value);
     return $this;
   }
 
   /**
-   * Alternative to R::data($key, $default)
+   * Alternative to self::data($key, $default)
    * 
    * @param string $key An optional key to receive only parts of the data array
    * @param mixed $default A default value, which will be returned if nothing can be found for a given key
    * @param mixed
    */
   static public function get($key = null, $default = null) {
-    return R::data($key, $default);  
+    return self::data($key, $default);  
   }
 
   /**
@@ -113,9 +113,9 @@ class R {
     * @return array
     */    
   static public function body() {
-    if(!is_null(R::$body)) return R::$body; 
-    @parse_str(@file_get_contents('php://input'), R::$body); 
-    return R::$body = R::sanitize((array)R::$body);
+    if(!is_null(self::$body)) return self::$body; 
+    @parse_str(@file_get_contents('php://input'), self::$body); 
+    return self::$body = self::sanitize((array)self::$body);
   }
 
   /**
@@ -131,9 +131,9 @@ class R {
    */
   static public function is($method) {
     if($method == 'ajax') {
-      return R::ajax();
+      return self::ajax();
     } else {
-      return (strtoupper($method) == R::method()) ? true : false;
+      return (strtoupper($method) == self::method()) ? true : false;
     }
   }
 
@@ -155,7 +155,7 @@ class R {
    * @return string
    */
   static public function referrer($default = '/') {
-    return R::referer($default);    
+    return self::referer($default);    
   }
 
   /**
@@ -201,7 +201,7 @@ class R {
    * @return boolean
    */
   static public function ssl() {
-    return (R::scheme() == 'https') ? true : false;
+    return (self::scheme() == 'https') ? true : false;
   }
 
 }

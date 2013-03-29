@@ -69,17 +69,17 @@ class Uri {
    */
   static public function current($url = null, $options = null) {
 
-    if(!is_null(Uri::$current)) {
+    if(!is_null(self::$current)) {
       if(is_null($url) && is_null($options)) {
-        return Uri::$current;
+        return self::$current;
       } else {
         // overwrite the url and options in the current URI
-        return Uri::$current->set($url, $options);
+        return self::$current->set($url, $options);
       }
     } 
 
     // create a new current URI
-    return Uri::$current = new URI($url, $options);
+    return self::$current = new URI($url, $options);
 
   }
 

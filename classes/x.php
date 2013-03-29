@@ -41,7 +41,7 @@ class X {
           $mtags = true;
         }
         if(!$mtags && count($value) > 0) {
-          $result .= X::xml($value, $key, $head, $charset, $tab, $nlevel);
+          $result .= self::xml($value, $key, $head, $charset, $tab, $nlevel);
         }
       } else if(trim($value) != '') {
         $value   = (htmlspecialchars($value) != $value) ? '<![CDATA[' . $value . ']]>' : $value;
@@ -80,7 +80,7 @@ class X {
     */  
   static public function decode($string) {
     // convert xml entities to html entities
-    $string = strtr($string, X::entities());
+    $string = strtr($string, self::entities());
     return html::decode($string);
   }  
 

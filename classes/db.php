@@ -62,14 +62,14 @@ class Db {
   static public function connect($params = null) {
 
     // start the connector
-    Db::$connector = new DbConnector($params);
+    self::$connector = new DbConnector($params);
 
     // store the type and prefix
-    Db::$type   = Db::$connector->type();
-    Db::$prefix = Db::$connector->prefix();
+    self::$type   = self::$connector->type();
+    self::$prefix = self::$connector->prefix();
         
     // return the established connection
-    return Db::$connection = Db::$connector->connection();
+    return self::$connection = self::$connector->connection();
   
   }
   
@@ -79,7 +79,7 @@ class Db {
    * @return object
    */
   static public function connection() {
-    return (!is_null(Db::$connection)) ? Db::$connection : Db::connect();
+    return (!is_null(self::$connection)) ? self::$connection : self::connect();
   }
 
   /**
@@ -88,7 +88,7 @@ class Db {
    * @param boolean $fail
    */
   static public function fail($fail = true) {
-    Db::$fail = $fail;
+    self::$fail = $fail;
   }
 
   /**
@@ -97,8 +97,8 @@ class Db {
    * @return string
    */
   static public function type() {
-    Db::connection();
-    return Db::$type;
+    self::connection();
+    return self::$type;
   }
 
   /**
@@ -107,8 +107,8 @@ class Db {
    * @return string
    */
   static public function prefix() {
-    Db::connection();
-    return Db::$prefix;
+    self::connection();
+    return self::$prefix;
   }
 
   /**
@@ -118,7 +118,7 @@ class Db {
    * @return string
    */
   static public function escape($value) {
-    return substr(Db::connection()->quote($value), 1, -1);
+    return substr(self::connection()->quote($value), 1, -1);
   }
 
   /**
@@ -128,8 +128,8 @@ class Db {
    * @return array
    */
   static public function trace($data = null) {
-    if(is_null($data)) return Db::$trace;  
-    Db::$trace[] = $data;
+    if(is_null($data)) return self::$trace;  
+    self::$trace[] = $data;
   }
 
   /**
@@ -138,7 +138,7 @@ class Db {
    * @return int
    */
   static public function affected() {
-    return Db::$affected;
+    return self::$affected;
   }
 
   /**
@@ -147,7 +147,7 @@ class Db {
    * @return int
    */
   static public function lastId() {
-    return Db::$lastId;
+    return self::$lastId;
   }
 
   /**
@@ -156,7 +156,7 @@ class Db {
    * @return string
    */
   static public function lastQuery() {
-    return Db::$lastQuery;
+    return self::$lastQuery;
   }
 
   /**
@@ -165,7 +165,7 @@ class Db {
    * @return mixed
    */
   static public function lastResult() {
-    return Db::$lastResult;
+    return self::$lastResult;
   }
 
   /**
@@ -174,7 +174,7 @@ class Db {
    * @return object
    */
   static public function lastError() {
-    return Db::$lastError;
+    return self::$lastError;
   }
 
   /**
@@ -190,41 +190,41 @@ class Db {
     // try to prepare and execute the sql
     try {                                  
   
-      Db::$statement = Db::connection()->prepare($query);        
-      Db::$statement->execute($bindings);  
+      self::$statement = self::connection()->prepare($query);        
+      self::$statement->execute($bindings);  
       
-      Db::$affected  = Db::$statement->rowCount();  
-      Db::$lastId    = Db::connection()->lastInsertId();
-      Db::$lastError = null;
+      self::$affected  = self::$statement->rowCount();  
+      self::$lastId    = self::connection()->lastInsertId();
+      self::$lastError = null;
       
       // store the final sql to add it to the trace later
-      Db::$lastQuery = Db::$statement->queryString;
+      self::$lastQuery = self::$statement->queryString;
 
     } catch(Exception $e) {
 
       // store the error
-      Db::$affected  = 0;
-      Db::$lastError = $e;                  
-      Db::$lastId    = null;
-      Db::$lastQuery = $query;
+      self::$affected  = 0;
+      self::$lastError = $e;                  
+      self::$lastId    = null;
+      self::$lastQuery = $query;
 
       // only throw the extension if failing is allowed
-      if(Db::$fail == true) throw $e;
+      if(self::$fail == true) throw $e;
 
     }
 
     // add a new entry to the singleton trace array    
-    Db::trace(array(
-      'query'    => Db::$lastQuery, 
+    self::trace(array(
+      'query'    => self::$lastQuery, 
       'bindings' => $bindings,
-      'error'    => Db::$lastError
+      'error'    => self::$lastError
     ));
 
     // reset some stuff
-    Db::$fail = false;
+    self::$fail = false;
 
     // return true or false on success or failure
-    return is_null(Db::$lastError);
+    return is_null(self::$lastError);
                 
   }
 
@@ -247,7 +247,7 @@ class Db {
 
     $options = array_merge($defaults, $params);
 
-    if(!Db::hit($query, $bindings)) return false;
+    if(!self::hit($query, $bindings)) return false;
 
     // define the default flag for the fetch method
     $flags = $options['fetch'] == 'array' ? PDO::FETCH_ASSOC : PDO::FETCH_CLASS; 
@@ -257,16 +257,16 @@ class Db {
     
     // set the fetch mode
     if($options['fetch'] == 'array') {
-      Db::$statement->setFetchMode($flags);
+      self::$statement->setFetchMode($flags);
     } else {
-      Db::$statement->setFetchMode($flags, $options['fetch']);
+      self::$statement->setFetchMode($flags, $options['fetch']);
     }
 
     // fetch that stuff
-    $results = Db::$statement->$options['method']();
+    $results = self::$statement->$options['method']();
     
-    if($options['iterator'] == 'array') return Db::$lastResult = $results;
-    return Db::$lastResult = new $options['iterator']($results);
+    if($options['iterator'] == 'array') return self::$lastResult = $results;
+    return self::$lastResult = new $options['iterator']($results);
   
   }
 
@@ -278,7 +278,7 @@ class Db {
    * @return boolean
    */
   static public function execute($query, $bindings = array()) {
-    return Db::$lastResult = Db::hit($query, $bindings);
+    return self::$lastResult = self::hit($query, $bindings);
   }
 
   /**
@@ -303,7 +303,7 @@ class Db {
    * @return mixed
    */
   static public function select($table, $columns, $where = null, $order = null, $offset = 0, $limit = null) {
-    return Db::table($table)->select($columns)->where($where)->order($order)->offset($offset)->limit($limit)->all();
+    return self::table($table)->select($columns)->where($where)->order($order)->offset($offset)->limit($limit)->all();
   }
 
   /**
@@ -318,25 +318,25 @@ class Db {
    * @return mixed
    */
   static public function first($table, $columns, $where = null, $order = null) {
-    return Db::table($table)->select($columns)->where($where)->order($order)->first();    
+    return self::table($table)->select($columns)->where($where)->order($order)->first();    
   }
 
   /**
    * Shortcut for selecting a single row in a table
    * 
-   * @see Db::first()
+   * @see self::first()
    */
   static public function row($table, $columns, $where = null, $order = null) {
-    return Db::first($table, $column, $where, $order);
+    return self::first($table, $column, $where, $order);
   }
 
   /**
    * Shortcut for selecting a single row in a table
    * 
-   * @see Db::first()
+   * @see self::first()
    */
   static public function one($table, $columns, $where = null, $order = null) {
-    return Db::first($table, $column, $where, $order);
+    return self::first($table, $column, $where, $order);
   }
 
   /**
@@ -351,7 +351,7 @@ class Db {
    * @return mixed
    */
   static public function column($table, $column, $where = null, $order = null, $limit = null) {
-    return Db::table($table)->where($where)->order($order)->offset($offset)->limit($limit)->column($column);
+    return self::table($table)->where($where)->order($order)->offset($offset)->limit($limit)->column($column);
   }
 
   /**
@@ -362,7 +362,7 @@ class Db {
    * @return boolean 
    */
   static public function insert($table, $values) {
-    return Db::table($table)->insert($values);
+    return self::table($table)->insert($values);
   }
 
   /**
@@ -374,7 +374,7 @@ class Db {
    * @return boolean 
    */
   static public function update($table, $values, $where = null) {
-    return Db::table($table)->where($where)->update($values);
+    return self::table($table)->where($where)->update($values);
   }
 
   /**
@@ -385,7 +385,7 @@ class Db {
    * @return int
    */
   static public function count($table, $where = null) {
-    return Db::table($table)->where($where)->count();    
+    return self::table($table)->where($where)->count();    
   }
 
   /**
@@ -397,7 +397,7 @@ class Db {
    * @return mixed
    */
   static public function min($table, $column, $where = null) {
-    return Db::table($table)->where($where)->min($column);    
+    return self::table($table)->where($where)->min($column);    
   }
 
   /**
@@ -409,7 +409,7 @@ class Db {
    * @return mixed
    */
   static public function max($table, $column, $where = null) {
-    return Db::table($table)->where($where)->max($column);    
+    return self::table($table)->where($where)->max($column);    
   }
 
   /**
@@ -421,7 +421,7 @@ class Db {
    * @return mixed
    */
   static public function avg($table, $column, $where = null) {
-    return Db::table($table)->where($where)->avg($column);    
+    return self::table($table)->where($where)->avg($column);    
   }
 
   /**
@@ -433,7 +433,7 @@ class Db {
    * @return mixed
    */
   static public function sum($table, $column, $where = null) {
-    return Db::table($table)->where($where)->sum($column);    
+    return self::table($table)->where($where)->sum($column);    
   }
 
 }

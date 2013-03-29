@@ -89,7 +89,7 @@ class Str {
         break;
       case 'query':
         if(url::hasQuery($string)) {
-          $string = Str::split($string, '?');
+          $string = self::split($string, '?');
           $string = a::last($string);
         }
         @parse_str($string, $result);
@@ -116,7 +116,7 @@ class Str {
     */  
   static public function encode($string) {
     $encoded = '';
-    $length = Str::length($string);
+    $length = self::length($string);
     for($i=0; $i<$length; $i++) {
       $encoded .= (rand(1, 2)==1) ? '&#' . ord($string[$i]) . ';' : '&#x' . dechex(ord($string[$i])) . ';';
     }
@@ -192,13 +192,13 @@ class Str {
 
     switch($type) {
       case 'chars':
-        if(Str::length($string) <= $length) return $string;
-        $string = Str::substr($string, 0, $length);
+        if(self::length($string) <= $length) return $string;
+        $string = self::substr($string, 0, $length);
         return $string . $rep;
         break;
       case 'words':
         preg_match('/^\s*+(?:\S++\s*+){1,'.$length.'}/u', $string, $matches);
-        if(Str::length($string) == Str::length($matches[0])) $rep = '';
+        if(self::length($string) == self::length($matches[0])) $rep = '';
         return rtrim($matches[0]) . $rep;
         break;
       case 'sentences':
@@ -209,7 +209,7 @@ class Str {
         return str::substr($string, 0, $offset);
         break;
       case 'lines':
-        $lines = Str::lines($string);
+        $lines = self::lines($string);
         $lines = (count($lines) <= $length) ? $lines : array_slice($lines, 0, $length);
         return implode(PHP_EOL, $lines);
         break;
@@ -226,7 +226,7 @@ class Str {
     * @return string  The shortened string  
     */  
   static public function short($string, $length, $rep = '…') {
-    return Str::limit($string, 'chars', $length, $rep);
+    return self::limit($string, 'chars', $length, $rep);
   }
 
   /** 
@@ -244,7 +244,7 @@ class Str {
     $string = trim($string);    
     $string = str_replace(PHP_EOL, ' ', $string);
     if(str::length($string) <= $chars) return $string;
-    return ($chars==0) ? $string : Str::substr($string, 0, strrpos(Str::substr($string, 0, $chars), ' ')) . $rep;
+    return ($chars==0) ? $string : self::substr($string, 0, strrpos(self::substr($string, 0, $chars), ' ')) . $rep;
   }
 
   /**
@@ -311,8 +311,8 @@ class Str {
     */
   static public function contains($str, $needle, $i=true) {
     if($i) {
-      $str    = Str::lower($str);
-      $needle = Str::lower($needle);
+      $str    = self::lower($str);
+      $needle = self::lower($needle);
     }
     return (strstr($str, $needle)) ? true : false;
   }
@@ -341,7 +341,7 @@ class Str {
     */
   static public function random($length = false, $type = 'alphaNum') {
     $length = ($length) ? $length : rand(5,10);
-    $pool   = a::shuffle(Str::pool($type));
+    $pool   = a::shuffle(self::pool($type));
     $pool   = ($length) ? array_slice($pool, 0, $length) : $pool;
     return implode('', $pool);
   }
@@ -370,8 +370,8 @@ class Str {
   static public function slug($string, $separator = '-') {
 
     $string = trim($string);
-    $string = Str::lower($string);
-    $string = Str::ascii($string);
+    $string = self::lower($string);
+    $string = self::ascii($string);
 
     // replace spaces with simple dashes
     $string = preg_replace('![^a-z0-9]!i','-', $string);
@@ -390,7 +390,7 @@ class Str {
    * Alternative for str::slug($text)
    */
   static public function urlify($string) {
-    return Str::slug($string);
+    return self::slug($string);
   }
 
   /** 
@@ -414,7 +414,7 @@ class Str {
 
     foreach($parts AS $p) {
       $p = trim($p);
-      if(Str::length($p) > 0 && Str::length($p) >= $length) $out[] = $p;
+      if(self::length($p) > 0 && self::length($p) >= $length) $out[] = $p;
     }
 
     return $out;
@@ -452,7 +452,7 @@ class Str {
     * @return string 
     */
   static public function ucfirst($string) {
-    return Str::upper(Str::substr($string, 0, 1)) . Str::substr($string, 1);
+    return self::upper(self::substr($string, 0, 1)) . self::substr($string, 1);
   }
 
   /**
@@ -486,7 +486,7 @@ class Str {
    */
   static public function convert($string, $targetEncoding, $sourceEncoding = null) {
     // detect the source encoding if not passed as third argument
-    if(is_null($sourceEncoding)) $sourceEncoding = Str::encoding($string);
+    if(is_null($sourceEncoding)) $sourceEncoding = self::encoding($string);
     return iconv($sourceEncoding, $targetEncoding, $string); 
   }
 
@@ -497,7 +497,7 @@ class Str {
     * @return string 
     */
   static public function utf8($string) {
-    return Str::convert($string, 'utf-8');
+    return self::convert($string, 'utf-8');
   }
 
   /** 
@@ -612,7 +612,7 @@ class Str {
     
     if(is_array($type)) {
       foreach($type as $t) {
-        $pool = array_merge($pool, Str::pool($t));
+        $pool = array_merge($pool, self::pool($t));
       }
     } else {
 
@@ -624,13 +624,13 @@ class Str {
           $pool = range('A', 'Z');
           break;
         case 'alpha':
-          $pool = Str::pool(array('alphaLower', 'alphaUpper'));
+          $pool = self::pool(array('alphaLower', 'alphaUpper'));
           break;
         case 'num':
           $pool = range(0, 9);
           break;
         case 'alphaNum':
-          $pool = Str::pool(array('alpha', 'num'));
+          $pool = self::pool(array('alpha', 'num'));
           break;
       }
 
