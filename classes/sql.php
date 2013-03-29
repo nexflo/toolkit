@@ -94,7 +94,7 @@ class SQL {
     $query   = array();
     
     $query[] = 'INSERT INTO ' . $options['table'];
-    $query[] = static::values($options['values'], ', ', false);
+    $query[] = SQL::values($options['values'], ', ', false);
 
     return implode(' ', $query);
 
@@ -118,7 +118,7 @@ class SQL {
     $query   = array();
 
     $query[] = 'UPDATE ' . $options['table'] . ' SET';
-    $query[] = static::values($options['values']);
+    $query[] = SQL::values($options['values']);
 
     if(!empty($options['where'])) {
       $query[] = 'WHERE ' . $options['where'];
@@ -171,7 +171,7 @@ class SQL {
       $output = array();
 
       foreach($values AS $key => $value) {
-        if(in_array($value, static::$literals)) {
+        if(in_array($value, SQL::$literals)) {
           $output[] = $key . ' = ' . $value;
         } elseif(is_array($value)) {
           $output[] = $key . " = '" . json_encode($value) . "'";
@@ -189,7 +189,7 @@ class SQL {
       
       foreach($values AS $key => $value) {
         $fields[] = $key;
-        if(in_array($value, static::$literals)) {
+        if(in_array($value, SQL::$literals)) {
           $values[] = $value;
         } elseif(is_array($value)) {
           $values[] = "'" . db::escape(json_encode($value)) . "'";

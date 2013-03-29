@@ -31,11 +31,11 @@ class R {
    */
   static public function data($key = null, $default = null) {
     
-    if(!is_null(static::$data)) {
-      $data = static::$data;
+    if(!is_null(R::$data)) {
+      $data = R::$data;
     } else {
       $_REQUEST = array_merge($_GET, $_POST);
-      $data = static::$data = (static::is('GET')) ? static::sanitize($_REQUEST) : array_merge(static::body(), static::sanitize($_REQUEST));
+      $data = R::$data = (R::is('GET')) ? R::sanitize($_REQUEST) : array_merge(R::body(), R::sanitize($_REQUEST));
     }
     
     if(is_null($key)) return $data;
@@ -57,7 +57,7 @@ class R {
     }
 
     foreach($data as $key => $value) {
-      $value = static::sanitize($value);
+      $value = R::sanitize($value);
       $data[$key] = $value;    
     }      
 
@@ -76,25 +76,25 @@ class R {
     
     // set multiple values at once
     if(is_array($key)) {
-      foreach($key as $k => $v) static::set($k, $v);
+      foreach($key as $k => $v) R::set($k, $v);
     }
 
     // make sure the data array is actually an array
-    if(is_null(static::$data)) static::$data = array();
+    if(is_null(R::$data)) R::$data = array();
 
-    static::$data[$key] = static::sanitize($value);
+    R::$data[$key] = R::sanitize($value);
     return $this;
   }
 
   /**
-   * Alternative to static::data($key, $default)
+   * Alternative to R::data($key, $default)
    * 
    * @param string $key An optional key to receive only parts of the data array
    * @param mixed $default A default value, which will be returned if nothing can be found for a given key
    * @param mixed
    */
   static public function get($key = null, $default = null) {
-    return static::data($key, $default);  
+    return R::data($key, $default);  
   }
 
   /**
@@ -113,9 +113,9 @@ class R {
     * @return array
     */    
   static public function body() {
-    if(!is_null(static::$body)) return static::$body; 
-    @parse_str(@file_get_contents('php://input'), static::$body); 
-    return static::$body = static::sanitize((array)static::$body);
+    if(!is_null(R::$body)) return R::$body; 
+    @parse_str(@file_get_contents('php://input'), R::$body); 
+    return R::$body = R::sanitize((array)R::$body);
   }
 
   /**
@@ -131,9 +131,9 @@ class R {
    */
   static public function is($method) {
     if($method == 'ajax') {
-      return static::ajax();
+      return R::ajax();
     } else {
-      return (strtoupper($method) == static::method()) ? true : false;
+      return (strtoupper($method) == R::method()) ? true : false;
     }
   }
 
@@ -155,7 +155,7 @@ class R {
    * @return string
    */
   static public function referrer($default = '/') {
-    return static::referer($default);    
+    return R::referer($default);    
   }
 
   /**
@@ -201,7 +201,7 @@ class R {
    * @return boolean
    */
   static public function ssl() {
-    return (static::scheme() == 'https') ? true : false;
+    return (R::scheme() == 'https') ? true : false;
   }
 
 }
