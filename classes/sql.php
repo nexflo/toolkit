@@ -5,11 +5,11 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
 
 /**
  * 
- * SQL Query builder 
+ * Sql Query builder 
  * 
  * @package Kirby Toolkit
  */
-class SQL {
+class Sql {
 
   // list of literals which should not be escaped in queries
   static protected $literals = array('NOW()'); 
@@ -94,7 +94,7 @@ class SQL {
     $query   = array();
     
     $query[] = 'INSERT INTO ' . $options['table'];
-    $query[] = static::values($options['values'], ', ', false);
+    $query[] = self::values($options['values'], ', ', false);
 
     return implode(' ', $query);
 
@@ -118,7 +118,7 @@ class SQL {
     $query   = array();
 
     $query[] = 'UPDATE ' . $options['table'] . ' SET';
-    $query[] = static::values($options['values']);
+    $query[] = self::values($options['values']);
 
     if(!empty($options['where'])) {
       $query[] = 'WHERE ' . $options['where'];
@@ -171,7 +171,7 @@ class SQL {
       $output = array();
 
       foreach($values AS $key => $value) {
-        if(in_array($value, static::$literals)) {
+        if(in_array($value, self::$literals)) {
           $output[] = $key . ' = ' . $value;
         } elseif(is_array($value)) {
           $output[] = $key . " = '" . json_encode($value) . "'";
@@ -189,7 +189,7 @@ class SQL {
       
       foreach($values AS $key => $value) {
         $fields[] = $key;
-        if(in_array($value, static::$literals)) {
+        if(in_array($value, self::$literals)) {
           $values[] = $value;
         } elseif(is_array($value)) {
           $values[] = "'" . db::escape(json_encode($value)) . "'";

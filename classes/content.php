@@ -15,21 +15,21 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
 class Content {
   
   /**
-    * Starts the output buffer
-    * 
-    */
+   * Starts the output buffer
+   * 
+   */
   static public function start() {
     ob_start();
   }
 
   /**
-    * Stops the output buffer
-    * and flush the content or return it.
-    * 
-    * @param  boolean  $return Pass true to return the content instead of flushing it 
-    * @return mixed
-    */
-  static public function end($return=false) {
+   * Stops the output buffer
+   * and flush the content or return it.
+   * 
+   * @param  boolean  $return Pass true to return the content instead of flushing it 
+   * @return mixed
+   */
+  static public function end($return = false) {
     if($return) {
       $content = ob_get_contents();
       ob_end_clean();
@@ -39,14 +39,16 @@ class Content {
   }
 
   /**
-    * Loads content from a passed file
-    * 
-    * @param  string  $file The path to the file
-    * @param  boolean $return True: return the content of the file, false: echo the content
-    * @return mixed
-    */
-  static public function load($file, $return=true) {
+   * Loads content from a passed file
+   * 
+   * @param  string  $file The path to the file
+   * @param  array   $data Additional variables which should be available for the loaded content
+   * @param  boolean $return True: return the content of the file, false: echo the content
+   * @return mixed
+   */
+  static public function load($file, $data = array(), $return = true) {
     self::start();
+    extract($data);
     require_once($file);
     $content = self::end(true);
     if($return) return $content;
@@ -54,11 +56,11 @@ class Content {
   }
 
   /**
-    * Simplifies setting content type headers
-    * 
-    * @param  string  $ctype The shortcut for the content type. See the keys of the $ctypes array for all available shortcuts
-    * @param  string  $charset The charset definition for the content type header. Default is "utf-8"
-    */
+   * Simplifies setting content type headers
+   * 
+   * @param  string  $ctype The shortcut for the content type. See the keys of the $ctypes array for all available shortcuts
+   * @param  string  $charset The charset definition for the content type header. Default is "utf-8"
+   */
   static public function type($type = null, $charset = 'utf-8') {
 
     $type = a::get(c::get('mimes'), $type);

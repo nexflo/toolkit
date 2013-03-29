@@ -29,7 +29,7 @@ class UriPath extends Collection {
    * @return string
    */
   public function toString() {
-    return implode('/', $this->_);  
+    return url::buildPath($this->toArray());
   }
     
 }

@@ -14,65 +14,65 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
 class Str {
 
   /**
-    * Converts a string to a html-safe string
-    *
-    * @param  string  $string
-    * @param  boolean $keepTags True: lets stuff inside html tags untouched. 
-    * @return string  The html string
-    */  
+   * Converts a string to a html-safe string
+   *
+   * @param  string  $string
+   * @param  boolean $keepTags True: lets stuff inside html tags untouched. 
+   * @return string  The html string
+   */  
   static public function html($string, $keepTags = true) {
     return html::encode($string, $keepTags);
   }
 
   /**
-    * Removes all html tags and encoded chars from a string
-    *
-    * @param  string  $string
-    * @return string  The html string
-    */  
+   * Removes all html tags and encoded chars from a string
+   *
+   * @param  string  $string
+   * @return string  The html string
+   */  
   static public function unhtml($string) {
     return html::decode($string);
   }
 
   /**
-    * Converts a string to a xml-safe string
-    * Converts it to html-safe first and then it
-    * will replace html entities to xml entities
-    *
-    * @param  string  $text
-    * @param  boolean $html True: convert to html first
-    * @return string
-    */  
+   * Converts a string to a xml-safe string
+   * Converts it to html-safe first and then it
+   * will replace html entities to xml entities
+   *
+   * @param  string  $text
+   * @param  boolean $html True: convert to html first
+   * @return string
+   */  
   static public function xml($text, $html = true) {
-    return x::encode($text, $html);
+    return xml::encode($text, $html);
   }
 
   /**
-    * Removes all xml entities from a string
-    * and convert them to html entities first
-    * and remove all html entities afterwards.
-    *
-    * @param  string  $string
-    * @return string
-    */  
+   * Removes all xml entities from a string
+   * and convert them to html entities first
+   * and remove all html entities afterwards.
+   *
+   * @param  string  $string
+   * @return string
+   */  
   static public function unxml($string) {
-    return x::decode($string);
+    return xml::decode($string);
   }
 
   /**
-    * Parses a string by a set of available methods
-    *
-    * Available methods:
-    * - json
-    * - xml
-    * - url
-    * - query
-    * - php
-    *
-    * @param  string  $string
-    * @param  string  $mode
-    * @return string
-    */  
+   * Parses a string by a set of available methods
+   *
+   * Available methods:
+   * - json
+   * - xml
+   * - url
+   * - query
+   * - php
+   *
+   * @param  string  $string
+   * @param  string  $mode
+   * @return string
+   */  
   static public function parse($string, $mode = 'json') {
 
     if(is_array($string)) return $string;
@@ -82,14 +82,14 @@ class Str {
         $result = (array)@json_decode($string, true);
         break;
       case 'xml':
-        $result = x::parse($string);
+        $result = xml::parse($string);
         break;
       case 'url':
         $result = (array)@parse_url($string);
         break;
       case 'query':
         if(url::hasQuery($string)) {
-          $string = static::split($string, '?');
+          $string = self::split($string, '?');
           $string = a::last($string);
         }
         @parse_str($string, $result);
@@ -109,14 +109,14 @@ class Str {
   }
 
   /**
-    * Encode a string (used for email addresses)
-    *
-    * @param  string  $string
-    * @return string
-    */  
+   * Encode a string (used for email addresses)
+   *
+   * @param  string  $string
+   * @return string
+   */  
   static public function encode($string) {
     $encoded = '';
-    $length = static::length($string);
+    $length = self::length($string);
     for($i=0; $i<$length; $i++) {
       $encoded .= (rand(1, 2)==1) ? '&#' . ord($string[$i]) . ';' : '&#x' . dechex(ord($string[$i])) . ';';
     }
@@ -192,13 +192,13 @@ class Str {
 
     switch($type) {
       case 'chars':
-        if(static::length($string) <= $length) return $string;
-        $string = static::substr($string, 0, $length);
+        if(self::length($string) <= $length) return $string;
+        $string = self::substr($string, 0, $length);
         return $string . $rep;
         break;
       case 'words':
         preg_match('/^\s*+(?:\S++\s*+){1,'.$length.'}/u', $string, $matches);
-        if(static::length($string) == static::length($matches[0])) $rep = '';
+        if(self::length($string) == self::length($matches[0])) $rep = '';
         return rtrim($matches[0]) . $rep;
         break;
       case 'sentences':
@@ -209,7 +209,7 @@ class Str {
         return str::substr($string, 0, $offset);
         break;
       case 'lines':
-        $lines = static::lines($string);
+        $lines = self::lines($string);
         $lines = (count($lines) <= $length) ? $lines : array_slice($lines, 0, $length);
         return implode(PHP_EOL, $lines);
         break;
@@ -218,33 +218,33 @@ class Str {
   } 
 
   /**
-    * Shortens a string and adds an ellipsis if the string is too long
-    *
-    * @param  string  $string The string to be shortened
-    * @param  int     $chars The final number of characters the string should have
-    * @param  string  $rep The element, which should be added if the string is too long. Ellipsis is the default.
-    * @return string  The shortened string  
-    */  
+   * Shortens a string and adds an ellipsis if the string is too long
+   *
+   * @param  string  $string The string to be shortened
+   * @param  int     $chars The final number of characters the string should have
+   * @param  string  $rep The element, which should be added if the string is too long. Ellipsis is the default.
+   * @return string  The shortened string  
+   */  
   static public function short($string, $length, $rep = '…') {
-    return static::limit($string, 'chars', $length, $rep);
+    return self::limit($string, 'chars', $length, $rep);
   }
 
   /** 
-    * Creates an excerpt of a string
-    * It removes all html tags first and then uses str::short
-    *
-    * @param  string  $string The string to be shortened
-    * @param  int     $chars The final number of characters the string should have
-    * @param  boolean $removehtml True: remove the HTML tags from the string first 
-    * @param  string  $rep The element, which should be added if the string is too long. Ellipsis is the default.
-    * @return string  The shortened string  
-    */
+   * Creates an excerpt of a string
+   * It removes all html tags first and then uses str::short
+   *
+   * @param  string  $string The string to be shortened
+   * @param  int     $chars The final number of characters the string should have
+   * @param  boolean $removehtml True: remove the HTML tags from the string first 
+   * @param  string  $rep The element, which should be added if the string is too long. Ellipsis is the default.
+   * @return string  The shortened string  
+   */
   static public function excerpt($string, $chars = 140, $removehtml = true, $rep='…') {
     if($removehtml) $string = strip_tags($string);
     $string = trim($string);    
     $string = str_replace(PHP_EOL, ' ', $string);
     if(str::length($string) <= $chars) return $string;
-    return ($chars==0) ? $string : static::substr($string, 0, strrpos(static::substr($string, 0, $chars), ' ')) . $rep;
+    return ($chars==0) ? $string : self::substr($string, 0, strrpos(self::substr($string, 0, $chars), ' ')) . $rep;
   }
 
   /**
@@ -260,72 +260,72 @@ class Str {
   }
 
   /** 
-    * An UTF-8 safe version of substr()
-    * 
-    * @param  string  $str
-    * @param  int     $start
-    * @param  int     $end 
-    * @return string  
-    */
+   * An UTF-8 safe version of substr()
+   * 
+   * @param  string  $str
+   * @param  int     $start
+   * @param  int     $end 
+   * @return string  
+   */
   static public function substr($str, $start, $end = null) {    
     return MB_STRING ? mb_substr($str, $start, ($end == null) ? str::length($str) : $end, 'UTF-8') : substr($str, $start, $end);
   }
 
   /** 
-    * An UTF-8 safe version of strtolower()
-    * 
-    * @param  string  $str
-    * @return string  
-    */
+   * An UTF-8 safe version of strtolower()
+   * 
+   * @param  string  $str
+   * @return string  
+   */
   static public function lower($str) {
     return MB_STRING ? mb_strtolower($str, 'UTF-8') : strtolower($str);
   }
 
   /** 
-    * An UTF-8 safe version of strotoupper()
-    * 
-    * @param  string  $str
-    * @return string  
-    */
+   * An UTF-8 safe version of strotoupper()
+   * 
+   * @param  string  $str
+   * @return string  
+   */
   static public function upper($str) {
     return MB_STRING ? mb_strtoupper($str, 'UTF-8') : strtoupper($str);
   }
 
   /** 
-    * An UTF-8 safe version of strlen()
-    * 
-    * @param  string  $str
-    * @return string  
-    */
+   * An UTF-8 safe version of strlen()
+   * 
+   * @param  string  $str
+   * @return string  
+   */
   static public function length($str) {
     return MB_STRING ? mb_strlen($str, 'UTF-8') : strlen($str);
   }
 
   /** 
-    * Checks if a str contains another string
-    * 
-    * @param  string  $str
-    * @param  string  $needle
-    * @param  boolean $i ignore upper/lowercase
-    * @return string  
-    */
+   * Checks if a str contains another string
+   * 
+   * @param  string  $str
+   * @param  string  $needle
+   * @param  boolean $i ignore upper/lowercase
+   * @return string  
+   */
   static public function contains($str, $needle, $i=true) {
     if($i) {
-      $str    = static::lower($str);
-      $needle = static::lower($needle);
+      $str    = self::lower($str);
+      $needle = self::lower($needle);
     }
     return (strstr($str, $needle)) ? true : false;
   }
 
   /** 
-    * preg_match sucks! This tries to make it more convenient
-    * 
-    * @param  string  $string
-    * @param  string  $preg Regular expression
-    * @param  string  $get Which part should be returned from the result array
-    * @param  string  $placeholder Default value if nothing will be found
-    * @return mixed  
-    */
+   * preg_match sucks! This tries to make it more convenient
+   * 
+   * @param  string  $string
+   * @param  string  $preg Regular expression
+   * @param  string  $get Which part should be returned from the result array
+   * @param  string  $placeholder Default value if nothing will be found
+   * @return mixed  
+   */
   static public function match($string, $preg, $get = false, $placeholder = false) {
     $match = @preg_match($preg, $string, $array);
     if(!$match) return false;
@@ -334,14 +334,14 @@ class Str {
   }
 
   /** 
-    * Generates a random string
-    * 
-    * @param  int  $length The length of the random string
-    * @return string  
-    */
+   * Generates a random string
+   * 
+   * @param  int  $length The length of the random string
+   * @return string  
+   */
   static public function random($length = false, $type = 'alphaNum') {
     $length = ($length) ? $length : rand(5,10);
-    $pool   = a::shuffle(static::pool($type));
+    $pool   = a::shuffle(self::pool($type));
     $pool   = ($length) ? array_slice($pool, 0, $length) : $pool;
     return implode('', $pool);
   }
@@ -361,17 +361,17 @@ class Str {
   }
 
   /** 
-    * Convert a string to a safe version to be used in a URL
-    * 
-    * @param  string  $text The unsafe string
-    * @param  string  $separator To be used instead of space and other non-word characters.
-    * @return string  The safe string
-    */
+   * Convert a string to a safe version to be used in a URL
+   * 
+   * @param  string  $text The unsafe string
+   * @param  string  $separator To be used instead of space and other non-word characters.
+   * @return string  The safe string
+   */
   static public function slug($string, $separator = '-') {
 
     $string = trim($string);
-    $string = static::lower($string);
-    $string = static::ascii($string);
+    $string = self::lower($string);
+    $string = self::ascii($string);
 
     // replace spaces with simple dashes
     $string = preg_replace('![^a-z0-9]!i','-', $string);
@@ -390,20 +390,20 @@ class Str {
    * Alternative for str::slug($text)
    */
   static public function urlify($string) {
-    return static::slug($string);
+    return self::slug($string);
   }
 
   /** 
-    * Better alternative for explode()
-    * It takes care of removing empty values
-    * and it has a built-in way to skip values
-    * which are too short. 
-    * 
-    * @param  string  $string The string to split
-    * @param  string  $separator The string to split by
-    * @param  int     $length The min length of values. 
-    * @return array   An array of found values
-    */
+   * Better alternative for explode()
+   * It takes care of removing empty values
+   * and it has a built-in way to skip values
+   * which are too short. 
+   * 
+   * @param  string  $string The string to split
+   * @param  string  $separator The string to split by
+   * @param  int     $length The min length of values. 
+   * @return array   An array of found values
+   */
   static public function split($string, $separator = ',', $length = 1) {
 
     if(is_array($string)) return $string;
@@ -414,7 +414,7 @@ class Str {
 
     foreach($parts AS $p) {
       $p = trim($p);
-      if(static::length($p) > 0 && static::length($p) >= $length) $out[] = $p;
+      if(self::length($p) > 0 && self::length($p) >= $length) $out[] = $p;
     }
 
     return $out;
@@ -422,37 +422,37 @@ class Str {
   }
 
   /** 
-    * A more brutal way to trim. 
-    * It removes double spaces. 
-    * Can be useful in some cases but 
-    * be careful as it might remove too much. 
-    * 
-    * @param  string  $string The string to trim
-    * @return string  The trimmed string
-    */
+   * A more brutal way to trim. 
+   * It removes double spaces. 
+   * Can be useful in some cases but 
+   * be careful as it might remove too much. 
+   * 
+   * @param  string  $string The string to trim
+   * @return string  The trimmed string
+   */
   static public function trim($string) {
     $string = preg_replace('/\s\s+/u', ' ', $string);
     return trim($string);
   }
 
   /** 
-    * An UTF-8 safe version of ucwords()
-    * 
-    * @param  string  $string 
-    * @return string 
-    */
+   * An UTF-8 safe version of ucwords()
+   * 
+   * @param  string  $string 
+   * @return string 
+   */
   static public function ucwords($string) {
     return MB_STRING ? mb_convert_case($string, MB_CASE_TITLE, 'UTF-8') : ucwords(strtolower($string));
   }
 
   /** 
-    * An UTF-8 safe version of ucfirst()
-    * 
-    * @param  string $string
-    * @return string 
-    */
+   * An UTF-8 safe version of ucfirst()
+   * 
+   * @param  string $string
+   * @return string 
+   */
   static public function ucfirst($string) {
-    return static::upper(static::substr($string, 0, 1)) . static::substr($string, 1);
+    return self::upper(self::substr($string, 0, 1)) . self::substr($string, 1);
   }
 
   /**
@@ -486,26 +486,26 @@ class Str {
    */
   static public function convert($string, $targetEncoding, $sourceEncoding = null) {
     // detect the source encoding if not passed as third argument
-    if(is_null($sourceEncoding)) $sourceEncoding = static::encoding($string);
+    if(is_null($sourceEncoding)) $sourceEncoding = self::encoding($string);
     return iconv($sourceEncoding, $targetEncoding, $string); 
   }
 
   /** 
-    * Converts a string to UTF-8
-    * 
-    * @param  string  $string 
-    * @return string 
-    */
+   * Converts a string to UTF-8
+   * 
+   * @param  string  $string 
+   * @return string 
+   */
   static public function utf8($string) {
-    return static::convert($string, 'utf-8');
+    return self::convert($string, 'utf-8');
   }
 
   /** 
-    * A better way to strip slashes
-    * 
-    * @param  string  $string 
-    * @return string 
-    */
+   * A better way to strip slashes
+   * 
+   * @param  string  $string 
+   * @return string 
+   */
   static public function stripslashes($string) {
     if(is_array($string)) return $string;
     return (get_magic_quotes_gpc()) ? stripslashes(stripslashes($string)) : $string;
@@ -612,7 +612,7 @@ class Str {
     
     if(is_array($type)) {
       foreach($type as $t) {
-        $pool = array_merge($pool, static::pool($t));
+        $pool = array_merge($pool, self::pool($t));
       }
     } else {
 
@@ -624,13 +624,13 @@ class Str {
           $pool = range('A', 'Z');
           break;
         case 'alpha':
-          $pool = static::pool(array('alphaLower', 'alphaUpper'));
+          $pool = self::pool(array('alphaLower', 'alphaUpper'));
           break;
         case 'num':
           $pool = range(0, 9);
           break;
         case 'alphaNum':
-          $pool = static::pool(array('alpha', 'num'));
+          $pool = self::pool(array('alpha', 'num'));
           break;
       }
 

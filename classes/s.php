@@ -16,20 +16,20 @@ class S {
   static protected $started = false;
 
   /**
-    * Returns the current session id
-    * 
-    * @return string
-    */  
+   * Returns the current session id
+   * 
+   * @return string
+   */  
   static public function id() {
     return session_id();
   }
 
   /** 
-    * Sets a session value by key
-    *
-    * @param  mixed   $key The key to define
-    * @param  mixed   $value The value for the passed key
-    */    
+   * Sets a session value by key
+   *
+   * @param  mixed   $key The key to define
+   * @param  mixed   $value The value for the passed key
+   */    
   static public function set($key, $value = false) {
     if(!isset($_SESSION)) return false;
     if(is_array($key)) {
@@ -40,12 +40,12 @@ class S {
   }
 
   /**
-    * Gets a session value by key
-    *
-    * @param  mixed    $key The key to look for. Pass false or null to return the entire session array. 
-    * @param  mixed    $default Optional default value, which should be returned if no element has been found
-    * @return mixed
-    */  
+   * Gets a session value by key
+   *
+   * @param  mixed    $key The key to look for. Pass false or null to return the entire session array. 
+   * @param  mixed    $default Optional default value, which should be returned if no element has been found
+   * @return mixed
+   */  
   static public function get($key = false, $default = null) {
     if(!isset($_SESSION)) return false;
     if(empty($key)) return $_SESSION;
@@ -53,11 +53,11 @@ class S {
   }
 
   /**
-    * Removes a value from the session by key
-    *
-    * @param  mixed    $key The key to remove by
-    * @return array    The session array without the value
-    */  
+   * Removes a value from the session by key
+   *
+   * @param  mixed    $key The key to remove by
+   * @return array    The session array without the value
+   */  
   static public function remove($key) {
     if(!isset($_SESSION)) return false;
     $_SESSION = a::remove($_SESSION, $key, true);
@@ -65,9 +65,9 @@ class S {
   }
 
   /**
-    * Starts a new session
-    *
-    */  
+   * Starts a new session
+   *
+   */  
   static public function start() {
     if(self::$started) return true;
     session_start();
@@ -75,18 +75,26 @@ class S {
   }
 
   /**
-    * Destroys a session
-    *
-    */  
+   * Destroys a session
+   *
+   */  
   static public function destroy() {
     session_destroy();
+    unset($_SESSION);
     self::$started = false;
   }
 
   /**
-    * Destroys a session first and then starts it again
-    *
-    */  
+   * Alternative for s::destroy()
+   */
+  static public function stop() {
+    s::destroy();
+  }
+
+  /**
+   * Destroys a session first and then starts it again
+   *
+   */  
   static public function restart() {
     self::destroy();
     self::start();

@@ -20,12 +20,7 @@ class UriParams extends Collection {
    * @return string
    */
   public function toString() {
-    $output = array();
-    $sep    = (DS == '/') ? ':' : ';';
-    foreach($this->toArray() as $key => $value) {
-      $output[] = $key . $sep . $value;
-    }        
-    return implode('/', $output);
+    return url::buildParams($this->toArray());
   }
 
   /**

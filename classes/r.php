@@ -31,11 +31,11 @@ class R {
    */
   static public function data($key = null, $default = null) {
     
-    if(!is_null(static::$data)) {
-      $data = static::$data;
+    if(!is_null(self::$data)) {
+      $data = self::$data;
     } else {
       $_REQUEST = array_merge($_GET, $_POST);
-      $data = static::$data = (static::is('GET')) ? static::sanitize($_REQUEST) : array_merge(static::body(), static::sanitize($_REQUEST));
+      $data = self::$data = (self::is('GET')) ? self::sanitize($_REQUEST) : array_merge(self::body(), self::sanitize($_REQUEST));
     }
     
     if(is_null($key)) return $data;
@@ -57,7 +57,7 @@ class R {
     }
 
     foreach($data as $key => $value) {
-      $value = static::sanitize($value);
+      $value = self::sanitize($value);
       $data[$key] = $value;    
     }      
 
@@ -70,52 +70,63 @@ class R {
    * 
    * @param mixed $key The key to set/replace. Use an array to set multiple values at once
    * @param mixed $value The value
-   * @return object $this
+   * @return array
    */
   static public function set($key, $value = null) {
     
     // set multiple values at once
     if(is_array($key)) {
-      foreach($key as $k => $v) static::set($k, $v);
+      foreach($key as $k => $v) self::set($k, $v);
     }
 
     // make sure the data array is actually an array
-    if(is_null(static::$data)) static::$data = array();
+    if(is_null(self::$data)) self::$data = array();
 
-    static::$data[$key] = static::sanitize($value);
-    return $this;
+    self::$data[$key] = $_REQUEST[$key] = self::sanitize($value);
+    return self::$data;
+
   }
 
   /**
-   * Alternative to static::data($key, $default)
+   * Alternative to self::data($key, $default)
    * 
    * @param string $key An optional key to receive only parts of the data array
    * @param mixed $default A default value, which will be returned if nothing can be found for a given key
    * @param mixed
    */
   static public function get($key = null, $default = null) {
-    return static::data($key, $default);  
+    return self::data($key, $default);  
   }
 
   /**
-    * Returns the current request method
-    *
-    * @return string POST, GET, DELETE, PUT
-    */  
+   * Removes a variable from the request array
+   * 
+   * @param string $key
+   */
+  static public function remove($key) {
+    unset($_REQUEST[$key]);
+    unset(self::$data[$key]);
+  }
+
+  /**
+   * Returns the current request method
+   *
+   * @return string POST, GET, DELETE, PUT
+   */  
   static public function method() {
     $method = strtoupper(server::get('request_method', 'GET'));
     return ($method == 'HEAD') ? 'GET' : $method;
   }
 
   /**
-    * Returns the request body from POST requests for example
-    *
-    * @return array
-    */    
+   * Returns the request body from POST requests for example
+   *
+   * @return array
+   */    
   static public function body() {
-    if(!is_null(static::$body)) return static::$body; 
-    @parse_str(@file_get_contents('php://input'), static::$body); 
-    return static::$body = static::sanitize((array)static::$body);
+    if(!is_null(self::$body)) return self::$body; 
+    @parse_str(@file_get_contents('php://input'), self::$body); 
+    return self::$body = self::sanitize((array)self::$body);
   }
 
   /**
@@ -131,9 +142,9 @@ class R {
    */
   static public function is($method) {
     if($method == 'ajax') {
-      return static::ajax();
+      return self::ajax();
     } else {
-      return (strtoupper($method) == static::method()) ? true : false;
+      return (strtoupper($method) == self::method()) ? true : false;
     }
   }
 
@@ -143,7 +154,7 @@ class R {
    * @param string $default Pass an optional URL to use as default referer if no referer is being found
    * @return string
    */
-  static public function referer($default = '/') {
+  static public function referer($default = null) {
     return server::get('http_referer', $default);
   }
 
@@ -154,8 +165,8 @@ class R {
    * @param string $default Pass an optional URL to use as default referer if no referer is being found
    * @return string
    */
-  static public function referrer($default = '/') {
-    return static::referer($default);    
+  static public function referrer($default = nullg) {
+    return self::referer($default);    
   }
 
   /**
@@ -201,7 +212,16 @@ class R {
    * @return boolean
    */
   static public function ssl() {
-    return (static::scheme() == 'https') ? true : false;
+    return (self::scheme() == 'https') ? true : false;
+  }
+
+  /**
+   * Alternative for self::ssl()
+   * 
+   * @return boolean
+   */
+  static public function secure() {
+    return self::ssl();
   }
 
 }

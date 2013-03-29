@@ -87,6 +87,17 @@ function r($condition, $value, $alternative = null) {
 }
 
 /**
+ * Returns a language string
+ * 
+ * @param mixed $key
+ * @param mixed $default
+ * @return string
+ */
+function l($key = null, $default = null) {
+  return l::get($key, $default);
+}
+
+/**
  * Shortcut for a::show()
  * 
  * @see a::show()
@@ -134,7 +145,7 @@ function h($text, $keepTags = true) {
  * @return string
  */
 function xml($text) {
-  return x::encode($text);
+  return xml::encode($text);
 }
 
 /**

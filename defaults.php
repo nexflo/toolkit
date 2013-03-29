@@ -9,6 +9,12 @@ c::set(array(
   'toolkit.version.string' => '2.0',
   'toolkit.version.number' => 2.0,
 
+  // set the default timezone
+  'timezone' => 'UTC',
+
+  // secret key
+  'cookie.salt' => 'secretTokenForCookieHashes',
+
   // permissions for new directories
   'dir.make.permissions' => 0755,
   'dir.read.ignore' => array('.', '..', '.DS_Store'),

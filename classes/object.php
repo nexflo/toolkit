@@ -318,11 +318,8 @@ class Object {
    * 
    * @return string
    */
-  public function __toString() {
-    $output  = '<pre>';
-    $output .= htmlspecialchars(print_r($this->toArray(), true));
-    $output .= '</pre>';
-    return $output;
+  public function __toString() {      
+    return a::show($this->toArray(), false);
   }
 
   // Private Methods

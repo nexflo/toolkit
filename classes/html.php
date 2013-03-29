@@ -13,12 +13,12 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
 class Html {
 
   /**
-    * Converts a string to a html-safe string
-    *
-    * @param  string  $string
-    * @param  boolean $keepTags True: lets stuff inside html tags untouched. 
-    * @return string  The html string
-    */  
+   * Converts a string to a html-safe string
+   *
+   * @param  string  $string
+   * @param  boolean $keepTags True: lets stuff inside html tags untouched. 
+   * @return string  The html string
+   */  
   static public function encode($string, $keepTags = true) {
     if($keepTags) {
       return stripslashes(implode('', preg_replace('/^([^<].+[^>])$/e', "htmlentities('\\1', ENT_COMPAT, 'utf-8')", preg_split('/(<.+?>)/', $string, -1, PREG_SPLIT_DELIM_CAPTURE))));
@@ -28,11 +28,11 @@ class Html {
   }
 
   /**
-    * Removes all html tags and encoded chars from a string
-    *
-    * @param  string  $string
-    * @return string  The html string
-    */  
+   * Removes all html tags and encoded chars from a string
+   *
+   * @param  string  $string
+   * @return string  The html string
+   */  
   static public function decode($string) {
     $string = strip_tags($string);
     return html_entity_decode($string, ENT_COMPAT, 'utf-8');

@@ -46,13 +46,13 @@ class A {
   }
 
   /**
-    * Gets an element of an array by key
-    *
-    * @param  array    $array The source array
-    * @param  mixed    $key The key to look for
-    * @param  mixed    $default Optional default value, which should be returned if no element has been found
-    * @return mixed
-    */
+   * Gets an element of an array by key
+   *
+   * @param  array    $array The source array
+   * @param  mixed    $key The key to look for
+   * @param  mixed    $default Optional default value, which should be returned if no element has been found
+   * @return mixed
+   */
   static public function get($array, $key, $default = null) {
 
     if(isset($array[$key])) return $array[$key];
@@ -70,13 +70,13 @@ class A {
   }
   
   /**
-    * Removes an element from an array
-    * 
-    * @param  array   $array The source array
-    * @param  mixed   $search The value or key to look for
-    * @param  boolean $key Pass true to search for an key, pass false to search for an value.   
-    * @return array   The result array without the removed element
-    */
+   * Removes an element from an array
+   * 
+   * @param  array   $array The source array
+   * @param  mixed   $search The value or key to look for
+   * @param  boolean $key Pass true to search for an key, pass false to search for an value.   
+   * @return array   The result array without the removed element
+   */
   static public function remove($array, $search, $key = true) {
     if($key) {
       unset($array[$search]);
@@ -100,7 +100,7 @@ class A {
    * @see a::remove() 
    */
   static public function removeKey($array, $search) {
-    static::remove($array, $search, true);
+    self::remove($array, $search, true);
   }
 
   /**
@@ -109,17 +109,17 @@ class A {
    * @see a::remove() 
    */
   static public function removeValue($array, $search) {
-    static::remove($array, $search, false);
+    self::remove($array, $search, false);
   }
 
   /**
-    * Injects an element into an array
-    * 
-    * @param  array   $array The source array
-    * @param  int     $position The position, where to inject the element
-    * @param  mixed   $element The element, which should be injected
-    * @return array   The result array including the new element
-    */
+   * Injects an element into an array
+   * 
+   * @param  array   $array The source array
+   * @param  int     $position The position, where to inject the element
+   * @param  mixed   $element The element, which should be injected
+   * @return array   The result array including the new element
+   */
   static public function inject($array, $position, $element = 'placeholder') {
     $start = array_slice($array, 0, $position);
     $end = array_slice($array, $position);
@@ -127,53 +127,53 @@ class A {
   }
 
   /**
-    * Shows an entire array or object in a human readable way
-    * This is perfect for debugging
-    * 
-    * @param  array   $array The source array
-    * @param  boolean $echo By default the result will be echoed instantly. You can switch that off here. 
-    * @return mixed   If echo is false, this will return the generated array output.
-    */
+   * Shows an entire array or object in a human readable way
+   * This is perfect for debugging
+   * 
+   * @param  array   $array The source array
+   * @param  boolean $echo By default the result will be echoed instantly. You can switch that off here. 
+   * @return mixed   If echo is false, this will return the generated array output.
+   */
   static public function show($array, $echo = true) {
     $output  = '<pre>';
-    $output .= htmlspecialchars(print_r($array, true));
+    $output .= (r::cli()) ? print_r($array, true) : htmlspecialchars(print_r($array, true));
     $output .= '</pre>';
     if($echo == true) echo $output;
     return $output;
   }
 
   /**
-    * Converts an array to a JSON string
-    * It's basically a shortcut for json_encode()
-    * 
-    * @param  array   $array The source array
-    * @return string  The JSON string
-    */
+   * Converts an array to a JSON string
+   * It's basically a shortcut for json_encode()
+   * 
+   * @param  array   $array The source array
+   * @return string  The JSON string
+   */
   static public function json($array) {
-    return json_encode( (array)$array );
+    return json_encode((array)$array);
   }
 
   /**
-    * Converts an array to a XML string
-    * 
-    * @param  array   $array The source array
-    * @param  string  $tag The name of the root element
-    * @param  boolean $head Include the xml declaration head or not
-    * @param  string  $charset The charset, which should be used for the header
-    * @param  int     $level The indendation level
-    * @return string  The XML string
-    */
+   * Converts an array to a XML string
+   * 
+   * @param  array   $array The source array
+   * @param  string  $tag The name of the root element
+   * @param  boolean $head Include the xml declaration head or not
+   * @param  string  $charset The charset, which should be used for the header
+   * @param  int     $level The indendation level
+   * @return string  The XML string
+   */
   static public function xml($array, $tag = 'root', $head = true, $charset = 'utf-8', $tab = '  ', $level = 0) {
-    return x::create($array, $tag, $head, $charset, $tab, $level);
+    return xml::create($array, $tag, $head, $charset, $tab, $level);
   }
 
   /**
-    * Extracts a single column from an array
-    * 
-    * @param  array   $array The source array
-    * @param  string  $key The key name of the column to extract
-    * @return array   The result array with all values from that column. 
-    */
+   * Extracts a single column from an array
+   * 
+   * @param  array   $array The source array
+   * @param  string  $key The key name of the column to extract
+   * @return array   The result array with all values from that column. 
+   */
   static public function extract($array, $key) {
     $output = array();
     foreach($array AS $a) if(isset($a[$key])) $output[] = $a[ $key ];
@@ -181,11 +181,11 @@ class A {
   }
 
   /**
-    * Shuffles an array and keeps the keys
-    * 
-    * @param  array   $array The source array
-    * @return array   The shuffled result array
-    */
+   * Shuffles an array and keeps the keys
+   * 
+   * @param  array   $array The source array
+   * @return array   The shuffled result array
+   */
   static public function shuffle($array) {
 
     $keys = array_keys($array); 
@@ -200,41 +200,41 @@ class A {
   } 
 
   /**
-    * Returns the first element of an array
-    *
-    * I always have to lookup the names of that function
-    * so I decided to make this shortcut which is 
-    * easier to remember.
-    *
-    * @param  array   $array The source array
-    * @return mixed   The first element
-    */
+   * Returns the first element of an array
+   *
+   * I always have to lookup the names of that function
+   * so I decided to make this shortcut which is 
+   * easier to remember.
+   *
+   * @param  array   $array The source array
+   * @return mixed   The first element
+   */
   static public function first($array) {
     return array_shift($array);
   }
 
   /**
-    * Returns the last element of an array
-    *
-    * I always have to lookup the names of that function
-    * so I decided to make this shortcut which is 
-    * easier to remember.
-    * 
-    * @param  array   $array The source array
-    * @return mixed   The last element
-    */
+   * Returns the last element of an array
+   *
+   * I always have to lookup the names of that function
+   * so I decided to make this shortcut which is 
+   * easier to remember.
+   * 
+   * @param  array   $array The source array
+   * @return mixed   The last element
+   */
   static public function last($array) {
     return array_pop($array);
   }
 
   /**
-    * Fills an array up with additional elements to certain amount. 
-    *
-    * @param  array   $array The source array
-    * @param  int     $limit The number of elements the array should contain after filling it up. 
-    * @param  mixed   $fill The element, which should be used to fill the array
-    * @return array   The filled-up result array
-    */
+   * Fills an array up with additional elements to certain amount. 
+   *
+   * @param  array   $array The source array
+   * @param  int     $limit The number of elements the array should contain after filling it up. 
+   * @param  mixed   $fill The element, which should be used to fill the array
+   * @return array   The filled-up result array
+   */
   static public function fill($array, $limit, $fill='placeholder') {
     if(count($array) < $limit) {
       $diff = $limit-count($array);
@@ -244,15 +244,15 @@ class A {
   }
 
   /**
-    * Checks for missing elements in an array
-    *
-    * This is very handy to check for missing 
-    * user values in a request for example. 
-    * 
-    * @param  array   $array The source array
-    * @param  array   $required An array of required keys
-    * @return array   An array of missing fields. If this is empty, nothing is missing. 
-    */
+   * Checks for missing elements in an array
+   *
+   * This is very handy to check for missing 
+   * user values in a request for example. 
+   * 
+   * @param  array   $array The source array
+   * @param  array   $required An array of required keys
+   * @return array   An array of missing fields. If this is empty, nothing is missing. 
+   */
   static public function missing($array, $required=array()) {
     $missing = array();
     foreach($required AS $r) {
@@ -262,14 +262,14 @@ class A {
   }
 
   /**
-    * Sorts a multi-dimensional array by a certain column
-    *
-    * @param  array   $array The source array
-    * @param  string  $field The name of the column
-    * @param  string  $direction desc (descending) or asc (ascending)
-    * @param  const   $method A PHP sort method flag or 'natural' for natural sorting, which is not supported in PHP by sort flags 
-    * @return array   The sorted array
-    */
+   * Sorts a multi-dimensional array by a certain column
+   *
+   * @param  array   $array The source array
+   * @param  string  $field The name of the column
+   * @param  string  $direction desc (descending) or asc (ascending)
+   * @param  const   $method A PHP sort method flag or 'natural' for natural sorting, which is not supported in PHP by sort flags 
+   * @return array   The sorted array
+   */
   static public function sort($array, $field, $direction = 'desc', $method = SORT_REGULAR) {
 
     $direction = (strtolower($direction) == 'desc') ? SORT_DESC : SORT_ASC;
