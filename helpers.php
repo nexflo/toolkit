@@ -188,3 +188,16 @@ function widont($string = '') {
 function memory() {
   return f::niceSize(memory_get_usage());
 }
+
+/**
+ * Determines the size/length of numbers, strings, arrays and files 
+ *
+ * @param mixed $value 
+ * @return int
+ */
+function size($value) {
+  if(is_numeric($value)) return $value; 
+  if(is_string($value))  return str::length(trim($value));
+  if(is_array($value))   return count($value);
+  if(f::exists($value))  return f::size($value) / 1024;
+}

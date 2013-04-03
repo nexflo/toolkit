@@ -126,7 +126,7 @@ class UrlTest extends PHPUnit_Framework_TestCase {
 
   public function testValid() {
 
-     $sample = 'http://getkirby.com/?var=value';
+    $sample = 'http://getkirby.com/?var=value';
 
     $this->assertTrue(url::valid($sample));
 

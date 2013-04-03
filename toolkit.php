@@ -43,5 +43,8 @@ spl_autoload_register('toolkitLoader');
 // load the default config values
 require_once(ROOT_KIRBY_TOOLKIT . DS . 'defaults.php');
 
+// set the default timezone
+date_default_timezone_set(c::get('timezone', 'UTC'));
+
 // load the helper functions
 require_once(ROOT_KIRBY_TOOLKIT . DS . 'helpers.php');
