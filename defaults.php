@@ -20,6 +20,9 @@ c::set(array(
   'dir.make.permissions' => 0755,
   'dir.read.ignore' => array('.', '..', '.DS_Store'),
   
+  // the default path for templates
+  'tpl.root' => '',
+
   // a list of detectable mime types, borrowed from Laravel
   'mimes' => array(
     'hqx'   => 'application/mac-binhex40',
