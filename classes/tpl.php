@@ -70,7 +70,7 @@ class Tpl {
     if(!file_exists($file)) return false;
 
     // always make sure to work with an array
-    if(!is_array($vars)) $vars = array();
+    if(!is_array($data)) $data = array();
 
     return content::load($file, array_merge(self::$data, $data), $return);
 
