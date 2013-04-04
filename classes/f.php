@@ -23,6 +23,13 @@ class F {
   static public function exists($file) {
     return file_exists($file);
   }
+
+  /**
+   * Safely requires a file if it exists
+   */
+  static public function load($file) {
+    if(file_exists($file)) require_once($file);
+  }
   
   /**
    * Creates a new file
