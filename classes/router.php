@@ -18,6 +18,9 @@ require_once(ROOT_KIRBY_TOOLKIT_CLASSES . DS . 'router' . DS . 'route.php');
  */
 class Router {
   
+  // the matched route if found
+  static protected $route = null;
+
   // all registered routes
   static protected $routes = array(
     'GET'    => array(),
@@ -46,12 +49,22 @@ class Router {
    * Resets all registered routes
    */
   static public function reset() {
+    self::$route  = null;
     self::$routes = array(
       'GET'    => array(),
       'POST'   => array(),
       'PUT'    => array(),
       'DELETE' => array()
     );    
+  }
+
+  /**
+   * Returns the found route
+   * 
+   * @return mixed
+   */
+  static public function route() {
+    return self::$route;
   }
 
   /**
@@ -109,7 +122,7 @@ class Router {
 
       // handle exact matches
       if($pattern == $url) {
-        return new Route($method, $pattern, $action, array());
+        return self::$route = new Route($method, $pattern, $action, array());
       }
 
       // We only need to check routes with regular expression since all others
@@ -123,7 +136,7 @@ class Router {
       // parameter match, as preg_match sets the first array item to the
       // full-text match of the pattern.
       if(preg_match($preg, $url, $parameters)) {
-        return new Route($method, $pattern, $action, array_slice($parameters, 1));
+        return self::$route = new Route($method, $pattern, $action, array_slice($parameters, 1));
       }    
     
     }

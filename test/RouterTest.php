@@ -101,6 +101,8 @@ class RouterTest extends PHPUnit_Framework_TestCase {
 
     $this->assertEquals(array('design'), $route->options());
 
+    $this->assertEquals(router::route(), $route);
+
   }
 
 
