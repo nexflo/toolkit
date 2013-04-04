@@ -68,6 +68,15 @@ class Router {
   }
 
   /**
+   * Returns the options array from the current route
+   * 
+   * @return array
+   */
+  static public function options() {
+    if($route = self::route()) return $route->options();
+  }
+
+  /**
    * Adds a new route
    * 
    * @param string|array $methods GET, POST, PUT, DELETE
