@@ -8,5 +8,5 @@ if(!defined('TEST_ROOT_LIB')) define('TEST_ROOT_LIB', $dir);
 if(!defined('TEST_ROOT_TMP')) define('TEST_ROOT_TMP', TEST_ROOT_ETC . DIRECTORY_SEPARATOR . 'tmp');
 
 // include the kirby toolkit bootstrapper file
-require_once(dirname(TEST_ROOT) . DIRECTORY_SEPARATOR . 'toolkit.php');
+require_once(dirname(TEST_ROOT) . DIRECTORY_SEPARATOR . 'bootstrap.php');
 

@@ -4,7 +4,7 @@
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
 // dependencies
-require_once(ROOT_KIRBY_TOOLKIT_CLASSES . DS . 'v' . DS . 'validation.php');
+require_once(ROOT_KIRBY_TOOLKIT_LIB . DS . 'v' . DS . 'validation.php');
 
 /**
  * 

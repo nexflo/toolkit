@@ -74,7 +74,7 @@ class Exif {
     if(!is_array($this->data)) return null;
 
     // load the camera sub class
-    require_once(ROOT_KIRBY_TOOLKIT_CLASSES . DS . 'exif' . DS . 'camera.php');
+    require_once(ROOT_KIRBY_TOOLKIT_LIB . DS . 'exif' . DS . 'camera.php');
 
     // initialize and return it
     return $this->camera = new ExifCamera($this->data);
@@ -94,7 +94,7 @@ class Exif {
     if(!is_array($this->data)) return null;
 
     // load the location sub class
-    require_once(ROOT_KIRBY_TOOLKIT_CLASSES . DS . 'exif' . DS . 'location.php');
+    require_once(ROOT_KIRBY_TOOLKIT_LIB . DS . 'exif' . DS . 'location.php');
 
     // initialize and return it
     return $this->location = new ExifLocation($this->data);

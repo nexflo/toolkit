@@ -14,8 +14,8 @@ if(!defined('KIRBY')) define('KIRBY', true);
 if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 
 // store the main toolkit root
-if(!defined('ROOT_KIRBY_TOOLKIT'))         define('ROOT_KIRBY_TOOLKIT',         dirname(__FILE__));
-if(!defined('ROOT_KIRBY_TOOLKIT_CLASSES')) define('ROOT_KIRBY_TOOLKIT_CLASSES', ROOT_KIRBY_TOOLKIT . DS . 'classes');
+if(!defined('ROOT_KIRBY_TOOLKIT'))     define('ROOT_KIRBY_TOOLKIT',         dirname(__FILE__));
+if(!defined('ROOT_KIRBY_TOOLKIT_LIB')) define('ROOT_KIRBY_TOOLKIT_LIB', ROOT_KIRBY_TOOLKIT . DS . 'lib');
 
 // check for mb_string support
 if(!defined('MB_STRING')) define('MB_STRING', (int)function_exists('mb_get_info'));
@@ -28,7 +28,7 @@ if(!defined('MB_STRING')) define('MB_STRING', (int)function_exists('mb_get_info'
  */
 function toolkitLoader($class) {
 
-  $file = ROOT_KIRBY_TOOLKIT_CLASSES . DS . strtolower($class) . '.php';
+  $file = ROOT_KIRBY_TOOLKIT_LIB . DS . strtolower($class) . '.php';
 
   if(file_exists($file)) {
     require_once($file);
