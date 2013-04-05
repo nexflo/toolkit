@@ -121,7 +121,7 @@ class Dimensions {
    * @param boolean $force If true, the parent object will be upscaled to fit the height if smaller
    * @return object returns this object with recalculated dimensions
    */
-  public function fitHeight($fit, $force=false) {
+  public function fitHeight($fit, $force = false) {
 
     if($this->height <= $fit && !$force) return $this;
 
@@ -129,6 +129,35 @@ class Dimensions {
     
     $this->width  = floor($fit * $ratio);
     $this->height = $fit; 
+
+    return $this;
+
+  }
+
+  /**
+   * Recalculates the dimensions by the width and height
+   * 
+   * @param int $width the max height
+   * @param int $height the max width
+   * @return object
+   */
+  public function fitWidthAndHeight($width, $height, $force = false) {
+
+    if($this->width > $this->height) {
+
+      $this->fitWidth($width, $force);
+      
+      // do another check for the max height
+      if($this->height > $height) $this->fitHeight($height);
+
+    } else {
+
+      $this->fitHeight($height, $force);
+      
+      // do another check for the max width
+      if($this->width > $width) $this->fitWidth($width);
+
+    }
 
     return $this;
 
