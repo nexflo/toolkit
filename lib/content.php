@@ -51,7 +51,7 @@ class Content {
   static public function load($file, $data = array(), $return = true) {
     self::start();
     extract($data);
-    require_once($file);
+    require($file);
     $content = self::stop();
     if($return) return $content;
     echo $content;        
