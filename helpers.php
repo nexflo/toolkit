@@ -201,3 +201,15 @@ function size($value) {
   if(is_array($value))   return count($value);
   if(f::exists($value))  return f::size($value) / 1024;
 }
+
+/**
+ * Generates a gravatar image link
+ * 
+ * @param string $email
+ * @param int $size
+ * @param string $default 
+ * @return string
+ */
+function gravatar($email, $size = 256, $default = 'mm') {
+  return 'https://gravatar.com/avatar/' . md5(strtolower(trim($email))) . '?d=' . urlencode($default) . '&s=' . $size;  
+}

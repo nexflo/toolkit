@@ -596,11 +596,7 @@ class Collection implements Iterator {
   public function toArray() {
     $clean = array();
     foreach($this->_ as $dirtyKey => $value) {
-      if(is_object($value) && method_exists($value, 'toArray')) {
-        $clean[ $this->cleankey($dirtyKey) ] = $value->toArray();      
-      } else {
-        $clean[ $this->cleankey($dirtyKey) ] = $value;
-      }
+      $clean[ $this->cleankey($dirtyKey) ] = $value;
     }
     $this->rewind();
     return $clean;
