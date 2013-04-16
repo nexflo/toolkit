@@ -15,7 +15,7 @@ class DirTest extends PHPUnit_Framework_TestCase {
 
   public function testRead() {
     $files = dir::read(TEST_ROOT_ETC);
-    $this->assertEquals(3, count($files));
+    $this->assertEquals(4, count($files));
   } 
 
   public function testMove() {

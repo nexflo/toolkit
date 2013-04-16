@@ -135,9 +135,13 @@ class A {
    * @return mixed   If echo is false, this will return the generated array output.
    */
   static public function show($array, $echo = true) {
-    $output  = '<pre>';
-    $output .= (r::cli()) ? print_r($array, true) : htmlspecialchars(print_r($array, true));
-    $output .= '</pre>';
+    if(r::cli()) {
+      $output = print_r($array, true) . PHP_EOL;
+    } else {
+      $output  = '<pre>';
+      $output .=  htmlspecialchars(print_r($array, true));
+      $output .= '</pre>';
+    }
     if($echo == true) echo $output;
     return $output;
   }

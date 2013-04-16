@@ -236,7 +236,32 @@ class F {
     return $info;
 
   }
+
+  /**
+   * Converts a mime type to a file extension
+   * 
+   * @param string $mime
+   * @return string
+   */
+  static public function mimeToExtension($mime) {
+    foreach(c::get('mimes') as $key => $value) {
+      if(is_array($value) && in_array($mime, $value)) return $key; 
+      if($value == $mime) return $key;
+    }
+    return null;
+  }
     
+  /**
+   * Converts a file extension to a mime type
+   * 
+   * @param string $extension
+   * @return string
+   */
+  static public function extensionToMime($extension) {
+    $mime = a::get(c::get('mimes'), $extension);
+    return (is_array($mime)) ? a::first($mime) : $mime;
+  }
+
   /**
    * Sanitize a filename to strip unwanted special characters
    * 

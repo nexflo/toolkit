@@ -23,6 +23,9 @@ c::set(array(
   // the default path for templates
   'tpl.root' => '',
 
+  // upload settings
+  'upload.maxsize' => false,
+
   // a list of detectable mime types, borrowed from Laravel
   'mimes' => array(
     'hqx'   => 'application/mac-binhex40',
@@ -85,8 +88,8 @@ c::set(array(
     'wav'   => 'audio/x-wav',
     'bmp'   => 'image/bmp',
     'gif'   => 'image/gif',
-    'jpeg'  => array('image/jpeg', 'image/pjpeg'),
     'jpg'   => array('image/jpeg', 'image/pjpeg'),
+    'jpeg'  => array('image/jpeg', 'image/pjpeg'),
     'jpe'   => array('image/jpeg', 'image/pjpeg'),
     'png'   => 'image/png',
     'tiff'  => 'image/tiff',
