@@ -23,7 +23,7 @@ class Tpl {
    * @param string $key
    * @param string $value
    */
-  static public function set($key, $value=false) {
+  static public function set($key, $value = false) {
     if(is_array($key)) {
       self::$data = array_merge(self::$data, $key);
     } else {
@@ -41,6 +41,16 @@ class Tpl {
   static public function get($key = null, $default = null) {
     if(is_null($key)) return (array)self::$data;
     return a::get(self::$data, $key, $default);       
+  }
+
+  /**
+   * Removes a template variable
+   * 
+   * @param string $key
+   * @return void
+   */
+  static public function remove($key) {
+    unset(self::$data[$key]);
   }
 
   /**

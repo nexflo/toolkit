@@ -120,6 +120,17 @@ class F {
   }
 
   /**
+   * Returns all extensions for a certain file type
+   * 
+   * @param string $type
+   * @return array
+   */
+  static public function extensions($type = null) {
+    if(is_null($type)) return array_keys(c::get('f.mimes', array()));
+    return a::get(c::get('f.types'), $type, array());
+  }
+
+  /**
    * Extracts the filename from a file path
    * 
    * @param  string  $file The path
@@ -227,7 +238,7 @@ class F {
     } 
 
     // guess the matching mime type by extension
-    $info = a::get(c::get('mimes'), f::extension($file), null);
+    $info = a::get(c::get('f.mimes'), f::extension($file), null);
 
     // if there are more than one applicable mimes for the extension, return the first
     if(is_array($info)) return a::first($info);
@@ -238,13 +249,76 @@ class F {
   }
 
   /**
+   * Categorize the file
+   * 
+   * @param string $file Either the file path or extension
+   * @return string
+   */
+  static public function type($file) {
+
+    if(v::between($file, 2,4)) {
+      // use the file name as extension
+      $extension = $file;
+    } else {
+      // get the extension from the filename
+      $extension = f::extension($file);
+    }
+
+    if(empty($extension)) {
+      // detect the mime type first to get the most reliable extension
+      $mime      = f::mime($file);
+      $extension = f::mimeToExtension($mime);
+    }
+
+    // get all categorized types
+    $types = c::get('f.types', array());
+
+    foreach($types as $type => $extensions) {
+      if(in_array($extension, $extensions)) return $type;
+    }
+
+    return null;
+
+  }
+
+  /**
+   * Returns an array of all available file types
+   *
+   * @return array
+   */
+  static public function types() {
+    return array_keys(c::get('f.types'));
+  }
+
+  /**
+   * Checks if a file is of a certain type
+   * 
+   * @param string $file Full path to the file
+   * @param string $value An extension or mime type
+   * @return boolean
+   */
+  static public function is($file, $value) {
+    
+    if(in_array($value, self::extensions())) {
+      // check for the extension
+      return f::extension($file) == $value;
+    } else if(str::contains($value, '/')) {
+      // check for the mime type
+      return f::mime($file) == $value;
+    }
+
+    return false;
+    
+  }
+
+  /**
    * Converts a mime type to a file extension
    * 
    * @param string $mime
    * @return string
    */
   static public function mimeToExtension($mime) {
-    foreach(c::get('mimes') as $key => $value) {
+    foreach(c::get('f.mimes') as $key => $value) {
       if(is_array($value) && in_array($mime, $value)) return $key; 
       if($value == $mime) return $key;
     }
@@ -258,7 +332,7 @@ class F {
    * @return string
    */
   static public function extensionToMime($extension) {
-    $mime = a::get(c::get('mimes'), $extension);
+    $mime = a::get(c::get('f.mimes'), $extension);
     return (is_array($mime)) ? a::first($mime) : $mime;
   }
 

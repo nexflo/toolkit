@@ -73,6 +73,25 @@ class FTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('text/plain', f::mime($this->contentFile));
   }
 
+  public function testType() {
+
+    $this->assertEquals('image', f::type('jpg'));
+    $this->assertEquals('document', f::type('pdf'));
+    $this->assertEquals('archive', f::type('zip'));
+    $this->assertEquals('code', f::type('css'));
+    $this->assertEquals('code', f::type('content.php'));
+
+  }
+
+  public function testIs() {
+
+    $file = TEST_ROOT_ETC . DS . 'content.php';
+
+    $this->assertTrue(f::is($file, 'php'));
+    $this->assertTrue(f::is($file, 'text/plain'));
+
+  }
+
   public function testSafeName() {
     $name     = 'Süper -invølid_fileßnamé!!!.jpg';
     $expected = 'sueper-involid-filessname.jpg';

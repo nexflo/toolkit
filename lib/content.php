@@ -65,7 +65,7 @@ class Content {
    */
   static public function type($type = null, $charset = 'utf-8', $send = true) {
 
-    $type = a::get(c::get('mimes'), $type);
+    $type = a::get(c::get('f.mimes'), $type);
 
     // use the first content type if multiple are available
     if(is_array($type)) $type = a::first($type);

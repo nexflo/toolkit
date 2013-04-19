@@ -27,7 +27,7 @@ c::set(array(
   'upload.maxsize' => false,
 
   // a list of detectable mime types, borrowed from Laravel
-  'mimes' => array(
+  'f.mimes' => array(
     'hqx'   => 'application/mac-binhex40',
     'cpt'   => 'application/mac-compactpro',
     'csv'   => array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream'),
@@ -119,6 +119,94 @@ c::set(array(
     'xl'    => 'application/excel',
     'eml'   => 'message/rfc822',
     'json'  => array('application/json', 'text/json'),
+  ),
+
+  'f.types' => array(
+
+    'image' => array(
+      'jpeg',
+      'jpg',
+      'jpe',
+      'gif',
+      'png',
+      'svg',
+      'ico',
+      'tif',
+      'tiff',
+      'bmp',
+      'psd',
+      'ai',
+      'eps', 
+      'ps'
+    ),
+
+    'document' => array(
+      'txt',
+      'text',
+      'mdown',
+      'md',
+      'markdown',
+      'pdf',
+      'doc',
+      'docx',
+      'word',
+      'xl',
+      'xls',
+      'xlsx',
+      'ppt',
+      'csv',
+      'rtf',
+      'rtx',
+      'log',
+    ),
+
+    'archive' => array(
+      'zip',
+      'tar',
+      'gz',
+      'gzip',
+      'tgz',
+    ),
+
+    'code' => array(
+      'js',
+      'css',
+      'scss',
+      'htm',
+      'html',
+      'shtml',
+      'xhtml',
+      'php',
+      'php3',
+      'php4',
+      'rb',
+      'xml',
+      'json',
+    ),
+
+    'video' => array(
+      'mov',
+      'movie',
+      'avi',
+      'ogg',
+      'ogv',
+      'webm',
+      'flv',
+      'swf',
+      'mp4',
+      'mv4',
+      'mpg', 
+      'mpe'
+    ),
+
+    'audio' => array(
+      'mp3',
+      'wav',
+      'aif',
+      'aiff', 
+      'midi',
+    ),
+
   ),
 
 ));

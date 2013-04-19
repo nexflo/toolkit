@@ -6,8 +6,10 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
 /**
  * Asset
  * 
- * $image = new Asset('http://mydomain.com/myfile.jpg', '/root/to/myfile.jpg');
- * 
+ * <code>
+ * $image = new Asset('/root/to/myfile.jpg', 'http://mydomain.com/myfile.jpg');
+ * </code> 
+ *
  * @package Kirby
  */
 class Asset {
@@ -60,12 +62,12 @@ class Asset {
   /**
    * Constructor
    * 
-   * @param string $url
    * @param string $root
+   * @param string $url
    */
-  public function __construct($url, $root = null) {
-    $this->url  = $url;
+  public function __construct($root, $url = null) {
     $this->root = realpath($root);
+    $this->url  = $url;
   }
 
   /**
@@ -165,17 +167,22 @@ class Asset {
     // get the cached type if available
     if(!is_null($this->type)) return $this->type;
 
-    // get the matching fileinfo for the extension
-    $info = a::get($this->filetypes(), $this->extension());
-
-    // get the type matching to this extension
-    if($info && isset($info['type'])) {
-      return $this->type = $info['type'];      
-    }
+    // detect the file type
+    $type = f::type($this->extension());
 
     // unkown file type
-    return $this->type = 'unknown';
+    return $this->type = (is_null($type)) ? 'unknown' : $type;
 
+  }
+
+  /**
+   * Checks if a file is of a certain type
+   * 
+   * @param string $value An extension or mime type
+   * @return boolean
+   */
+  public function is($value) {
+    return f::is($this->root(), $value);
   }
 
   /**
@@ -344,73 +351,10 @@ class Asset {
   }
 
   /**
-   * Returns basic file info by extension
+   * Sends an appropriate header for the asset
    */
-  protected function filetypes() {
-
-    $fileinfo = array(
-
-      // images
-      'jpg'      => array('type' => 'image', 'mime' => 'image/jpeg'),
-      'jpeg'     => array('type' => 'image', 'mime' => 'image/jpeg'),
-      'gif'      => array('type' => 'image', 'mime' => 'image/gif'),
-      'png'      => array('type' => 'image', 'mime' => 'image/png'),
-      'svg'      => array('type' => 'image', 'mime' => 'image/svg+xml'),
-      'ico'      => array('type' => 'image', 'mime' => 'image/x-icon'),
-      'tif'      => array('type' => 'image', 'mime' => 'image/tiff'),
-      'tiff'     => array('type' => 'image', 'mime' => 'image/tiff'),
-      'bmp'      => array('type' => 'image', 'mime' => 'image/bmp'),
-
-      // documents
-      'txt'      => array('type' => 'document', 'mime' => 'text/plain'),
-      'mdown'    => array('type' => 'document', 'mime' => 'text/plain'),
-      'md'       => array('type' => 'document', 'mime' => 'text/plain'),
-      'markdown' => array('type' => 'document', 'mime' => 'text/plain'),
-      'pdf'      => array('type' => 'document', 'mime' => 'application/pdf'),
-      'doc'      => array('type' => 'document', 'mime' => 'application/msword'),
-      'docx'     => array('type' => 'document', 'mime' => 'application/msword'),
-      'xls'      => array('type' => 'document', 'mime' => 'application/msexcel'),
-      'xlsx'     => array('type' => 'document', 'mime' => 'application/msexcel'),
-      'ppt'      => array('type' => 'document', 'mime' => 'application/mspowerpoint'),
-
-      // archives
-      'zip'      => array('type' => 'archive', 'mime' => 'application/zip'),
-      'tar'      => array('type' => 'archive', 'mime' => 'application/x-tar'),
-      'gz'       => array('type' => 'archive', 'mime' => 'application/x-gzip'),
-      'gzip'     => array('type' => 'archive', 'mime' => 'application/x-gzip'),
-      'tgz'      => array('type' => 'archive', 'mime' => 'application/gnutar'),
-
-      // code
-      'js'       => array('type' => 'code', 'mime' => 'application/javascript'),
-      'css'      => array('type' => 'code', 'mime' => 'text/css'),
-      'scss'     => array('type' => 'code', 'mime' => 'text/css'),
-      'htm'      => array('type' => 'code', 'mime' => 'text/html'),
-      'html'     => array('type' => 'code', 'mime' => 'text/html'),
-      'php'      => array('type' => 'code', 'mime' => 'text/php'),
-      'xml'      => array('type' => 'code', 'mime' => 'application/xml'),
-      'json'     => array('type' => 'code', 'mime' => 'application/json'),
-
-      // videos
-      'mov'      => array('type' => 'video', 'mime' => 'video/quicktime'),
-      'avi'      => array('type' => 'video', 'mime' => 'video/avi'),
-      'ogg'      => array('type' => 'video', 'mime' => 'video/ogg'),
-      'ogv'      => array('type' => 'video', 'mime' => 'video/ogg'),
-      'webm'     => array('type' => 'video', 'mime' => 'video/webm'),
-      'flv'      => array('type' => 'video', 'mime' => 'video/x-flv'),
-      'swf'      => array('type' => 'video', 'mime' => 'application/x-shockwave-flash'),
-      'mp4'      => array('type' => 'video', 'mime' => 'video/mp4'),
-      'mv4'      => array('type' => 'video', 'mime' => 'video/mv4'),
-
-      // audio
-      'mp3'      => array('type' => 'audio', 'mime' => 'audio/mp3'),
-      'wav'      => array('type' => 'audio', 'mime' => 'audio/wav'),
-      'aif'      => array('type' => 'audio', 'mime' => 'audio/aiff'),
-      'aiff'     => array('type' => 'audio', 'mime' => 'audio/aiff'),
-
-    );
-
-    return array_merge($fileinfo, c::get('fileinfo', array()));
-
+  public function header() {
+    header('Content-type: ' . $this->mime());    
   }
 
   /**
