@@ -39,7 +39,7 @@ class F {
    * @param  boolean $append true: append the content to an exisiting file if available. false: overwrite. 
    * @return boolean 
    */  
-  static public function write($file,$content,$append=false){
+  static public function write($file, $content, $append = false) {
     if(is_array($content)) $content = a::json($content);
     $mode = ($append) ? FILE_APPEND | LOCK_EX : LOCK_EX;
     if(file_put_contents($file, $content, $mode)) return true;
@@ -53,7 +53,7 @@ class F {
    * @param  mixed   $content Either a string or an array. Arrays will be converted to JSON. 
    * @return boolean 
    */  
-  static public function append($file,$content){
+  static public function append($file, $content) {
     return self::write($file,$content,true);
   }
   
