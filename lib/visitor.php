@@ -93,6 +93,15 @@ class Visitor {
   }
 
   /**
+   * Checks if the ip of the current visitor is banned
+   * 
+   * @return boolean
+   */
+  static public function banned() {
+    return (in_array(self::ip(), c::get('visitor.banned')));
+  }
+
+  /**
    * Returns the ip address if the object 
    * is being converted to a string or echoed
    *

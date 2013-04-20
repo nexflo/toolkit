@@ -26,6 +26,9 @@ c::set(array(
   // upload settings
   'upload.maxsize' => false,
 
+  // banned visitor ips
+  'visitor.banned' => array(),
+
   // a list of detectable mime types, borrowed from Laravel
   'f.mimes' => array(
     'hqx'   => 'application/mac-binhex40',
