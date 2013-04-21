@@ -116,7 +116,7 @@ class Cache {
    * @param string $key
    * @return int UNIX timestamp
    */
-  public function created($key) {
+  static public function created($key) {
     return self::driver()->created($key);
   }  
 
