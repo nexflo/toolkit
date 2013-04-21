@@ -4,13 +4,13 @@
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
 /**
- * Events
+ * Event
  * 
  * Attach and trigger events throghout the system
  * 
  * @package Kirby 
  */
-class Events {
+class Event {
 
   // array with all collected events
   static protected $events = array();

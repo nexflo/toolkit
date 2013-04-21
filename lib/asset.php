@@ -277,7 +277,7 @@ class Asset {
 
     // try to get the asset dimensions with getimagesize
     // this should work for all major image types and some videos
-    return $this->details = @getimagesize($this->root());
+    return $this->details = getimagesize($this->root());
 
   }
 
@@ -299,28 +299,6 @@ class Asset {
     // init and return the dimensions object with the detected width and height
     return $this->dimensions = new Dimensions(a::get($details, 0, 0), a::get($details, 1, 0));
 
-  }
-
-  /**
-   * Checks if the color mode RGB or CMYK
-   * 
-   * @return string
-   */
-  public function colorMode() {    
-    switch(a::get($this->details(), 'channels')) {
-      case 3:  return 'RGB';
-      case 4:  return 'CMYK';
-      default: return false;
-    }
-  }
-
-  /**
-   * Returns the color bit depth of images
-   * 
-   * @return int
-   */
-  public function colorDepth() {
-    return a::get($this->details(), 'bits');
   }
 
   /**
@@ -352,9 +330,17 @@ class Asset {
 
   /**
    * Sends an appropriate header for the asset
+   * 
+   * @param boolean $send
+   * @return mixed
    */
-  public function header() {
-    header('Content-type: ' . $this->mime());    
+  public function header($send = true) {
+    $header = 'Content-type: ' . $this->mime();
+    if($send) {
+      header($send);
+    } else {
+      return $header;
+    }
   }
 
   /**
