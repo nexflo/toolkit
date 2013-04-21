@@ -18,7 +18,7 @@ c::set(array(
 
   // permissions for new directories
   'dir.make.permissions' => 0755,
-  'dir.read.ignore' => array('.', '..', '.DS_Store'),
+  'dir.read.ignore' => array('.', '..', '.DS_Store', '.gitignore'),
   
   // the default path for templates
   'tpl.root' => '',

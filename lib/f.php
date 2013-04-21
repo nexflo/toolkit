@@ -224,6 +224,9 @@ class F {
    */
   static public function mime($file) {
 
+    // stop for invalid files
+    if(!file_exists($file)) return null;
+
     // Fileinfo is prefered if available
     if(function_exists('finfo_file')) {
       $finfo = finfo_open(FILEINFO_MIME_TYPE);
