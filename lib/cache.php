@@ -32,7 +32,7 @@ class Cache {
   static public function connect($driver, $params = array()) {
 
     // driver class file
-    $file  = ROOT_KIRBY_TOOLKIT_LIB . DS . 'cache' . DS . $driver . '.php';
+    $file  = ROOT_KIRBY_TOOLKIT_LIB . DS . 'cache' . DS . 'drivers' . DS . $driver . '.php';
     $class = $driver . 'CacheDriver';
 
     if(!file_exists($file)) throw new Exception('The cache driver does not exist: ' . $driver);
@@ -109,6 +109,16 @@ class Cache {
   static public function expired($key) {
     return self::driver()->expired($key);
   }
+
+  /**
+   * Checks when the cache value has been created
+   * 
+   * @param string $key
+   * @return int UNIX timestamp
+   */
+  public function created($key) {
+    return self::driver()->created($key);
+  }  
 
   /**
    * Determine if an item exists in the cache.

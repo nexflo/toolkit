@@ -10,6 +10,7 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class MemcacheCacheDriver extends CacheDriver {
 
+  // store for the memache connection
   protected $connection = null;
 
   /**
@@ -47,57 +48,17 @@ class MemcacheCacheDriver extends CacheDriver {
    * @return void
    */
   public function set($key, $value, $minutes = null) {
-    return $this->connection->set($key, $value, false, $this->expiration($minutes));
+    return $this->connection->set($key, $this->value($value, $minutes), false, $this->expiration($minutes));
   }
 
   /**
-   * Get an item from the cache.
-   *
-   * <code>
-   *    // Get an item from the cache driver
-   *    $value = Cache::get('value');
-   *
-   *    // Return a default value if the requested item isn't cached
-   *    $value = Cache::get('value', 'default value');
-   * </code>
+   * Retrieve the CacheValue object from the cache.
    *
    * @param  string  $key
-   * @param  mixed   $default
-   * @return mixed
+   * @return object CacheValue
    */
-  public function get($key, $default = null) {
-    if(($cache = $this->connection->get($key)) !== false) return $cache;
-    return $default;
-  }
-
-  /**
-   * Checks if the current key exists in cache
-   * 
-   * @param string $key
-   * @return boolean
-   */
-  public function exists($key) {
-    return !is_null($this->get($key));
-  }
-
-  /**
-   * Checks when an item in the cache expires
-   * 
-   * @param string $key
-   * @return int
-   */
-  public function expires($key) {
-    return null;
-  }
-
-  /**
-   * Checks if the key has expired yet
-   * 
-   * @param string $key
-   * @return boolean
-   */
-  public function expired($key) {
-    return !$this->exists($key);
+  public function retrieve($key) {
+    return $this->connection->get($key);
   }
 
   /**

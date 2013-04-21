@@ -128,7 +128,7 @@ class CacheTest extends PHPUnit_Framework_TestCase {
 
     Cache::set('key', 'val', 60);
     
-    $this->assertEquals(null, Cache::expires('key'));
+    $this->assertTrue(is_int(Cache::expires('key')));
     $this->assertFalse(Cache::expired('key'));
 
     Cache::flush();

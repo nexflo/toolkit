@@ -54,55 +54,32 @@ class FileCacheDriver extends CacheDriver {
    * @param  int     $minutes
    * @return void
    */
-  public function set($key, $value, $minutes = null) {
-    $value = $this->expiration($minutes) . serialize($value);   
-    return f::write($this->file($key), $value);
+  public function set($key, $value, $minutes = null) {    
+    return f::write($this->file($key), serialize($this->value($value, $minutes)));
   }
 
   /**
-   * Get an item from the cache.
-   *
-   * <code>
-   *    // Get an item from the cache driver
-   *    $value = Cache::get('value');
-   *
-   *    // Return a default value if the requested item isn't cached
-   *    $value = Cache::get('value', 'default value');
-   * </code>
+   * Retrieve an item from the cache.
    *
    * @param  string  $key
-   * @param  mixed   $default
-   * @return mixed
+   * @return object CacheValue
    */
-  public function get($key, $default = null) {
-
-    // return the default value if the file does not exist at all
-    if(!file_exists($this->file($key))) return $default;
-
-    // File based caches store have the expiration timestamp stored in
-    // UNIX format prepended to their contents. We'll compare the
-    // timestamp to the current time when we read the file.
-    if(time() > substr($cache = file_get_contents($this->file($key)), 0, 10)) {
-      $this->remove($key);
-      return $default;
-    }
-
-    // get the unserialized cache value without timestamp
-    $cache = unserialize(substr($cache, 10));
-    
-    // return the cache value or the default
-    return (!is_null($cache)) ? $cache : $default;
-
+  public function retrieve($key) {
+    // unserialized value array (see $this->value())
+    return f::read($this->file($key), 'php');
   }
 
   /**
-   * Checks when an item in the cache expires
+   * Checks when the cache has been created
    * 
    * @param string $key
    * @return int
    */
-  public function expires($key) {
-    return substr(f::read($this->file($key)), 0, 10);
+  public function created($key) {
+    // use the modification timestamp
+    // as indicator when the cache has been created/overwritten
+    clearstatcache();
+    return filemtime($this->file($key));
   }
 
   /**

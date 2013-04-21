@@ -3,6 +3,9 @@
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
+// dependencies
+require_once(ROOT_KIRBY_TOOLKIT_LIB . DS . 'cache' . DS . 'value.php');
+
 /**
  * Template for all cache drivers
  * 
@@ -38,6 +41,15 @@ abstract class CacheDriver {
 	 */
   abstract function set($key, $value, $minutes = null);
 
+  /**
+   * Private method to retrieve the cache value
+   * This needs to be defined by the driver
+   * 
+   * @param string $key
+   * @return object CacheValue
+   */
+  abstract function retrieve($key);
+
 	/**
 	 * Get an item from the cache.
 	 *
@@ -53,7 +65,41 @@ abstract class CacheDriver {
 	 * @param  mixed   $default
 	 * @return mixed
 	 */
-  abstract function get($key, $default = null);
+  public function get($key, $default = null) {
+
+    // get the CacheValue
+    $value = $this->retrieve($key);
+
+    // check for a valid cache value
+    if(!is_a($value, 'CacheValue')) return $default;
+     
+    // remove the item if it is expired
+    if(time() > $value->expires()) {
+      $this->remove($key);
+      return $default;
+    }
+
+    // get the pure value
+    $cache = $value->value();
+    
+    // return the cache value or the default
+    return (!is_null($cache)) ? $cache : $default;
+
+  }
+
+  /**
+   * Calculates the expiration timestamp
+   * 
+   * @param int $minutes
+   * @return int
+   */
+  protected function expiration($minutes = null) {
+    // keep forever if minutes are not defined  
+    if(is_null($minutes)) $minutes = 2628000;
+
+    // calculate the time
+    return time() + ($minutes * 60);
+  }
 
   /**
    * Checks when an item in the cache expires
@@ -61,7 +107,16 @@ abstract class CacheDriver {
    * @param string $key
    * @return int
    */
-  abstract function expires($key);
+  public function expires($key) {
+    // get the CacheValue object
+    $value = $this->retrieve($key);
+
+    // check for a valid CacheValue object
+    if(!is_a($value, 'CacheValue')) return false;
+
+    // return the expires timestamp
+    return $value->expires();
+  }
 
   /**
    * Checks if an item in the cache is expired
@@ -74,17 +129,31 @@ abstract class CacheDriver {
   }
 
   /**
-   * Get the expiration time as a UNIX timestamp.
-   *
-   * @param  int  $minutes
+   * Checks when the cache has been created
+   * 
+   * @param string $key
    * @return int
    */
-  protected function expiration($minutes) {
-    // keep the cache forever if no minutes are defined
-    if(is_null($minutes)) $minutes = 2628000;
+  public function created($key) {
+    // get the CacheValue object
+    $value = $this->retrieve($key);
 
-    // calculate the time 
-    return time() + ($minutes * 60);
+    // check for a valid CacheValue object
+    if(!is_a($value, 'CacheValue')) return false;
+
+    // return the expires timestamp
+    return $value->created();
+  }
+
+  /**
+   * An array with value, created timestamp and expires timestamp
+   * 
+   * @param mixed $value The value, which should be cached
+   * @param int $minutes The number of minutes before expiration
+   * @return array
+   */
+  protected function value($value, $minutes) {
+    return new CacheValue($value, $minutes);
   }
 
 	/**

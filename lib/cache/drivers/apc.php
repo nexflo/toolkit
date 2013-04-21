@@ -24,7 +24,7 @@ class ApcCacheDriver extends CacheDriver {
    * @return void
    */
   public function set($key, $value, $minutes = null) {
-    return apc_add($key, $value, $minutes * 60);
+    return apc_add($key, $this->value($value, $minutes), $this->expiration($minutes));
   }
 
   /**
@@ -42,9 +42,8 @@ class ApcCacheDriver extends CacheDriver {
    * @param  mixed   $default
    * @return mixed
    */
-  public function get($key, $default = null) {
-    if(($cache = apc_fetch($key)) !== false) return $cache;
-    return $default;
+  public function retrieve($key) {
+    return apc_fetch($key);
   }
 
   /**
@@ -55,26 +54,6 @@ class ApcCacheDriver extends CacheDriver {
    */
   public function exists($key) {
     return apc_exists($key);
-  }
-
-  /**
-   * Checks when an item in the cache expires
-   * 
-   * @param string $key
-   * @return int
-   */
-  public function expires($key) {
-    return null;
-  }
-
-  /**
-   * Checks if the key has expired yet
-   * 
-   * @param string $key
-   * @return boolean
-   */
-  public function expired($key) {
-    return !$this->exists($key);
   }
 
   /**
