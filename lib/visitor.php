@@ -66,7 +66,7 @@ class Visitor {
    * @return string
    */
   static public function acceptedLanguageCode() {
-    if(!is_null(self::$accpetedLanguageCode)) return self::$acceptedLanguageCode;
+    if(!is_null(self::$acceptedLanguageCode)) return self::$acceptedLanguageCode;
     $detected = str::split(self::acceptedLanguage(), ',');
     $detected = a::first($detected);
     $detected = str::split($detected, '-');
