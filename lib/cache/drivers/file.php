@@ -79,7 +79,9 @@ class FileCacheDriver extends CacheDriver {
     // use the modification timestamp
     // as indicator when the cache has been created/overwritten
     clearstatcache();
-    return filemtime($this->file($key));
+    // get the file for this cache key
+    $file = $this->file($key);
+    return file_exists($file) ? filemtime($this->file($key)) : 0;
   }
 
   /**
