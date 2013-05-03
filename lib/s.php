@@ -79,9 +79,11 @@ class S {
    *
    */  
   static public function destroy() {
-    session_destroy();
-    unset($_SESSION);
-    self::$started = false;
+    if(self::$started){
+      session_destroy();
+      unset($_SESSION);
+      self::$started = false;
+    }
   }
 
   /**
