@@ -302,5 +302,26 @@ class A {
     return $result;
     
   }
+  
+  /**
+   * Checks wether an array is associative or not (experimental)
+   * 
+   * @param  array     $array The array to analyze
+   * @return boolean   true: The array is associative false: It's not
+   */
+  static function isAssociative($array) {
+    return !ctype_digit(implode(NULL, array_keys($array)));
+  }
+  
+  /**
+   * Returns the average value of an array
+   * 
+   * @param  array   $array The source array
+   * @param  int   $decimals The number of decimals to return
+   * @return int  The average value
+   */
+  static function average($array, $decimals = 0) {
+    return round(array_sum($array), $decimals) / sizeof($array); 
+  }  
 
 }
