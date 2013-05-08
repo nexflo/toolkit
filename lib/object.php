@@ -125,7 +125,9 @@ class Object {
     if(is_array($this->allowedKeys) && !in_array($key, $this->allowedKeys)) throw new Exception('The following key is not allowed in the object: ' . $key);
     
     // store the old value
-    $this->old[$key] = a::get($this->data, $key, $value);
+    if(isset($this->data[$key])) {
+      $this->old[$key] = $this->data[$key];
+    }
 
     // before overwriting it
     $this->data[$key] = $value;    
