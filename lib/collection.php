@@ -651,7 +651,7 @@ class Collection implements Iterator {
    * @return string the clean version of the key
    */      
   private function cleankey($dirtyKey) {
-    return ltrim($dirtyKey, '_');  
+    return preg_replace('!^(_)!', '', $dirtyKey);  
   }
 
 }
