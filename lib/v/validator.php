@@ -84,7 +84,7 @@ class Validator {
   static public function create($method, $data, $attribute = null, $options = array()) {
 
     $method = strtolower($method);
-    $file   = isset(self::$installed[$method]) ? self::$installed[$method] : ROOT_KIRBY_TOOLKIT_LIB . DS . 'v' . DS . 'validators' . DS . $method . '.php';
+    $file   = isset(self::$installed[$method]) ? self::$installed[$method] : ROOT_KIRBY_TOOLKIT_LIB . DS . 'v' . DS . 'validator' . DS . $method . '.php';
     $class  = $method . 'Validator'; 
 
     // check for an existing validator

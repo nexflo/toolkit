@@ -1,14 +1,14 @@
 <?php
 
-// direct access protection
-if(!defined('KIRBY')) die('Direct access is not allowed');
-
 /**
  * Alpha Numeric Validator
  * 
  * Checks for letters and numbers
  * 
- * @package Kirby
+ * @package Kirby Toolkit 
+ * @author Bastian Allgeier <bastian@getkirby.com>
+ * @link http://getkirby.com
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class AlphaNumericValidator extends Validator {
 

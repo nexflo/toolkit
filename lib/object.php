@@ -4,28 +4,32 @@
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
 /**
+ * Object
+ * 
  * A core object with magic getters and setters 
  * and some helpful helper methods
  *
  * @package Kirby Toolkit 
- * @version 1.0
  * @author Bastian Allgeier <bastian@getkirby.com>
  * @link http://getkirby.com
- * @copyright Copyright 2009-2012 Bastian Allgeier
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Object {
     
-  protected $_ = array();
+  // internal store for all object data
+  protected $data = array();
+  
+  // optional list of allowed keys
+  protected $allowedKeys = null;
 
   /** 
    * Initializes a new object
    * 
-   * @param array $_ an optional array of data for the object
+   * @param array $data an optional array of data for the object
    * @return void
    */
-  public function __construct(array $_ = array()) {
-    $this->set($_);
+  public function __construct(array $data = array()) {
+    $this->set($data);
     $this->init();
   }
 
@@ -110,11 +114,13 @@ class Object {
    * instead of using set, which would cause a 
    * endless loop in a custom setter.   
    * 
-   * @param string $key The name for the key in the $_ array
+   * @param string $key The name for the key in the $data array
    * @param mixed $value Can be anything
    */
-  public function write($key, $value) {
-    $this->_['_' . $key] = $value;    
+  public function write($key, $value) {    
+    // check for allowed keys
+    if(is_array($this->allowedKeys) && !in_array($key, $this->allowedKeys)) throw new Exception('The following key is not allowed in the object: ' . $key);
+    $this->data['_' . $key] = $value;    
   }
 
   /**
@@ -175,13 +181,13 @@ class Object {
    * instead of using get or a magic getter, which would 
    * cause a endless loop in a custom setter.   
    * 
-   * @param string $key The name for the key in the $_ array
+   * @param string $key The name for the key in the $data array
    * @param mixed $default An optional fallback value if nothing can be found for the key
    * @return mixed Whatever is stored for the key
    */
   public function read($key = null, $default = null) {
-    if(is_null($key)) return $this->_;
-    return (isset($this->_['_' . $key])) ? $this->_['_' . $key] : $default;  
+    if(is_null($key)) return $this->data;
+    return (isset($this->data['_' . $key])) ? $this->data['_' . $key] : $default;  
   }
 
   /**
@@ -190,10 +196,10 @@ class Object {
    * 
    * i.e.: unset($myobject->myvalue);
    * 
-   * @param string $key The name for the key in the $_ array (is auto-filled by PHP)
+   * @param string $key The name for the key in the $data array (is auto-filled by PHP)
    */
   public function __unset($key) {
-    unset($this->_['_' . $key]);
+    unset($this->data['_' . $key]);
   }
 
   /**
@@ -202,24 +208,24 @@ class Object {
    * 
    * i.e.: isset($myobject->myvalue);
    * 
-   * @param string $key The name for the key in the $_ array (is auto-filled by PHP)
+   * @param string $key The name for the key in the $data array (is auto-filled by PHP)
    */
   public function __isset($key) {
-    return isset($this->_['_' . $key]);
+    return isset($this->data['_' . $key]);
   }
 
   /**
-   * Removes all data from the $_ array
+   * Removes all data from the $data array
    * Can also be used to set a fresh set of 
    * data at once. 
    * 
-   * @param array $_ a new set of data for the $_ array
+   * @param array $data a new set of data for the $data array
    */
-  public function reset($_ = array()) {
+  public function reset($data = array()) {
     // remove the old data
-    $this->_ = array();
+    $this->data = array();
     // set the new data    
-    if(!empty($_)) $this->set($_);
+    if(!empty($data)) $this->set($data);
   }
 
   /** 
@@ -269,12 +275,12 @@ class Object {
 
 
   /**
-   * Gets all keys from the $_ array
+   * Gets all keys from the $data array
    * 
    * @return array An array of key names
    */
   public function keys() {
-    $keys  = array_keys($this->_);
+    $keys  = array_keys($this->data);
     $clean = array();
     foreach($keys as $key) {
       $clean[] = $this->cleankey($key);
@@ -293,7 +299,7 @@ class Object {
   public function toArray() {
     $array = array();
     // why so complicated? because of dirty keys and possible custom getters
-    foreach($this->_ as $dirtyKey => $value) {
+    foreach($this->data as $dirtyKey => $value) {
       $cleanKey = $this->cleankey($dirtyKey);
       $array[ $cleanKey ] = $this->get($cleanKey);    
     }

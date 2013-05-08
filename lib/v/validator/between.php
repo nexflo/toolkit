@@ -8,7 +8,10 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * 
  * Checks for the size of the value being between the first and second argument
  * 
- * @package Kirby
+ * @package Kirby Toolkit 
+ * @author Bastian Allgeier <bastian@getkirby.com>
+ * @link http://getkirby.com
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class BetweenValidator extends Validator {
 

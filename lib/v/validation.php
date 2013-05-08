@@ -50,7 +50,7 @@ class Validation {
 
     foreach($rules as $attribute => $methods) {
 
-      foreach($methods as $method => $options) {
+      foreach((array)$methods as $method => $options) {
 
         // if the key is used as method name
         if(is_numeric($method)) {
@@ -127,21 +127,22 @@ class Validation {
     $method = $validator->method();
 
     // try to find a custom attribute name 
-    $attribute = a::get($this->attributes, $validator->attribute());
+    $attributeName  = $validator->attribute();
+    $attributeValue = a::get($this->attributes, $attributeName);
     
     // try to find a custom message for the error
     $message = a::get($this->messages, $method);
     
     // pass custom message and attribute to the validator
-    $error = $validator->error($message, $attribute); 
+    $error = $validator->error($message, $attributeValue); 
 
-    if(!isset($this->errors->$attribute)) {
+    if(!isset($this->errors->$attributeName)) {
       // create a new set of errors if no error exists so far
-      $this->errors->$attribute = new ValidationErrors();
-      $this->errors->$attribute->$method = $error;
+      $this->errors->$attributeName = new ValidationErrors();
+      $this->errors->$attributeName->$method = $error;
     } else {
       // add a new message to the existing list of errors
-      $this->errors->$attribute->$method = $error;
+      $this->errors->$attributeName->$method = $error;
     }
 
   }
