@@ -19,6 +19,9 @@ class Object {
   // internal store for all object data
   protected $data = array();
   
+  // store for old, overwritten data
+  protected $old = array();
+
   // optional list of allowed keys
   protected $allowedKeys = null;
 
@@ -120,7 +123,12 @@ class Object {
   public function write($key, $value) {    
     // check for allowed keys
     if(is_array($this->allowedKeys) && !in_array($key, $this->allowedKeys)) throw new Exception('The following key is not allowed in the object: ' . $key);
-    $this->data['_' . $key] = $value;    
+    
+    // store the old value
+    $this->old[$key] = a::get($this->data, $key, $value);
+
+    // before overwriting it
+    $this->data[$key] = $value;    
   }
 
   /**
@@ -187,7 +195,7 @@ class Object {
    */
   public function read($key = null, $default = null) {
     if(is_null($key)) return $this->data;
-    return (isset($this->data['_' . $key])) ? $this->data['_' . $key] : $default;  
+    return (isset($this->data[$key])) ? $this->data[$key] : $default;  
   }
 
   /**
@@ -199,7 +207,7 @@ class Object {
    * @param string $key The name for the key in the $data array (is auto-filled by PHP)
    */
   public function __unset($key) {
-    unset($this->data['_' . $key]);
+    unset($this->data[$key]);
   }
 
   /**
@@ -211,7 +219,7 @@ class Object {
    * @param string $key The name for the key in the $data array (is auto-filled by PHP)
    */
   public function __isset($key) {
-    return isset($this->data['_' . $key]);
+    return isset($this->data[$key]);
   }
 
   /**
@@ -229,40 +237,40 @@ class Object {
   }
 
   /** 
-    * Adds a new value to the object
-    * 
-    * It's basically an alternative for set()
-    * 
-    * @param string $key
-    * @param mixed $value
-    * @return object returns the current object to make it chainable
-    */  
-  function add($key, $value) {
+   * Adds a new value to the object
+   * 
+   * It's basically an alternative for set()
+   * 
+   * @param string $key
+   * @param mixed $value
+   * @return object returns the current object to make it chainable
+   */  
+  public function add($key, $value) {
     return $this->set($key, $value);
   }
   
   /** 
-    * Replaces a value of the object
-    * 
-    * It's yet another alternative for set()
-    * 
-    * @param string $key
-    * @param mixed $value
-    * @return object returns the current object to make it chainable
-    */  
-  function replace($key, $value) {
+   * Replaces a value of the object
+   * 
+   * It's yet another alternative for set()
+   * 
+   * @param string $key
+   * @param mixed $value
+   * @return object returns the current object to make it chainable
+   */  
+  public function replace($key, $value) {
     return $this->set($key, $value);
   }
 
   /** 
-    * Removes a value from the object
-    * 
-    * It's an alternative for unset($object->key)
-    * 
-    * @param string $key
-    * @return object returns the current object to make it chainable
-    */  
-  function remove($key = null) {
+   * Removes a value from the object
+   * 
+   * It's an alternative for unset($object->key)
+   * 
+   * @param string $key
+   * @return object returns the current object to make it chainable
+   */  
+  public function remove($key = null) {
 
     if(is_null($key)) { 
       $this->reset();
@@ -273,6 +281,17 @@ class Object {
     return $this;
   }
 
+  /**
+   * Get stuff from the old array
+   * 
+   * @param string $key Optional key. If not given, the entire array will be returned
+   * @param mixed $default Optional default value if the key does not exist
+   * @return mixed
+   */
+  public function old($key = null, $default = null) {
+    if(is_null($key)) return $this->old;
+    return a::get($this->old, $key, $default);
+  }
 
   /**
    * Gets all keys from the $data array
@@ -280,12 +299,7 @@ class Object {
    * @return array An array of key names
    */
   public function keys() {
-    $keys  = array_keys($this->data);
-    $clean = array();
-    foreach($keys as $key) {
-      $clean[] = $this->cleankey($key);
-    }
-    return $clean;
+    return array_keys($this->data);
   }
 
   /**
@@ -297,13 +311,7 @@ class Object {
    * @return array 
    */
   public function toArray() {
-    $array = array();
-    // why so complicated? because of dirty keys and possible custom getters
-    foreach($this->data as $dirtyKey => $value) {
-      $cleanKey = $this->cleankey($dirtyKey);
-      $array[ $cleanKey ] = $this->get($cleanKey);    
-    }
-    return $array;
+    return $this->data;
   }
 
   /**
@@ -326,22 +334,6 @@ class Object {
    */
   public function __toString() {      
     return a::show($this->toArray(), false);
-  }
-
-  // Private Methods
-
-  /**
-   * Cleans the dirty keys, which 
-   * are used internally to store all data
-   * 
-   * This avoids that keys are unintentionally
-   * converted to integers and things break. 
-   * 
-   * @param  string The dirty key with the leading underscore
-   * @return string The cleaned key
-   */
-  private function cleankey($dirtyKey) {
-    return ltrim($dirtyKey, '_');  
   }
 
 }

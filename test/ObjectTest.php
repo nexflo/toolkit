@@ -94,7 +94,17 @@ class ObjectTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('peter + custom setter', $object->read('username'));
     $this->assertEquals('peter + custom setter + custom getter', $object->get('username'));
   }
+
+  public function testOld() {
+
+    $object = new Object();
+    $object->name = 'Bastian Allgeier';
+    $object->name = 'Peter Schmidt';
   
+    $this->assertEquals('Bastian Allgeier', $object->old('name'));
+
+  }
+
   private function restoreObject() {
     // set all values at once
     $this->object->reset($this->data);
