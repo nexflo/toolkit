@@ -19,7 +19,7 @@ class ConfirmedValidator extends Validator {
 
   public function validate() {
     // check for an existing confirmation field and make sure it matches the current value
-    return v::same($this->value, $this->data[$this->attribute . '_confirmation']);
+    return v::same($this->value, get($this->attribute . '_confirmation')) or v::same($this->value, $this->data[$this->attribute . '_confirmation']);
   }
 
 }

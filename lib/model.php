@@ -32,8 +32,10 @@ class Model extends Object {
   public function __construct($data = array()) {
 
     // make sure the primary key is in the array of allowed keys    
-    $this->allowedKeys[] = $this->primaryKeyName();    
-    
+    if(is_array($this->allowedKeys)) {
+      $this->allowedKeys[] = $this->primaryKeyName();    
+    }
+
     // call the custom init method
     $this->init($data);  
   
@@ -49,6 +51,16 @@ class Model extends Object {
    */  
   public function init($data = array()) {
     $this->set($data);
+  }
+
+  /**
+   * Compares this model to another given model by type and primary key
+   * 
+   * @param $model
+   * @return boolean
+   */
+  public function is($model) {
+    return $model and get_class($this) == get_class($model) and $this->primaryKey() == $model->primaryKey();
   }
 
   /**
@@ -237,11 +249,11 @@ class Model extends Object {
   /**
    * Returns a specific error for a given key
    * 
-   * @param string $key if not specified all errors will be returned
+   * @param string $key if not specified the first error will be returned
    * @return string
    */
   public function error($key = null) {
-    return (is_null($key)) ? $this->errors : a::get($this->errors, $key);
+    return (is_null($key)) ? a::first($this->errors) : a::get($this->errors, $key);
   }
   
   /**
