@@ -30,7 +30,7 @@ $GLOBALS['kirby.roots'] = array();
 function root($key = null, $value = null, $default = null) {
   if(is_null($key)) {    
     $result = array();
-    foreach($GLOBALS['kirby.roots'] as $k => $v) $result[$k] => root($k);
+    foreach($GLOBALS['kirby.roots'] as $k => $v) $result[$k] = root($k);
     return $result;
   }
   if(is_array($key)) {
