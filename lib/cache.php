@@ -4,7 +4,7 @@
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
 // dependencies
-require_once(ROOT_KIRBY_TOOLKIT_LIB . DS . 'cache' . DS . 'driver.php');
+require_once(dirname(__FILE__) . DS . 'cache' . DS . 'driver.php');
 
 /**
  * 
@@ -32,7 +32,7 @@ class Cache {
   static public function connect($driver, $params = array()) {
 
     // driver class file
-    $file  = ROOT_KIRBY_TOOLKIT_LIB . DS . 'cache' . DS . 'drivers' . DS . $driver . '.php';
+    $file  = dirname(__FILE__) . DS . 'cache' . DS . 'drivers' . DS . $driver . '.php';
     $class = $driver . 'CacheDriver';
 
     if(!file_exists($file)) throw new Exception('The cache driver does not exist: ' . $driver);

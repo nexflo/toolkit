@@ -3,6 +3,10 @@
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
+// Dependencies
+require_once(dirname(__FILE__) . DS . 'exif' . DS . 'location.php');
+require_once(dirname(__FILE__) . DS . 'exif' . DS . 'camera.php');
+
 /**
  * Exif
  * 
@@ -73,9 +77,6 @@ class Exif {
     // check for valid exif data
     if(!is_array($this->data)) return null;
 
-    // load the camera sub class
-    require_once(ROOT_KIRBY_TOOLKIT_LIB . DS . 'exif' . DS . 'camera.php');
-
     // initialize and return it
     return $this->camera = new ExifCamera($this->data);
 
@@ -92,9 +93,6 @@ class Exif {
 
     // check for valid exif data
     if(!is_array($this->data)) return null;
-
-    // load the location sub class
-    require_once(ROOT_KIRBY_TOOLKIT_LIB . DS . 'exif' . DS . 'location.php');
 
     // initialize and return it
     return $this->location = new ExifLocation($this->data);

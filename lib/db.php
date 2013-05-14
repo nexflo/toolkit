@@ -4,8 +4,8 @@
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
 // query class
-require_once(ROOT_KIRBY_TOOLKIT_LIB . DS . 'db' . DS . 'query.php');
-require_once(ROOT_KIRBY_TOOLKIT_LIB . DS . 'db' . DS . 'connector.php');
+require_once(dirname(__FILE__) . DS . 'db' . DS . 'query.php');
+require_once(dirname(__FILE__) . DS . 'db' . DS . 'connector.php');
 
 /**
  * 

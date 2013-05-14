@@ -4,7 +4,7 @@
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
 // dependencies
-require_once(ROOT_KIRBY_TOOLKIT_LIB . DS . 'cache' . DS . 'value.php');
+require_once(dirname(__FILE__) . DS . 'value.php');
 
 /**
  * Template for all cache drivers

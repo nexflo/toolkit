@@ -4,8 +4,8 @@
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
 // dependencies
-require_once(ROOT_KIRBY_TOOLKIT_LIB . DS . 'v' . DS . 'validator.php');
-require_once(ROOT_KIRBY_TOOLKIT_LIB . DS . 'v' . DS . 'errors.php');
+require_once(dirname(__FILE__) . DS . 'validator.php');
+require_once(dirname(__FILE__) . DS . 'errors.php');
 
 /**
  * 

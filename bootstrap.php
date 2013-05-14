@@ -13,12 +13,35 @@ if(!defined('KIRBY')) define('KIRBY', true);
 // store the directory separator in something simpler to use
 if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 
-// store the main toolkit root
-if(!defined('ROOT_KIRBY_TOOLKIT'))     define('ROOT_KIRBY_TOOLKIT',         dirname(__FILE__));
-if(!defined('ROOT_KIRBY_TOOLKIT_LIB')) define('ROOT_KIRBY_TOOLKIT_LIB', ROOT_KIRBY_TOOLKIT . DS . 'lib');
-
 // check for mb_string support
 if(!defined('MB_STRING')) define('MB_STRING', (int)function_exists('mb_get_info'));
+
+// global store for all roots
+$GLOBALS['kirby.roots'] = array();
+
+/**
+ * Root handling
+ * 
+ * @param mixed $key
+ * @param string $value
+ * @param string $default
+ * @return mixed
+ */
+function root($key = null, $value = null, $default = null) {
+  if(is_null($key)) return $GLOBALS['kirby.roots'];
+  if(is_array($key)) {
+    foreach($key as $k => $v) root($k, $v);
+    return $GLOBALS['kirby.roots'];
+  }
+  if(!is_null($value)) $GLOBALS['kirby.roots'][$key] = $value;  
+  return isset($GLOBALS['kirby.roots'][$key]) ? $GLOBALS['kirby.roots'][$key] : $default;
+}
+
+// set the default roots for the toolkit
+root(array(
+  'toolkit'     => dirname(__FILE__),
+  'toolkit.lib' => dirname(__FILE__) . DS . 'lib' 
+));
 
 /**
  * Loads all missing toolkit classes on demand
@@ -28,7 +51,7 @@ if(!defined('MB_STRING')) define('MB_STRING', (int)function_exists('mb_get_info'
  */
 function toolkitLoader($class) {
 
-  $file = ROOT_KIRBY_TOOLKIT_LIB . DS . strtolower($class) . '.php';
+  $file = root('toolkit.lib') . DS . strtolower($class) . '.php';
 
   if(file_exists($file)) {
     require_once($file);
@@ -41,10 +64,10 @@ function toolkitLoader($class) {
 spl_autoload_register('toolkitLoader');
 
 // load the default config values
-require_once(ROOT_KIRBY_TOOLKIT . DS . 'defaults.php');
+require_once(root('toolkit') . DS . 'defaults.php');
 
 // set the default timezone
 date_default_timezone_set(c::get('timezone', 'UTC'));
 
 // load the helper functions
-require_once(ROOT_KIRBY_TOOLKIT . DS . 'helpers.php');
+require_once(root('toolkit') . DS . 'helpers.php');

@@ -42,7 +42,7 @@ class F {
   static public function write($file, $content, $append = false) {
     if(is_array($content)) $content = a::json($content);
     $mode = ($append) ? FILE_APPEND | LOCK_EX : LOCK_EX;
-    return @file_put_contents($file, $content, $mode);
+    return (@file_put_contents($file, $content, $mode)) ? true : false;
   }
 
   /**
