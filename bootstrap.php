@@ -34,7 +34,19 @@ function root($key = null, $value = null, $default = null) {
     return $GLOBALS['kirby.roots'];
   }
   if(!is_null($value)) $GLOBALS['kirby.roots'][$key] = $value;  
-  return isset($GLOBALS['kirby.roots'][$key]) ? $GLOBALS['kirby.roots'][$key] : $default;
+
+  if(isset($GLOBALS['kirby.roots'][$key])) {
+
+    $value = $GLOBALS['kirby.roots'][$key];
+    $func  = create_function('$result', 'return root($result[1]);');
+
+    if(strstr($value, '{')) $value = preg_replace_callback('!\{([a-z0-9]+)\}!i', $func, $value);
+    return $value;
+
+  } else {
+    return $default;
+  } 
+
 }
 
 // set the default roots for the toolkit
