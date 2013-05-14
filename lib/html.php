@@ -90,7 +90,7 @@ class Html {
     }  
 
     if(empty($value) && $value !== '0') return false;
-    return $name . '="' . $value . '"';    
+    return $name . '="' . html($value) . '"';    
   }
 
   /**
