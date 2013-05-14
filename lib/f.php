@@ -42,8 +42,7 @@ class F {
   static public function write($file, $content, $append = false) {
     if(is_array($content)) $content = a::json($content);
     $mode = ($append) ? FILE_APPEND | LOCK_EX : LOCK_EX;
-    if(file_put_contents($file, $content, $mode)) return true;
-    return false;
+    return @file_put_contents($file, $content, $mode);
   }
 
   /**
@@ -78,7 +77,7 @@ class F {
    */  
   static public function move($old, $new) {
     if(!f::exists($old)) return false;
-    return rename($old, $new);
+    return @rename($old, $new);
   }
 
   /**
@@ -89,7 +88,7 @@ class F {
    * @return boolean
    */
   static public function copy($file, $target) {
-    return copy($file, $target);
+    return @copy($file, $target);
   }
 
   /**
@@ -99,7 +98,7 @@ class F {
    * @return boolean 
    */  
   static public function remove($file) {
-    return (file_exists($file) && is_file($file) && !empty($file)) ? unlink($file) : false;
+    return (file_exists($file) && is_file($file) && !empty($file)) ? @unlink($file) : false;
   }
 
   /**
@@ -115,7 +114,7 @@ class F {
     if($extension) return self::name($file) . '.' . $extension;
 
     // return the current extension
-    return pathinfo($file, PATHINFO_EXTENSION);
+    return strtolower(pathinfo($file, PATHINFO_EXTENSION));
   
   }
 
