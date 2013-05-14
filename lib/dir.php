@@ -21,7 +21,7 @@ class Dir {
    * @return  boolean True: the dir has been created, false: creating failed
    */
   static public function make($dir, $recursive = true) {
-    return (is_dir($dir)) ? true : mkdir($dir, c::get('dir.make.permissions', 0755), $recursive);
+    return (is_dir($dir)) ? true : @mkdir($dir, c::get('dir.make.permissions', 0755), $recursive);
   }
 
   /**
@@ -47,7 +47,7 @@ class Dir {
    */  
   static public function move($old, $new) {
     if(!is_dir($old)) return false;
-    return rename($old, $new);
+    return @rename($old, $new);
   }
 
   /**
@@ -60,7 +60,7 @@ class Dir {
   static public function remove($dir, $keep=false) {
     if(!is_dir($dir)) return false;
 
-    $handle = opendir($dir);
+    $handle = @opendir($dir);
     $skip   = array('.', '..');
 
     if(!$handle) return false;
@@ -73,7 +73,7 @@ class Dir {
       }
     }
 
-    closedir($handle);
+    @closedir($handle);
     if(!$keep) return rmdir($dir);
     return true;
 
