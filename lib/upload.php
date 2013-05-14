@@ -86,7 +86,7 @@ class Upload {
       'size'     => null
     );
 
-    return $this->source = array_merge($default, a::get($_FILES, $this->key));
+    return $this->source = array_merge($default, a::get($_FILES, $this->key, array()));
 
   }
 
@@ -192,9 +192,11 @@ class Upload {
     if(is_null($file)) return $this->file;
 
     $replace = array(
-      ':name'      => $this->name(),
-      ':safeName'  => $this->safeName(),
-      ':extension' => $this->extension(),
+      ':name'         => $this->name(),
+      ':filename'     => $this->filename(),
+      ':safeName'     => $this->safeName(),
+      ':safeFilename' => $this->safeName() . '.' . $this->extension(),
+      ':extension'    => $this->extension(),
     );
 
     return str_replace(array_keys($replace), array_values($replace), $file);
