@@ -28,7 +28,11 @@ $GLOBALS['kirby.roots'] = array();
  * @return mixed
  */
 function root($key = null, $value = null, $default = null) {
-  if(is_null($key)) return $GLOBALS['kirby.roots'];
+  if(is_null($key)) {    
+    $result = array();
+    foreach($GLOBALS['kirby.roots'] as $k => $v) $result[$k] => root($k);
+    return $result;
+  }
   if(is_array($key)) {
     foreach($key as $k => $v) root($k, $v);
     return $GLOBALS['kirby.roots'];
