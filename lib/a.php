@@ -4,7 +4,6 @@
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
 /**
- * 
  * Array 
  *
  * This class is supposed to simplify array handling

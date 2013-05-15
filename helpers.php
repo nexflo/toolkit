@@ -212,3 +212,14 @@ function size($value) {
 function gravatar($email, $size = 256, $default = 'mm') {
   return 'https://gravatar.com/avatar/' . md5(strtolower(trim($email))) . '?d=' . urlencode($default) . '&s=' . $size;  
 }
+
+/**
+ * Raises an Exception
+ * 
+ * @see Exception
+ * @param string $message An error message for the exception
+ * @param string $exception Exception class 
+ */
+function raise($message, $exception = 'Exception') {
+  throw new $exception($message);
+}

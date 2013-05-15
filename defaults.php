@@ -3,7 +3,24 @@
 // direct access protection
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
-// default config variables
+/**
+ * This file sets all default options for the Kirby toolkit
+ * 
+ * DON'T OVERWRITE OPTIONS HERE!!!
+ *
+ * Include your custom config file to overwrite
+ * config variables on runtime 
+ * 
+ * Changing stuff in this file might break 
+ * your Kirby toolkit installation, since those are the 
+ * fallback values!
+ * 
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
+ */
 c::set(array(
   
   // toolkit version
