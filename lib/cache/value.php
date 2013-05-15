@@ -9,7 +9,11 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * Stores the value, creation timestamp and expiration timestamp
  * and makes it possible to store all three with a single cache key.
  * 
- * @package Kirby Toolkit
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class CacheValue {
 

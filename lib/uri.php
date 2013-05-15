@@ -14,7 +14,11 @@ require(dirname(__FILE__) . DS . 'uri' . DS . 'query.php');
  * The Kirby URI object makes it possible
  * to inspect the current URL and modify it
  * 
- * @package Kirby Toolkit
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Uri {
 

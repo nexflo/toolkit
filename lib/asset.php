@@ -10,7 +10,11 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * $image = new Asset('/root/to/myfile.jpg', 'http://mydomain.com/myfile.jpg');
  * </code> 
  *
- * @package Kirby
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Asset {
 

@@ -10,7 +10,11 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * It contains all query keys from a URL: 
  * var1=value1&var2=value2&var3=value3
  * 
- * @package Kirby Toolkit
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class UriQuery extends Collection {
   

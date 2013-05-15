@@ -9,7 +9,6 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * @param   string    $url The URL to redirect to
  * @param   boolean   $code The HTTP status code, which should be sent (301, 302 or 303)
  * @param   boolean   $send If true, headers will be sent and redirection will take effect
- * @package Kirby
  */
 function go($url = false, $code = false, $send = true) {
 

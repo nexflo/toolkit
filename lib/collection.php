@@ -9,12 +9,11 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * An iterator base for every array, 
  * which needs a little more love
  *
- * @package Kirby Toolkit 
- * @version 1.0
- * @author Bastian Allgeier <bastian@getkirby.com>
- * @link http://getkirby.com
- * @copyright Copyright 2009-2012 Bastian Allgeier
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Collection implements Iterator {
 

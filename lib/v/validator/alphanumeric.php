@@ -5,10 +5,11 @@
  * 
  * Checks for letters and numbers
  * 
- * @package Kirby Toolkit 
- * @author Bastian Allgeier <bastian@getkirby.com>
- * @link http://getkirby.com
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class AlphaNumericValidator extends Validator {
 

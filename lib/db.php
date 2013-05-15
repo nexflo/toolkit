@@ -13,7 +13,11 @@ require_once(dirname(__FILE__) . DS . 'db' . DS . 'connector.php');
  * 
  * The ingenius Kirby DB class
  * 
- * @package Kirby Toolkit
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Db {
 

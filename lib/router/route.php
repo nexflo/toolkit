@@ -9,7 +9,11 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * A route can be added to the Router
  * which wil then try to match it agains the current URL
  * 
- * @package Kirby
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Route {
 

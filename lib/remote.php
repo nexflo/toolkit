@@ -12,7 +12,11 @@ require_once(dirname(__FILE__) . DS . 'remote' . DS . 'response.php');
  * A handy little class to handle
  * all kind of remote requests 
  * 
- * @package Kirby Toolkit
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Remote {
 

@@ -14,7 +14,11 @@ require_once(dirname(__FILE__) . DS . 'router' . DS . 'route.php');
  * 
  * Partly inspired by Laravel's router
  * 
- * @package Kirby
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Router {
   

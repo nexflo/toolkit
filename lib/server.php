@@ -10,7 +10,11 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * Makes it more convenient to get variables
  * from the global server array
  * 
- * @package Kirby
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Server {
 

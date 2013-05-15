@@ -10,7 +10,11 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * The query builder is used by the DB class
  * to build SQL queries in a fluent, jquery-style way
  * 
- * @package Kirby Toolkit
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class DbQuery {
 

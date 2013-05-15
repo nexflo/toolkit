@@ -11,7 +11,11 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * objects with width and height to recalculate the size, 
  * get the ratio or just the width and height. 
  * 
- * @package Kirby
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Dimensions {
 

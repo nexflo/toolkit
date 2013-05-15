@@ -9,7 +9,11 @@ require_once(dirname(__FILE__) . DS . 'value.php');
 /**
  * Template for all cache drivers
  * 
- * @package Kirby Toolkit
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 abstract class CacheDriver {
 

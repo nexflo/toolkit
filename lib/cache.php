@@ -13,7 +13,11 @@ require_once(dirname(__FILE__) . DS . 'cache' . DS . 'driver.php');
  * The ultimate cache wrapper for 
  * all available drivers
  * 
- * @package Kirby
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Cache {
 
@@ -32,7 +36,7 @@ class Cache {
   static public function connect($driver, $params = array()) {
 
     // driver class file
-    $file  = dirname(__FILE__) . DS . 'cache' . DS . 'drivers' . DS . $driver . '.php';
+    $file  = dirname(__FILE__) . DS . 'cache' . DS . 'cachedriver' . DS . $driver . '.php';
     $class = $driver . 'CacheDriver';
 
     if(!file_exists($file)) throw new Exception('The cache driver does not exist: ' . $driver);

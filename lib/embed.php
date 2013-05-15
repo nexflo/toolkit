@@ -9,7 +9,11 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  * Simple embedding of stuff like
  * flash, youtube videos, vimeo videos or gists
  * 
- * @package Kirby Toolkit
+ * @package   Kirby Toolkit 
+ * @author    Bastian Allgeier <bastian@getkirby.com>
+ * @link      http://getkirby.com
+ * @copyright Bastian Allgeier
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Embed {
 
