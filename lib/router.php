@@ -131,6 +131,9 @@ class Router {
     $method = r::method();
     $routes = self::$routes[$method];
 
+    // empty urls should never happen
+    if(empty($url)) $url = '/';
+
     foreach($routes as $pattern => $action) {
 
       // handle exact matches
