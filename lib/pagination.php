@@ -53,12 +53,12 @@ class Pagination {
 
     $defaults = array(
       'variable' => c::get('pagination.variable', 'page'),
-      'mode'     => c::get('pagination.method', 'params'),
+      'method'   => c::get('pagination.method', 'params'),
       'page'     => false, 
       'uri'      => false,
     );
 
-    // In legacy mode, you can still pass an entire collection
+    // You can still pass an entire collection
     if(is_a($count, 'Collection')) {
       $count = $count->count();
     }
@@ -83,7 +83,7 @@ class Pagination {
     if($this->options['page']) {
       $this->page = $this->options['page']; 
     } else {
-      $this->page = ($this->options['mode'] == 'query') ? get($this->options['variable']) : param($this->options['variable']);  
+      $this->page = ($this->options['method'] == 'query') ? get($this->options['variable']) : param($this->options['variable']);  
     }
 
     // make sure the page is an int
@@ -179,7 +179,7 @@ class Pagination {
     // get the current uri object
     $uri = clone uri::current();
   
-    if($this->options['mode'] == 'query') {
+    if($this->options['method'] == 'query') {
       $method = ($page == 1) ? 'removeQueryKey' : 'replaceQueryKey';
     } else {
       $method = ($page == 1) ? 'removeParam' : 'replaceParam';

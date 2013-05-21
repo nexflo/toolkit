@@ -43,6 +43,13 @@ class R {
     }
     
     if(is_null($key)) return $data;
+    
+    // get an array of keys
+    if(is_array($key)) {
+      $result = array();
+      foreach($key as $k) $result[$k] => self::data($k);
+      return $result;
+    }
 
     return isset($data[$key]) ? $data[$key] : $default;
     
