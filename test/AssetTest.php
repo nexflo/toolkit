@@ -6,7 +6,7 @@ class AssetTest extends PHPUnit_Framework_TestCase {
 
   public function __construct() {
 
-    $this->file  = TEST_ROOT_ETC . DS . 'upload' . DS . 'Screen Shot 2013-04-15 at 13.04.33.png';
+    $this->file  = TEST_ROOT_ETC . DS . 'images' . DS . 'Screen Shot 2013-04-15 at 13.04.33.png';
     $this->url   = 'http://superdomain.com/Screen Shot 2013-04-15 at 13.04.33.png';
     $this->asset = new Asset($this->file, $this->url);
   }
@@ -32,7 +32,7 @@ class AssetTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testDirname() {
-    $this->assertEquals('upload', $this->asset->dirname());    
+    $this->assertEquals('images', $this->asset->dirname());    
   }
 
   public function testName() {

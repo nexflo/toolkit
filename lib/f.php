@@ -34,7 +34,7 @@ class F {
   static public function load($file) {
     if(file_exists($file)) require_once($file);
   }
-  
+
   /**
    * Creates a new file
    * 
@@ -70,6 +70,27 @@ class F {
   static public function read($file, $parse = false) {
     $content = f::exists($file) ? file_get_contents($file) : null;
     return ($parse) ? str::parse($content, $parse) : $content;
+  }
+
+  /**
+   * Returns the file content as base64 encoded string
+   * 
+   * @param string $file The path for the file
+   * @return string
+   */
+  static public function base64($file) {
+    return base64_encode(f::read($file));
+  }
+
+  /**
+   * Returns the file as data uri
+   * 
+   * @param string $file The path for the file
+   * @return string
+   */
+  static public function uri($file) {
+    $mime = self::mime($file);
+    return ($mime) ? 'data:' . $mime . ';base64,' . self::base64($file) : false;
   }
 
   /**

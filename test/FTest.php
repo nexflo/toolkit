@@ -25,6 +25,16 @@ class FTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('my content is awesome', f::read($this->tmpFile));    
   }
 
+  public function testURI() {
+
+    $expected = 'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAIdQTFRF/z08/wQD/2pp/42N/+3t/0lI/9XV/xAP//n5/w0M/2Rj/66u/yUk/0A//+fn/8/P/5aW/1ta//b2/3l4/4SE/21s/729/9LS/8bG/0NC/0xL/+rq/4GB//Dw/39+/zEw/xwb/wcG/1JR/xMS/6io/9jY/zQz/1hX/+Hh/7S0/8zM/wEA////1oK62gAAALtJREFUeNqsk9cSgjAQRUPvICD23t3N/3+fUREZ2ABxPC+ZZM7DzRbGe2Cqgj3pFExdQ8uWCq7hoEDTTVoIQixxDLctJBHWCIOGEPvYYG7XhGzsYYsyykuwkMSpBEYL+HfhYBzf7/tiRQopX2/EbzT/xkcSgfNlkZ7FQQu706d6s4sk5Pb+vMFCEpIBQCZuU4CcFK7fxtIZLKjIVQslaZbX3W70486BiRK1kRswtAPGvn9xBqzeL9v9EGAAi9+gVs3Ccg4AAAAASUVORK5CYII=';
+    $this->assertEquals($expected, f::base64(TEST_ROOT_ETC . DS . 'images' . DS . 'favicon.png'));
+
+    $expected = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAIdQTFRF/z08/wQD/2pp/42N/+3t/0lI/9XV/xAP//n5/w0M/2Rj/66u/yUk/0A//+fn/8/P/5aW/1ta//b2/3l4/4SE/21s/729/9LS/8bG/0NC/0xL/+rq/4GB//Dw/39+/zEw/xwb/wcG/1JR/xMS/6io/9jY/zQz/1hX/+Hh/7S0/8zM/wEA////1oK62gAAALtJREFUeNqsk9cSgjAQRUPvICD23t3N/3+fUREZ2ABxPC+ZZM7DzRbGe2Cqgj3pFExdQ8uWCq7hoEDTTVoIQixxDLctJBHWCIOGEPvYYG7XhGzsYYsyykuwkMSpBEYL+HfhYBzf7/tiRQopX2/EbzT/xkcSgfNlkZ7FQQu706d6s4sk5Pb+vMFCEpIBQCZuU4CcFK7fxtIZLKjIVQslaZbX3W70486BiRK1kRswtAPGvn9xBqzeL9v9EGAAi9+gVs3Ccg4AAAAASUVORK5CYII=';
+    $this->assertEquals($expected, f::uri(TEST_ROOT_ETC . DS . 'images' . DS . 'favicon.png'));
+
+  }
+
   public function testMove() {
     $this->assertTrue(f::move($this->tmpFile, TEST_ROOT_TMP . DS . 'moved.txt'));
   }

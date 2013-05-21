@@ -7,7 +7,7 @@ class UploadTest extends PHPUnit_Framework_TestCase {
   protected function upload() {
 
     $name = 'Screen Shot 2013-04-15 at 13.04.33.png';
-    $file = TEST_ROOT_ETC . DS . 'upload' . DS . $name;
+    $file = TEST_ROOT_ETC . DS . 'images' . DS . $name;
 
     $_FILES['file'] = array(
        'name'     => $name,
@@ -23,7 +23,7 @@ class UploadTest extends PHPUnit_Framework_TestCase {
 
     $this->upload();
 
-    $upload = new Upload('file', TEST_ROOT_ETC . DS . 'upload' . DS . ':safeName.:extension');
+    $upload = new Upload('file', TEST_ROOT_ETC . DS . 'images' . DS . ':safeName.:extension');
 
     $this->assertFalse($upload->failed());
     $this->assertEquals(null, $upload->error());
@@ -32,7 +32,7 @@ class UploadTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('Screen Shot 2013-04-15 at 13.04.33', $upload->name());
     $this->assertEquals('screen-shot-2013-04-15-at-13-04.33', $upload->safeName());
     $this->assertEquals('png', $upload->extension());
-    $this->assertTrue(f::exists(TEST_ROOT_ETC . DS . 'upload' . DS . 'screen-shot-2013-04-15-at-13-04.33.png'));
+    $this->assertTrue(f::exists(TEST_ROOT_ETC . DS . 'images' . DS . 'screen-shot-2013-04-15-at-13-04.33.png'));
 
     f::remove($upload->file());
 
