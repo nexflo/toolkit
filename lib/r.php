@@ -47,7 +47,7 @@ class R {
     // get an array of keys
     if(is_array($key)) {
       $result = array();
-      foreach($key as $k) $result[$k] => self::data($k);
+      foreach($key as $k) $result[$k] = self::data($k);
       return $result;
     }
 
@@ -88,6 +88,7 @@ class R {
     // set multiple values at once
     if(is_array($key)) {
       foreach($key as $k => $v) self::set($k, $v);
+      return self::$data;
     }
 
     // make sure the data array is actually an array

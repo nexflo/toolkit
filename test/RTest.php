@@ -27,6 +27,17 @@ class RTest extends PHPUnit_Framework_TestCase {
 
     $this->assertTrue(is_array(r::get()));
 
+    r::set(array(
+      'test1' => 'value1',
+      'test2' => 'value2'
+    ));
+
+    $array = r::get(array(
+      'test1', 'test2'
+    ));
+
+    $this->assertEquals(array('test1' => 'value1', 'test2' => 'value2'), $array);
+
   }
 
   public function testRemove() {

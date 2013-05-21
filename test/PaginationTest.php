@@ -44,7 +44,7 @@ class PaginationTest extends PHPUnit_Framework_TestCase {
 
     $pagination = new Pagination($this->data, 20, array(
       'variable' => 'seite', 
-      'mode'     => 'query'  
+      'method'   => 'query'  
     ));
     
     $this->assertEquals($this->url . '/?seite=3', $pagination->pageURL(3));
