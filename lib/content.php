@@ -21,6 +21,14 @@ class Content {
   /**
    * Starts the output buffer
    * 
+   * <code>
+   * 
+   * content::start();
+   * echo 'some content';
+   * echo content::stop();
+   * 
+   * </code>
+   * 
    */
   static public function start() {
     ob_start();
@@ -28,6 +36,21 @@ class Content {
 
   /**
    * Stops the output buffer and returns its content
+   * 
+   * <code>
+   * 
+   * content::start();
+   * echo 'some content';
+   * echo content::stop();    
+   * // echo the content immediatelly
+   * 
+   * 
+   * content::start();
+   * echo 'some content';
+   * $content = content::stop(true);    
+   * // return the content
+   * 
+   * </code>
    * 
    * @return string
    */
@@ -64,17 +87,35 @@ class Content {
   /**
    * Simplifies setting content type headers
    * 
+   * <code>
+   * 
+   * content::type('js');
+   * // some javascript
+   * 
+   * content::type('png');
+   * // some png 
+   * 
+   * content::type('text/rtf', 'iso-8859-1');    
+   * // rtf document
+   * 
+   * </code>
+   * 
+   * check c::get('f.mimes') for more available shortcuts
+   * 
    * @param  string  $ctype The shortcut for the content type. See the keys of the $ctypes array for all available shortcuts
    * @param  string  $charset The charset definition for the content type header. Default is "utf-8"
    */
   static public function type($type = null, $charset = 'utf-8', $send = true) {
 
-    $type = a::get(c::get('f.mimes'), $type);
+    $mime = a::get(c::get('f.mimes'), $type);
 
     // use the first content type if multiple are available
-    if(is_array($type)) $type = a::first($type);
+    if(is_array($mime)) $mime = a::first($mime);
 
-    $header = 'Content-type: ' . $type . '; charset=' . $charset;
+    // fallback to the given type
+    if(!$mime) $mime = $type;
+
+    $header = 'Content-type: ' . $mime . '; charset=' . $charset;
 
     if($send) {
      header($header);

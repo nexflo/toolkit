@@ -4,6 +4,8 @@
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
 /**
+ * Upload
+ * 
  * File Upload class
  * 
  * @package   Kirby Toolkit 

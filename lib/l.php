@@ -26,6 +26,21 @@ class L {
 
   /**
    * Gets a language value by key
+   * 
+   * <code>
+   * 
+   * // for german users
+   * echo l::get('yes');
+   * // output: Ja
+   * 
+   * // for english users
+   * echo l::get('yes');
+   * // output: yes
+   * 
+   * a::show( l::get() );
+   * // returns the whole language array
+   * 
+   * </code>
    *
    * @param  mixed    $key The key to look for. Pass false or null to return the entire language array. 
    * @param  mixed    $default Optional default value, which should be returned if no element has been found
@@ -39,6 +54,22 @@ class L {
   /** 
    * Sets a language value by key
    *
+   * <code>
+   * 
+   * // in the german translation file
+   * l::set('yes', 'Ja');
+   * 
+   * // in the english translation file    
+   * l::set('yes', 'yes');
+   * 
+   * // set multiple values at once
+   * l::set(array(
+   *     'yes' => 'Ja',
+   *     'no'  => 'Nein'
+   * ));   
+   * 
+   * </code>
+   * 
    * @param  mixed   $key The key to define
    * @param  mixed   $value The value for the passed key
    */  

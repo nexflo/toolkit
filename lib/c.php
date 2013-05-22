@@ -4,7 +4,6 @@
 if(!defined('KIRBY')) die('Direct access is not allowed');
 
 /**
- * 
  * Config 
  * 
  * This is the core class to handle 
@@ -29,6 +28,23 @@ class C {
   /** 
    * Sets a config value by key
    *
+   * <code>
+   * 
+   * // sets the hostname for the database for example
+   * c::set('db.host', 'localhost');
+   *
+   * // you can store all the values here you will need later somewhere
+   * c::set('title', 'The Title of your App');
+   * 
+   * // setting multiple variables at once
+   * c::set(array(
+   *   'key1' => 'val1',
+   *   'key2' => 'val2',
+   *   'key3' => 'val3'
+   * ));
+   * 
+   * </code>
+   *
    * @param  string  $key The key to define
    * @param  mixed   $value The value for the passed key
    */  
@@ -43,6 +59,19 @@ class C {
   
   /** 
    * Gets a config value by key
+   * 
+   * <code>
+   * 
+   * // get the hostname for the database and take the localhost if it's not defined.
+   * c::get('db.host', 'localhost');
+   * 
+   * // sample output: 'The Title of your App'
+   * $title = echo c::get('title');
+   * 
+   * // get an array of values
+   * $array = c::get(array('key1', 'key2'));
+   * 
+   * </code>
    *
    * @param  string  $key The key to look for. Pass false to get the entire config array
    * @param  mixed   $default The default value, which will be returned if the key has not been found
@@ -56,10 +85,26 @@ class C {
   /**
    * Removes a variable from the config array
    * 
+   * <code>
+   *
+   * // remove the title from the config array
+   * c::remove('title');
+   *  
+   * // the title will no longer return anything
+   * c::get('title');
+   * 
+   * </code>
+   * 
    * @param string $key
+   * @return array
    */
-  static public function remove($key) {
+  static public function remove($key = null) {
+    // reset the entire array
+    if(is_null($key)) return self::$config = array();
+    // unset a single key
     unset(self::$config[$key]);
+    // return the array without the removed key
+    return self::$config;
   }
 
 }

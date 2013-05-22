@@ -38,6 +38,17 @@ class F {
   /**
    * Creates a new file
    * 
+   * <code>
+   *
+   * f::write('test.txt', 'hello');
+   * // creates a new text file with hello as content
+   * 
+   * // create a new file
+   * f::write('text.txt', array('test' => 'hello'));
+   * // creates a new file and encodes the array as json   
+   * 
+   * </code>
+   * 
    * @param  string  $file The path for the new file
    * @param  mixed   $content Either a string or an array. Arrays will be converted to JSON. 
    * @param  boolean $append true: append the content to an exisiting file if available. false: overwrite. 
@@ -62,6 +73,16 @@ class F {
   
   /**
    * Reads the content of a file
+   * 
+   * <code>
+   *
+   * $content = f::read('test.txt');
+   * // i.e. content is hello
+   * 
+   * $content = f::read('text.txt', 'json');
+   * // returns an array with the parsed content
+   * 
+   * </code>   
    * 
    * @param  string  $file The path for the file
    * @param  mixed   $parse if set to true, parse the result with the passed method. See: "str::parse()" for more info about available methods. 
@@ -96,6 +117,14 @@ class F {
   /**
    * Moves a file to a new location
    * 
+   * <code>
+   *
+   * $move = f::move('test.txt', 'super.txt');
+   * 
+   * if($move) echo 'The file has been moved';
+   * 
+   * </code>
+   * 
    * @param  string  $old The current path for the file
    * @param  string  $new The path to the new location
    * @return boolean 
@@ -119,6 +148,13 @@ class F {
   /**
    * Deletes a file
    * 
+   * <code>
+   *
+   * $remove = f::remove('test.txt');
+   * if($remove) echo 'The file has been removed';
+   * 
+   * </code>   
+   * 
    * @param  string  $file The path for the file
    * @return boolean 
    */  
@@ -128,6 +164,13 @@ class F {
 
   /**
    * Gets the extension of a file
+   *
+   * <code>
+   *
+   * $extension = f::extension('test.txt');
+   * // extension is txt
+   * 
+   * </code>
    * 
    * @param  string  $file The filename or path
    * @param  string  $extension Set an optional extension to overwrite the current one
@@ -157,6 +200,13 @@ class F {
   /**
    * Extracts the filename from a file path
    * 
+   * <code>
+   *
+   * $filename = f::filename('/var/www/test.txt');
+   * // filename is test.txt
+   * 
+   * </code>
+   * 
    * @param  string  $file The path
    * @return string 
    */  
@@ -170,6 +220,14 @@ class F {
 
   /**
    * Extracts the name from a file path or filename without extension
+   *
+   * <code>
+   *
+   * $name = f::name('/var/www/test.txt');
+   * 
+   * // name is test
+   * 
+   * </code>  
    * 
    * @param  string  $file The path or filename
    * @return string 
@@ -182,6 +240,13 @@ class F {
 
   /**
    * Just an alternative for dirname() to stay consistent
+   *
+   * <code>
+   *
+   * $dirname = f::dirname('/var/www/test.txt');
+   * // dirname is /var/www  
+   * 
+   * </code>
    * 
    * @param  string  $file The path
    * @return string 
@@ -192,6 +257,16 @@ class F {
 
   /**
    * Returns the size of a file.
+   * 
+   * <code>
+   *
+   * $size = f::size('/var/www/test.txt');
+   * // size is ie: 1231939
+   * 
+   * $size = f::size('/var/www/test.txt', true);
+   * // size is ie: 1,2 mb
+   * 
+   * </code>   
    * 
    * @param  string  $file The path
    * @param  boolean $nice True: return the size in a human readable format
@@ -205,6 +280,16 @@ class F {
 
   /**
    * Converts an integer size into a human readable format
+   * 
+   * <code>
+   *
+   * $niceSize = f::niceSize('/path/to/a/file.txt');
+   * // nice size is i.e: 212 kb
+   * 
+   * $niceSize = f::niceSize(1231939);
+   * // nice size is: 1,2 mb
+   * 
+   * </code>   
    * 
    * @param  int $size The file size or a file path
    * @return string
@@ -365,6 +450,13 @@ class F {
 
   /**
    * Sanitize a filename to strip unwanted special characters
+   * 
+   * <code>
+   *
+   * $safe = f::safeName('über genious.txt');
+   * // safe will be ueber-genious.txt
+   * 
+   * </code>   
    * 
    * @param  string $string The file name
    * @return string

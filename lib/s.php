@@ -31,6 +31,20 @@ class S {
   /** 
    * Sets a session value by key
    *
+   * <code>
+   * 
+   * s::set('username', 'bastian');
+   * // saves the username in the session
+   *     
+   * s::set(array(
+   *     'key1' => 'val1',
+   *     'key2' => 'val2',
+   *     'key3' => 'val3'
+   * ));
+   * // setting multiple variables at once
+   * 
+   * </code>   
+   * 
    * @param  mixed   $key The key to define
    * @param  mixed   $value The value for the passed key
    */    
@@ -45,6 +59,16 @@ class S {
 
   /**
    * Gets a session value by key
+   * 
+   * <code>
+   * 
+   * s::get('username', 'bastian');
+   * // saves the username in the session
+   * 
+   * echo s::get('username');
+   * // output: 'bastian'
+   * 
+   * </code>   
    *
    * @param  mixed    $key The key to look for. Pass false or null to return the entire session array. 
    * @param  mixed    $default Optional default value, which should be returned if no element has been found
@@ -58,6 +82,20 @@ class S {
 
   /**
    * Removes a value from the session by key
+   * 
+   * <code>
+   * 
+   * $_SESSION = array(
+   *     'username' => 'bastian',
+   *     'id' => 1,
+   * );
+   * 
+   * s::remove('username');
+   * // $_SESSION = array(
+   * //    'id' => 1
+   * // )
+   * 
+   * </code>      
    *
    * @param  mixed    $key The key to remove by
    * @return array    The session array without the value
@@ -71,6 +109,13 @@ class S {
   /**
    * Starts a new session
    *
+   * <code>
+   * 
+   * s::start();
+   * // do whatever you want with the session now
+   * 
+   * </code>
+   * 
    */  
   static public function start() {
     if(self::$started) return true;
@@ -80,6 +125,16 @@ class S {
 
   /**
    * Destroys a session
+   * 
+   * <code>
+   * 
+   * s::start();
+   * // do whatever you want with the session now
+   * 
+   * s::destroy();
+   * // everything stored in the session will be deleted
+   * 
+   * </code>
    *
    */  
   static public function destroy() {
@@ -99,7 +154,6 @@ class S {
 
   /**
    * Destroys a session first and then starts it again
-   *
    */  
   static public function restart() {
     self::destroy();

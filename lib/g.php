@@ -20,6 +20,13 @@ class G {
 
   /**
    * Gets an global value by key
+   * 
+   * <code>
+   * 
+   * g::get('var1', 'some other value');
+   * // returns 'some value' if var1 has been set earlier, otherwise returns 'some other value'
+   * 
+   * </code>
    *
    * @param  mixed    $key The key to look for. Pass false or null to return the entire globals array. 
    * @param  mixed    $default Optional default value, which should be returned if no element has been found
@@ -32,7 +39,17 @@ class G {
 
   /** 
    * Sets a global by key
-   *
+   * 
+   * <code>
+   * 
+   * g::set('var1', 'some value');
+   * 
+   * // later
+   * echo g::get('var1');
+   * // output: 'some value'
+   * 
+   * </code>
+   * 
    * @param  string  $key The key to define
    * @param  mixed   $value The value for the passed key
    */  

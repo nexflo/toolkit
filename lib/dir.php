@@ -21,6 +21,14 @@ class Dir {
   /**
    * Creates a new directory
    * 
+   * <code>
+   * 
+   * $create = dir::make('/app/test/new-directory');
+   * 
+   * if($create) echo 'the directory has been created';
+   * 
+   * </code>
+   * 
    * @param   string  $dir The path for the new directory
    * @return  boolean True: the dir has been created, false: creating failed
    */
@@ -31,6 +39,13 @@ class Dir {
   /**
    * Reads all files from a directory and returns them as an array. 
    * It skips unwanted invisible stuff. 
+   * 
+   * <code>
+   * 
+   * $files = dir::read('mydirectory');
+   * // returns array('file-1.txt', 'file-2.txt', 'file-3.txt', etc...);
+   * 
+   * </code>
    * 
    * @param   string  $dir The path of directory
    * @param   array   $ignore Optional array with filenames, which should be ignored
@@ -44,6 +59,14 @@ class Dir {
 
   /**
    * Moves a directory to a new location
+   *
+   * <code>
+   * 
+   * $move = dir::move('mydirectory', 'mynewdirectory');
+   * 
+   * if($move) echo 'the directory has been moved to mynewdirectory';
+   * 
+   * </code>
    * 
    * @param   string  $old The current path of the directory
    * @param   string  $new The desired path where the dir should be moved to
@@ -56,6 +79,14 @@ class Dir {
 
   /**
    * Deletes a directory
+   * 
+   * <code>
+   * 
+   * $remove = dir::remove('mydirectory');
+   * 
+   * if($remove) echo 'the directory has been removed';
+   * 
+   * </code>
    * 
    * @param   string   $dir The path of the directory
    * @param   boolean  $keep If set to true, the directory will flushed but not removed. 

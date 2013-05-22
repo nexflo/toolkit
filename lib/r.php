@@ -29,6 +29,16 @@ class R {
   /**
    * Returns either the entire data array or parts of it
    * 
+   * <code>
+   * 
+   * echo r::data('username');
+   * // sample output 'bastian'
+   * 
+   * echo r::data('username', 'peter');
+   * // if no username is found in the request peter will be echoed
+   * 
+   * </code>
+   * 
    * @param string $key An optional key to receive only parts of the data array
    * @param mixed $default A default value, which will be returned if nothing can be found for a given key
    * @param mixed
@@ -42,16 +52,7 @@ class R {
       $data = self::$data = (self::is('GET')) ? self::sanitize($_REQUEST) : array_merge(self::body(), self::sanitize($_REQUEST));
     }
     
-    if(is_null($key)) return $data;
-    
-    // get an array of keys
-    if(is_array($key)) {
-      $result = array();
-      foreach($key as $k) $result[$k] = self::data($k);
-      return $result;
-    }
-
-    return isset($data[$key]) ? $data[$key] : $default;
+    return a::get($data, $key, $default);
     
   }
 
@@ -79,6 +80,19 @@ class R {
   /**
    * Sets or overwrites a variable in the data array
    * 
+   * <code>
+   * 
+   * r::set('username', 'bastian');
+   * 
+   * a::show($_REQUEST);
+   * 
+   * // sample output: array(
+   * //    'username' => 'bastian'
+   * //    ... other stuff from the request
+   * // );
+   * 
+   * </code>
+   * 
    * @param mixed $key The key to set/replace. Use an array to set multiple values at once
    * @param mixed $value The value
    * @return array
@@ -101,6 +115,16 @@ class R {
 
   /**
    * Alternative to self::data($key, $default)
+   * 
+   * <code>
+   * 
+   * echo r::get('username');
+   * // sample output 'bastian'
+   * 
+   * echo r::get('username', 'peter');
+   * // if no username is found in the request peter will be echoed
+   * 
+   * </code>
    * 
    * @param string $key An optional key to receive only parts of the data array
    * @param mixed $default A default value, which will be returned if nothing can be found for a given key
@@ -163,6 +187,13 @@ class R {
   /**
    * Returns the referer if available
    * 
+   * <code>
+   * 
+   * echo r::referer();
+   * // sample result: http://someurl.com
+   * 
+   * </code>
+   * 
    * @param string $default Pass an optional URL to use as default referer if no referer is being found
    * @return string
    */
@@ -173,6 +204,13 @@ class R {
   /**
    * Nobody remembers how to spell it
    * so this is a shortcut
+   * 
+   * <code>
+   * 
+   * echo r::referrer();
+   * // sample result: http://someurl.com
+   * 
+   * </code>
    * 
    * @param string $default Pass an optional URL to use as default referer if no referer is being found
    * @return string
@@ -202,6 +240,12 @@ class R {
 
   /**
    * Checks if the request is an AJAX request
+   * 
+   * <code>
+   * 
+   * if(r::ajax()) echo 'ajax rulez';
+   * 
+   * </code>
    * 
    * @return boolean
    */

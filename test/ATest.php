@@ -58,6 +58,11 @@ class ATest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('http://twitter.com/testuser', a::get($this->user, 'profiles > twitter'));
     $this->assertEquals('http://linkedin.com/testuser', a::get($this->user, 'profiles > linkedin', 'http://linkedin.com/testuser'));
 
+    // get an array of keys
+    $array = a::get($this->user, array('username', 'email'));
+
+    $this->assertEquals(array('username' => 'testuser', 'email' => 'test@user.com'), $array);
+
   }
 
   public function testRemove() {

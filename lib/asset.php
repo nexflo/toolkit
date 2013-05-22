@@ -6,8 +6,13 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
 /**
  * Asset
  * 
+ * The Asset class can represent any file and help with common stuff 
+ * like fetching the mime type, size or dimensions (for images)
+ *
  * <code>
+ * 
  * $image = new Asset('/root/to/myfile.jpg', 'http://mydomain.com/myfile.jpg');
+ * 
  * </code> 
  *
  * @package   Kirby Toolkit 

@@ -20,9 +20,16 @@ class Cookie {
   /**
    * Set a new cookie
    * 
+   * <code>
+   * 
+   * cookie::set('mycookie', 'hello', 60);
+   * // expires in 1 hour
+   * 
+   * </code>
+   * 
    * @param  string  $key The name of the cookie
    * @param  string  $value The cookie content
-   * @param  int     $expires The number of seconds until the cookie expires
+   * @param  int     $expires The number of minutes until the cookie expires
    * @param  string  $path The path on the server to set the cookie for
    * @param  string  $domain the domain 
    * @param  boolean $secure only sets the cookie over https
@@ -50,6 +57,13 @@ class Cookie {
   /**
    * Stores a cookie forever
    * 
+   * <code>
+   * 
+   * cookie::forever('mycookie', 'hello');
+   * // never expires
+   * 
+   * </code>
+   * 
    * @param  string  $key The name of the cookie
    * @param  string  $value The cookie content
    * @param  string  $path The path on the server to set the cookie for
@@ -63,6 +77,13 @@ class Cookie {
 
   /**
    * Get a cookie value
+   * 
+   * <code>
+   * 
+   * cookie::get('mycookie', 'peter');
+   * // sample output: 'hello' or if the cookie is not set 'peter'
+   * 
+   * </code>
    * 
    * @param  string  $key The name of the cookie
    * @param  string  $default The default value, which should be returned if the cookie has not been found
@@ -120,6 +141,13 @@ class Cookie {
 
   /**
    * Remove a cookie
+   * 
+   * <code>
+   * 
+   * cookie::remove('mycookie');
+   * // mycookie is now gone
+   * 
+   * </code>
    * 
    * @param  string  $key The name of the cookie
    * @param  string  $domain The domain of the cookie

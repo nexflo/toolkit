@@ -1,5 +1,26 @@
-# New Kirby Toolkit
+# Kirby Toolkit
 
-This is an alpha state of a brand new version of the Kirby toolkit. 
+This is a collection of classes and helpers to make your life with PHP easier. 
 
-Check out http://toolkit.getkirby.com for the current stable version.
+<http://getkirby.com>
+
+
+## Documentation
+<http://getkirby.com/docs>
+
+
+## Support
+<http://getkirby.com/contact>
+
+
+## Contact 
+<bastian@getkirby.com>
+
+
+## Copyright
+Bastian Allgeier
+<http://getkirby.com>
+
+
+## License
+MIT License <http://www.opensource.org/licenses/mit-license.php>
