@@ -195,6 +195,13 @@ class Url {
    * Shortens a URL
    * It removes http:// or https:// and uses str::short afterwards
    *
+   * <code>
+   * 
+   * echo url::short('http://veryveryverylongurl.com', 30);
+   * // output: veryveryverylongurl.com
+   *
+   * </code>
+   * 
    * @param  string  $url The URL to be shortened
    * @param  int     $chars The final number of characters the URL should have
    * @param  boolean $base True: only take the base of the URL. 
@@ -218,6 +225,14 @@ class Url {
   /** 
    * Checks if the URL has a query string attached
    * 
+   * <code>
+   * 
+   * if(url::hasQuery('http://www.youtube.com/watch?v=9q_aXttJduk')) {
+   *   echo 'Yes, there is a query attached';
+   * }
+   * 
+   * </code>
+   * 
    * @param  string  $url
    * @return boolean
    */
@@ -228,6 +243,13 @@ class Url {
   /** 
    * Strips the query from the URL
    * 
+   * <code>
+   * 
+   * echo url::stripQuery('http://www.youtube.com/watch?v=9q_aXttJduk');
+   * // output: http://www.youtube.com/watch
+   * 
+   * </code>
+   * 
    * @param  string  $url
    * @return string
    */
@@ -237,6 +259,13 @@ class Url {
 
   /** 
    * Strips a hash value from the URL
+   * 
+   * <code>
+   * 
+   * echo url::stripHash('http://testurl.com/#somehash');
+   * // output: http://testurl.com/
+   * 
+   * </code>
    * 
    * @param  string  $url
    * @return string

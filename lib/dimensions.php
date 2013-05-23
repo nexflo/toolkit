@@ -37,7 +37,7 @@ class Dimensions {
   }
 
   /**
-   * Returns the witdh of the parent object
+   * Returns the width
    * 
    * @return int
    */
@@ -46,7 +46,7 @@ class Dimensions {
   }
 
   /**
-   * Returns the height of the parent object
+   * Returns the height
    * 
    * @return int
    */
@@ -55,7 +55,15 @@ class Dimensions {
   }
 
   /**
-   * Calculates and returns the ratio of the parent object
+   * Calculates and returns the ratio
+   * 
+   * <code>
+   * 
+   * $dimensions = new Dimensions(1200, 768);
+   * echo $dimensions->ratio();
+   * // output: 1.5625
+   *
+   * </code>
    * 
    * @return float
    */
@@ -64,11 +72,24 @@ class Dimensions {
   }
 
   /**
-   * Recalculates the width and height of the parent 
-   * object to fit into the given box. 
+   * Recalculates the width and height 
+   * to fit into the given box. 
+   * 
+   * <code>
+   * 
+   * $dimensions = new Dimensions(1200, 768);
+   * $dimensions->fit(500);
+   * 
+   * echo $dimensions->width();
+   * // output: 500
+   * 
+   * echo $dimensions->height();
+   * // output: 320
+   *
+   * </code>
    * 
    * @param int $box the max width and/or height
-   * @param boolean $force If true, the parent object will be upscaled to fit the box if smaller
+   * @param boolean $force If true, the dimensions will be upscaled to fit the box if smaller
    * @return object returns this object with recalculated dimensions
    */
   public function fit($box, $force = false) {
@@ -97,11 +118,24 @@ class Dimensions {
   }
 
   /**
-   * Recalculates the width and height of the parent 
-   * object to fit the given width
+   * Recalculates the width and height
+   * to fit the given width
+   * 
+   * <code>
+   * 
+   * $dimensions = new Dimensions(1200, 768);
+   * $dimensions->fitWidth(500);
+   * 
+   * echo $dimensions->width();
+   * // output: 500
+   * 
+   * echo $dimensions->height();
+   * // output: 320
+   *
+   * </code>
    * 
    * @param int $width the max width
-   * @param boolean $force If true, the parent object will be upscaled to fit the width if smaller
+   * @param boolean $force If true, the dimensions will be upscaled to fit the width if smaller
    * @return object returns this object with recalculated dimensions
    */
   public function fitWidth($fit, $force = false) {
@@ -118,11 +152,24 @@ class Dimensions {
   }
 
   /**
-   * Recalculates the width and height of the parent 
-   * object to fit the given height
+   * Recalculates the width and height
+   * to fit the given height
    * 
+   * <code>
+   * 
+   * $dimensions = new Dimensions(1200, 768);
+   * $dimensions->fitHeight(500);
+   * 
+   * echo $dimensions->width();
+   * // output: 781
+   * 
+   * echo $dimensions->height();
+   * // output: 500
+   *
+   * </code>
+   *    
    * @param int $height the max height
-   * @param boolean $force If true, the parent object will be upscaled to fit the height if smaller
+   * @param boolean $force If true, the dimensions will be upscaled to fit the height if smaller
    * @return object returns this object with recalculated dimensions
    */
   public function fitHeight($fit, $force = false) {

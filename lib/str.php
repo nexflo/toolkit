@@ -20,6 +20,16 @@ class Str {
   /**
    * Converts a string to a html-safe string
    *
+   * <code>
+   * 
+   * echo str::html('some <em>über crazy</em> stuff');
+   * // output: some <em>&uuml;ber crazy</em> stuff
+   * 
+   * echo str::html('some <em>über crazy</em> stuff', false);    
+   * // output: some &lt;em&gt;&uuml;ber crazy&lt;/em&gt; stuff
+   * 
+   * </code>   
+   *
    * @param  string  $string
    * @param  boolean $keepTags True: lets stuff inside html tags untouched. 
    * @return string  The html string
@@ -31,6 +41,13 @@ class Str {
   /**
    * Removes all html tags and encoded chars from a string
    *
+   * <code>
+   * 
+   * echo str::unhtml('some <em>crazy</em> stuff');
+   * // output: some uber crazy stuff
+   * 
+   * </code>
+   * 
    * @param  string  $string
    * @return string  The html string
    */  
@@ -43,6 +60,13 @@ class Str {
    * Converts it to html-safe first and then it
    * will replace html entities to xml entities
    *
+   * <code>
+   *
+   * echo str::xml('some über crazy stuff');
+   * // output: some &#252;ber crazy stuff 
+   *  
+   * </code>
+   * 
    * @param  string  $text
    * @param  boolean $html True: convert to html first
    * @return string
@@ -56,6 +80,13 @@ class Str {
    * and convert them to html entities first
    * and remove all html entities afterwards.
    *
+   * <code>
+   * 
+   * echo str::unxml('some <em>&#252;ber</em> crazy stuff');
+   * // output: some &uuml;ber crazy stuff
+   * 
+   * </code>
+   * 
    * @param  string  $string
    * @return string
    */  
@@ -73,6 +104,23 @@ class Str {
    * - query
    * - php
    *
+   * <code>
+   * 
+   * str::parse('{"test":"cool","super":"genious"}');
+   * // output: array(
+   * //  'test' => 'cool',
+   * //  'super' => 'genious'
+   * // );
+   * 
+   * str::parse('<xml><entries><cool>nice</cool></entries></xml>', 'xml');
+   * // output: array(
+   * //    'entries' => array(
+   * //        'cool' => 'nice'
+   * //    )
+   * // );
+   * 
+   * </code>
+   * 
    * @param  string  $string
    * @param  string  $mode
    * @return string
@@ -129,6 +177,13 @@ class Str {
 
   /**
    * Generates an "a mailto" tag
+   * 
+   * <code>
+   * 
+   * echo str::email('bastian@getkirby.com');
+   * echo str::email('bastian@getkirby.com', 'mail me');
+   * 
+   * </code>
    * 
    * @param string $href The url for the a tag
    * @param mixed $text The optional text. If null, the url will be used as text
@@ -224,6 +279,16 @@ class Str {
   /**
    * Shortens a string and adds an ellipsis if the string is too long
    *
+   * <code>
+   * 
+   * echo str::short('This is a very, very, very long string', 10);
+   * // output: This is a…
+   * 
+   * echo str::short('This is a very, very, very long string', 10, '####');
+   * // output: This i####
+   * 
+   * </code>
+   * 
    * @param  string  $string The string to be shortened
    * @param  int     $chars The final number of characters the string should have
    * @param  string  $rep The element, which should be added if the string is too long. Ellipsis is the default.
@@ -231,6 +296,27 @@ class Str {
    */  
   static public function short($string, $length, $rep = '…') {
     return self::limit($string, 'chars', $length, $rep);
+  }
+
+  /**
+   * Shortens a URL
+   * It removes http:// or https:// and uses str::short afterwards
+   * 
+   * <code>
+   * 
+   * echo str::shorturl('http://veryveryverylongurl.com', 30);
+   * // output: veryveryverylongurl.com
+   *
+   * </code>
+   *
+   * @param  string  $url The URL to be shortened
+   * @param  int     $chars The final number of characters the URL should have
+   * @param  boolean $base True: only take the base of the URL. 
+   * @param  string  $rep The element, which should be added if the string is too long. Ellipsis is the default.
+   * @return string  The shortened URL  
+   */  
+  static public function shorturl($string, $length, $base = false, $rep = '…') {
+    return url::short($string, $length, $base, $rep);
   }
 
   /** 
@@ -313,7 +399,7 @@ class Str {
    * @param  boolean $i ignore upper/lowercase
    * @return string  
    */
-  static public function contains($str, $needle, $i=true) {
+  static public function contains($str, $needle, $i = true) {
     if($i) {
       $str    = self::lower($str);
       $needle = self::lower($needle);

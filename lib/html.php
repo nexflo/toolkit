@@ -34,6 +34,13 @@ class Html {
   /**
    * Removes all html tags and encoded chars from a string
    *
+   * <code>
+   * 
+   * echo html::decode('some <em>crazy</em> stuff');
+   * // output: some uber crazy stuff
+   * 
+   * </code>
+   * 
    * @param  string  $string
    * @return string  The html string
    */  

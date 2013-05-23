@@ -17,11 +17,12 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
  */
 class Collection implements Iterator {
 
-  protected $_ = array();
+  // holds all items in the collection
+  protected $data = array();
+  
+  // holds the optional pagination object after $this->paginate()
   protected $pagination = null;
   
-  // Public Methods
-
   /**
    * Creates a new collection
    * 
@@ -32,7 +33,7 @@ class Collection implements Iterator {
     if(!is_array($array)) return false;
 
     foreach($array as $key => $value) {
-      $this->_['_' . $key] = $value;
+      $this->data['_' . $key] = $value;
     }
   }
 
@@ -60,7 +61,7 @@ class Collection implements Iterator {
       return $this;
     }
     
-    $this->_['_' . $key] = $value;
+    $this->data['_' . $key] = $value;
     return $this;
   }
       
@@ -86,8 +87,8 @@ class Collection implements Iterator {
    * @return mixed Whatever has been found for the key
    */ 
   public function get($key = null, $default = null) {
-    if(is_null($key)) return $this->_;
-    return isset($this->_['_' . $key]) ? $this->_['_' . $key] : $default;  
+    if(is_null($key)) return $this->data;
+    return isset($this->data['_' . $key]) ? $this->data['_' . $key] : $default;  
   }
 
   /**
@@ -127,7 +128,7 @@ class Collection implements Iterator {
    * @return boolean
    */
   public function __isset($key) {
-    return isset($this->_['_' . $key]) ? true : false;
+    return isset($this->data['_' . $key]) ? true : false;
   }
 
   /** 
@@ -138,14 +139,14 @@ class Collection implements Iterator {
    * @param string $key the name of the key
    */
   public function __unset($key) {
-    unset($this->_['_' . $key]);
+    unset($this->data['_' . $key]);
   }
 
   /** 
    * Moves the cusor to the first element of the array
    */
   public function rewind() {
-    reset($this->_);
+    reset($this->data);
   }
 
   /** 
@@ -154,7 +155,7 @@ class Collection implements Iterator {
    * @return mixed
    */
   public function current() {
-    return current($this->_);
+    return current($this->data);
   }
 
   /** 
@@ -163,7 +164,7 @@ class Collection implements Iterator {
    * @return string
    */
   public function key() {
-    return $this->cleankey(key($this->_));
+    return $this->cleankey(key($this->data));
   }
 
   /** 
@@ -172,7 +173,7 @@ class Collection implements Iterator {
    * @return array
    */
   public function keys() {
-    $keys  = array_keys($this->_);
+    $keys  = array_keys($this->data);
     $clean = array();
     foreach($keys as $key) {
       $clean[] = $this->cleankey($key);
@@ -187,7 +188,7 @@ class Collection implements Iterator {
    * @return mixed
    */
   public function next() {
-    return next($this->_);
+    return next($this->data);
   }
 
   /** 
@@ -197,7 +198,7 @@ class Collection implements Iterator {
    * @return mixed
    */
   public function prev() {
-    return prev($this->_);
+    return prev($this->data);
   }
 
   /** 
@@ -206,7 +207,7 @@ class Collection implements Iterator {
    * @return mixed
    */
   public function nth($n) {
-    $array = array_values($this->_);
+    $array = array_values($this->data);
     return (isset($array[$n])) ? $array[$n] : false;
   }
 
@@ -217,21 +218,21 @@ class Collection implements Iterator {
    * @return boolean
    */
   public function valid() {
-    $key = key($this->_);
+    $key = key($this->data);
     return ($key !== null && $key !== false);
   }
 
   /**
-   * Removes all data from the $_ array
+   * Removes all data from the $data array
    * Can also be used to set a fresh array.
    * 
-   * @param array $_ a new array
+   * @param array $data a new array
    */
-  public function reset($_ = array()) {
+  public function reset($data = array()) {
     // remove the old data
-    $this->_ = array();
+    $this->data = array();
     // set the new data    
-    if(!empty($_)) $this->set($_);
+    if(!empty($data)) $this->set($data);
   }
 
   /** 
@@ -323,7 +324,7 @@ class Collection implements Iterator {
    * @return int 
    */      
   public function count() {
-    return count($this->_);
+    return count($this->data);
   }  
 
   /**
@@ -332,7 +333,7 @@ class Collection implements Iterator {
    * @return mixed
    */      
   public function first() {
-    $array = $this->_;
+    $array = $this->data;
     return array_shift($array); 
   }
 
@@ -342,7 +343,7 @@ class Collection implements Iterator {
    * @return mixed
    */      
   public function last() {
-    $array = $this->_;
+    $array = $this->data;
     return array_pop($array); 
   }
 
@@ -353,7 +354,7 @@ class Collection implements Iterator {
    * @return mixed the name of the key or false
    */      
   public function keyOf($needle) {
-    return $this->cleankey(array_search($needle, $this->_));
+    return $this->cleankey(array_search($needle, $this->data));
   }
 
   /**
@@ -363,7 +364,7 @@ class Collection implements Iterator {
    * @return mixed the name of the key or false
    */      
   public function indexOf($needle) {
-    return $this->cleankey(array_search($needle, array_values($this->_)));
+    return $this->cleankey(array_search($needle, array_values($this->data)));
   }
 
   // Methods which clone the current object
@@ -376,7 +377,7 @@ class Collection implements Iterator {
    */      
   public function filter($callback) {
     $self = clone $this;
-    $self->_ = array_filter($self->_, $callback);
+    $self->data = array_filter($self->data, $callback);
     return $self;
   }
 
@@ -388,9 +389,9 @@ class Collection implements Iterator {
   public function shuffle() {
     // shuffle array but keep the keys
     $self = clone $this;
-    $keys = array_keys($self->_); 
+    $keys = array_keys($self->data); 
     shuffle($keys); 
-    $self->_ = array_merge(array_flip($keys), $self->_); 
+    $self->data = array_merge(array_flip($keys), $self->data); 
     return $self;
   }
 
@@ -404,7 +405,7 @@ class Collection implements Iterator {
     $args = func_get_args();
     $self = clone $this;
     foreach($args as $kill) {
-      unset($self->_['_' . $kill]);
+      unset($self->data['_' . $kill]);
     }
     return $self;
   }
@@ -429,7 +430,7 @@ class Collection implements Iterator {
   public function slice($offset=null, $limit=null) {
     if($offset === null && $limit === null) return $this;
     $self = clone $this;
-    $self->_ = (array_slice($this->_, $offset, $limit));
+    $self->data = (array_slice($this->data, $offset, $limit));
     return $self;
   }
 
@@ -460,7 +461,7 @@ class Collection implements Iterator {
    */      
   public function flip() {
     $self = clone $this;
-    $self->_ = array_reverse($self->_, true);
+    $self->data = array_reverse($self->data, true);
     return $self;
   }
 
@@ -594,7 +595,7 @@ class Collection implements Iterator {
    */      
   public function toArray() {
     $clean = array();
-    foreach($this->_ as $dirtyKey => $value) {
+    foreach($this->data as $dirtyKey => $value) {
       $clean[ $this->cleankey($dirtyKey) ] = $value;
     }
     $this->rewind();
@@ -639,6 +640,46 @@ class Collection implements Iterator {
    */
   public function pagination() {
     return $this->pagination;
+  }
+
+  /**
+   * Groups the collection by a given field
+   *
+   * @param string $field 
+   * @return object A new collection with an item for each group and a subcollection in each group
+   */
+  public function groupBy($field, $i = true) {
+
+    $groups = array();
+
+    foreach($this->toArray() as $key => $item) {
+      
+      if(is_array($item)) {
+        $value = a::get($item, $field);
+      } else if(is_a($item, 'Object')) {
+        $value = $item->$field();
+      } else {
+        raise('Grouping requires items to be arrays or objects');
+      }
+
+      // make sure we have a proper key for each group
+      if(is_object($value) or is_array($value)) raise('You cannot group by arrays or objects');
+
+      // ignore upper/lowercase for group names
+      if($i) $value = str::lower($value);
+
+      if(!isset($groups[$value])) {
+        // create a new entry for the group if it does not exist yet      
+        $groups[$value] = new Collection(array($key => $item));
+      } else {
+        // add the item to an existing group
+        $groups[$value]->$key = $item;
+      }
+
+    }
+
+    return new Collection($groups);
+
   }
 
   // Private Methods

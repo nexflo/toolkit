@@ -18,14 +18,21 @@ if(!defined('KIRBY')) die('Direct access is not allowed');
 class Xml {
 
   /**
-    * Converts a string to a xml-safe string
-    * Converts it to html-safe first and then it
-    * will replace html entities to xml entities
-    *
-    * @param  string  $text
-    * @param  boolean $html True: convert to html first
-    * @return string
-    */  
+   * Converts a string to a xml-safe string
+   * Converts it to html-safe first and then it
+   * will replace html entities to xml entities
+   *
+   * <code>
+   *
+   * echo xml::encode('some über crazy stuff');
+   * // output: some &#252;ber crazy stuff 
+   *  
+   * </code>
+   *    
+   * @param  string  $text
+   * @param  boolean $html True: convert to html first
+   * @return string
+   */  
   static public function encode($string, $html = true) {
 
     // convert raw text to html safe text
@@ -37,13 +44,20 @@ class Xml {
   }
 
   /**
-    * Removes all xml entities from a string
-    * and convert them to html entities first
-    * and remove all html entities afterwards.
-    *
-    * @param  string  $string
-    * @return string
-    */  
+   * Removes all xml entities from a string
+   * and convert them to html entities first
+   * and remove all html entities afterwards.
+   *
+   * <code>
+   * 
+   * echo xml::decode('some <em>&#252;ber</em> crazy stuff');
+   * // output: some &uuml;ber crazy stuff
+   * 
+   * </code>
+   * 
+   * @param  string  $string
+   * @return string
+   */  
   static public function decode($string) {
     // convert xml entities to html entities
     $string = strtr($string, self::entities());
@@ -51,11 +65,11 @@ class Xml {
   }  
 
   /** 
-    * Parses a XML string and returns an array
-    * 
-    * @param  string  $xml
-    * @return mixed
-    */
+   * Parses a XML string and returns an array
+   * 
+   * @param  string  $xml
+   * @return mixed
+   */
   static public function parse($xml) {
 
     $xml = preg_replace('/(<\/?)(\w+):([^>]*>)/', '$1$2$3', $xml);

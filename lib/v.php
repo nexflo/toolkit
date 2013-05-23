@@ -69,6 +69,14 @@ class V {
   /** 
    * Checks for valid date
    * 
+   * <code>
+   * 
+   * if(v::date('2013-05-23')) {
+   *   echo 'That is a valid email';
+   * }
+   *
+   * </code>
+   * 
    * @param  string  $value
    * @return boolean
    */
@@ -78,6 +86,14 @@ class V {
 
   /** 
    * Checks for valid email address
+   * 
+   * <code>
+   * 
+   * if(v::email('mail@bastian-allgeier.de')) {
+   *   echo 'That is a valid email';
+   * }
+   *
+   * </code>
    * 
    * @param  string  $value
    * @return boolean
@@ -89,6 +105,14 @@ class V {
   /** 
    * Checks for valid URL
    * 
+   * <code>
+   * 
+   * if(v::url('http://getkirby.com')) {
+   *   echo 'That is a valid URL';
+   * }
+   *
+   * </code>
+   * 
    * @param  string  $value
    * @return boolean
    */
@@ -99,6 +123,14 @@ class V {
   /** 
    * Checks for valid filename
    * 
+   * <code>
+   * 
+   * if(v::filename('filename.jpg')) {
+   *   echo 'That is a valid filename';
+   * }
+   *
+   * </code>
+   * 
    * @param  string  $value
    * @return boolean
    */
@@ -108,6 +140,14 @@ class V {
 
   /**
    * Checks for an activated checkbox value
+   * 
+   * <code>
+   * 
+   * if(v::accepted(get('tos'))) {
+   *   echo 'The terms of service have been accepted';
+   * }
+   *
+   * </code>
    * 
    * @param string $value
    * @return boolean
@@ -120,6 +160,14 @@ class V {
    * Checks for a min size/count/length of a given value
    * The value may be a string, array or file
    * 
+   * <code>
+   * 
+   * if(v::min('My username', 6)) {
+   *   echo 'Your username is long enough';
+   * }
+   *
+   * </code>
+   * 
    * @param mixed $value 
    * @param int $min
    * @return boolean
@@ -131,6 +179,14 @@ class V {
   /**
    * Checks for a max size/count/length of a given value
    * The value may be a string, array or file
+   * 
+   * <code>
+   * 
+   * if(v::max('My tweet text', 140)) {
+   *   echo 'Your tweet has the correct length';
+   * }
+   *
+   * </code>
    * 
    * @param mixed $value 
    * @param int $max
@@ -145,6 +201,14 @@ class V {
    * is between a minimum and maximumn value. 
    * The value may be a string, array or file
    * 
+   * <code>
+   * 
+   * if(v::between('My random text', 10, 140)) {
+   *   echo 'Your text has the correct length';
+   * }
+   *
+   * </code>
+   * 
    * @param mixed $value 
    * @param int $min
    * @param int $max
@@ -157,6 +221,14 @@ class V {
   /**
    * Checks if the value is included in an array of values
    * 
+   * <code>
+   * 
+   * if(v::in('apple', array('apple', 'pear', 'melon'))) {
+   *   echo 'That is a valid fruit!';
+   * }
+   *
+   * </code>
+   * 
    * @param mixed $value
    * @param array $values
    * @return boolean
@@ -167,6 +239,14 @@ class V {
 
   /**
    * Checks if the value is not included in an array of values
+   * 
+   * <code>
+   * 
+   * if(v::notIn('pineapple', array('apple', 'pear', 'melon'))) {
+   *   echo 'Yes, that is a valid fruit!';
+   * }
+   *
+   * </code>
    * 
    * @param mixed $value
    * @param array $values
@@ -179,6 +259,14 @@ class V {
   /**
    * Checks if the value is a valid ip
    * 
+   * <code>
+   * 
+   * if(v::ip('127.0.0.1')) {
+   *   echo 'Valid IP';
+   * }
+   *
+   * </code>
+   * 
    * @param mixed $value
    * @return boolean
    */
@@ -188,6 +276,14 @@ class V {
 
   /**
    * Checks if the value contains only alpha chars
+   * 
+   * <code>
+   * 
+   * if(v::alpha('abc')) {
+   *   echo 'Valid text';
+   * }
+   *
+   * </code>
    * 
    * @param mixed $value
    * @return boolean
@@ -199,6 +295,14 @@ class V {
   /**
    * Checks if the value contains only numbers
    * 
+   * <code>
+   * 
+   * if(v::numeric(1234)) {
+   *   echo 'Valid number';
+   * }
+   *
+   * </code>
+   *
    * @param mixed $value
    * @return boolean
    */
@@ -209,6 +313,14 @@ class V {
   /**
    * Checks if the value contains only numbers and chars from a-z
    * 
+   * <code>
+   * 
+   * if(v::alphaNumeric('abc1234')) {
+   *   echo 'Valid alpha numeric string';
+   * }
+   *
+   * </code>
+   * 
    * @param mixed $value
    * @return boolean
    */
@@ -218,6 +330,14 @@ class V {
 
   /**
    * Checks for a valid integer value
+   * 
+   * <code>
+   * 
+   * if(v::integer(2)) {
+   *   echo 'Valid integer';
+   * }
+   *
+   * </code>
    * 
    * @param int $value
    * @return boolean
