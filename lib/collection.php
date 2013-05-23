@@ -495,9 +495,9 @@ class Collection implements Iterator {
 
         foreach($collection->toArray() as $key => $item) {
           if($split) {
-            $values = str::split((string)$item->$field(), $split);
+            $values = str::split((string)$this->filterByValue($item, $field), $split);
             if(in_array($value, $values)) $collection->remove($key);
-          } else if($item->$field() == $value) {
+          } else if($this->filterByValue($item, $field) == $value) {
             $collection->remove($key);
           }
 
@@ -509,14 +509,14 @@ class Collection implements Iterator {
         
         foreach($collection->toArray() as $key => $item) {
           if($split) {
-            $values = str::split((string)$item->$field(), $split);
+            $values = str::split((string)$this->filterByValue($item, $field), $split);
             foreach($values as $val) {
               if(str::contains($val, $value) == false) {
                 $collection->remove($key);
                 break;
               }
             }
-          } else if(str::contains($item->$field(), $value) == false) {
+          } else if(str::contains($this->filterByValue($item, $field), $value) == false) {
             $collection->remove($key);
           }
 
@@ -528,7 +528,7 @@ class Collection implements Iterator {
       case '>':
 
         foreach($collection->toArray() as $key => $item) {
-          if($item->$field() > $value) continue;
+          if($this->filterByValue($item, $field) > $value) continue;
           $collection->remove($key);
         }
 
@@ -538,7 +538,7 @@ class Collection implements Iterator {
       case '<':
 
         foreach($collection->toArray() as $key => $item) {
-          if($item->$field() < $value) continue;
+          if($this->filterByValue($item, $field) < $value) continue;
           $collection->remove($key);
         }
 
@@ -548,7 +548,7 @@ class Collection implements Iterator {
       case '>=':
 
         foreach($collection->toArray() as $key => $item) {
-          if($item->$field() >= $value) continue;
+          if($this->filterByValue($item, $field) >= $value) continue;
           $collection->remove($key);
         }
 
@@ -558,7 +558,7 @@ class Collection implements Iterator {
       case '<=':
 
         foreach($collection->toArray() as $key => $item) {
-          if($item->$field() <= $value) continue;
+          if($this->filterByValue($item, $field) <= $value) continue;
           $collection->remove($key);
         }
 
@@ -570,9 +570,9 @@ class Collection implements Iterator {
         foreach($collection->toArray() as $key => $item) {
 
           if($split) {
-            $values = str::split((string)$item->$field(), $split);
+            $values = str::split((string)$this->filterByValue($item, $field), $split);
             if(!in_array($value, $values)) $collection->remove($key);
-          } else if($item->$field() != $value) {
+          } else if($this->filterByValue($item, $field) != $value) {
             $collection->remove($key);
           }
         
@@ -585,6 +585,24 @@ class Collection implements Iterator {
     return $collection;
 
   }   
+
+  /**
+   * Makes sure to provide a valid value for each filter method
+   * no matter if an object or an array is given
+   * 
+   * @param mixed $item
+   * @param string $field
+   * @return mixed
+   */
+  protected function filterByValue($item, $field) {
+    if(is_array($item)) {
+      return a::get($item, $field);
+    } else if(is_a($item, 'Object')) {
+      return $item->$field();
+    } else {
+      return false;
+    }
+  } 
 
   // Conversion Helpers
   
@@ -653,14 +671,12 @@ class Collection implements Iterator {
     $groups = array();
 
     foreach($this->toArray() as $key => $item) {
-      
-      if(is_array($item)) {
-        $value = a::get($item, $field);
-      } else if(is_a($item, 'Object')) {
-        $value = $item->$field();
-      } else {
-        raise('Grouping requires items to be arrays or objects');
-      }
+  
+      // get the value to group by      
+      $value = $this->filterByValue($item, $field);
+
+      // make sure that there's always a proper value to group by      
+      if(!$value) raise('Invalid grouping value for key: ' . $key);
 
       // make sure we have a proper key for each group
       if(is_object($value) or is_array($value)) raise('You cannot group by arrays or objects');
