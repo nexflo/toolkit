@@ -176,6 +176,8 @@ class Sql {
       $output = array();
 
       foreach($values AS $key => $value) {
+        $key = '`'.$key.'`';
+
         if(in_array($value, self::$literals)) {
           $output[] = $key . ' = ' . $value;
         } elseif(is_array($value)) {
